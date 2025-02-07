@@ -5,7 +5,7 @@ namespace Code
 {
 	// TODO: This should be allocator-aware (allocator is a field, etc.)
 	// TODO: Ref iterator
-	public unsafe struct Array<T> : IDisposable where T : unmanaged
+	public unsafe struct Array<T> : IDisposable, IEquatable<Array<T>> where T : unmanaged
 	{
 		public T* Ptr;
 		public int Length;
@@ -49,6 +49,21 @@ namespace Code
 				Util.Free(Ptr);
 				this = default;
 			}
+		}
+
+		public bool Equals(Array<T> other)
+		{
+			return Ptr == other.Ptr && Length == other.Length;
+		}
+
+		public override bool Equals(object obj)
+		{
+			return obj is Array<T> other && Equals(other);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(unchecked((int)(long)Ptr), Length);
 		}
 	}
 }

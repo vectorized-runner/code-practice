@@ -41,6 +41,28 @@ namespace Code.Tests
 		}
 
 		[Test]
+		public static void Equals()
+		{
+			var arr = new Array<int>(1);
+			var arr2 = new Array<int>(1);
+			var copy = arr;
+			
+			Assert.AreEqual(arr, copy);
+			Assert.AreNotEqual(arr, arr2);
+			Assert.AreNotEqual(copy, arr2);
+		}
+
+		[Test]
+		public static void GetHashCodeDoesNotThrowOnEmpty()
+		{
+			Assert.DoesNotThrow(() =>
+			{
+				var arr = new Array<int>();
+				var hash = arr.GetHashCode();
+			});
+		}
+		
+		[Test]
 		public static void OutOfRangeAccessThrows()
 		{
 			_cleanupArray = new Array<int>(10);
