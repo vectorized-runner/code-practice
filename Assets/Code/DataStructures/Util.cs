@@ -5,9 +5,14 @@ namespace Code
 {
 	public static unsafe class Util
 	{
-		public static void* Malloc<T>(int count) where T : unmanaged
+		public static T* Malloc<T>(int count) where T : unmanaged
 		{
-			return UnsafeUtility.Malloc(count * sizeof(T), UnsafeUtility.AlignOf<T>(), Allocator.Persistent);
+			return (T*)UnsafeUtility.Malloc(count * sizeof(T), UnsafeUtility.AlignOf<T>(), Allocator.Persistent);
+		}
+
+		public static void Free(void* ptr)
+		{
+			UnsafeUtility.Free(ptr, Allocator.Persistent);
 		}
 	}
 }
