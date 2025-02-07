@@ -4,7 +4,7 @@ using System;
 namespace Code
 {
 	// TODO: This should be allocator-aware (allocator is a field, etc.)
-	public unsafe struct Array<T> where T : unmanaged, IDisposable
+	public unsafe struct Array<T> : IDisposable where T : unmanaged
 	{
 		public T* Ptr;
 		public int Length;
