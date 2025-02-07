@@ -23,6 +23,12 @@ namespace Code
 			}
 		}
 
+		public ref T ItemAsRef(int index)
+		{
+			Util.CheckIndexInRange(index, Length);
+			return ref Ptr[index];
+		}
+
 		public Array(int length)
 		{
 			Ptr = Util.Malloc<T>(length);
