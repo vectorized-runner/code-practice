@@ -30,11 +30,16 @@ namespace Code
 			return ref Ptr[index];
 		}
 
-		public Array(int length)
+		public Array(int length, bool clearMemory = false)
 		{
 			Util.CheckLength(length);
 			Ptr = Util.Malloc<T>(length);
 			Length = length;
+
+			if (clearMemory)
+			{
+				Util.MemClear(Ptr, length);
+			}
 		}
 
 		public void Dispose()
