@@ -4,20 +4,20 @@ namespace Code
 {
 	public unsafe struct Array<T> where T : unmanaged, IDisposable
 	{
-		private T* _ptr;
-		private int _count;
+		public T* Ptr;
+		public int Count;
 
 		public Array(int count)
 		{
-			_ptr = Util.Malloc<T>(count);
-			_count = count;
+			Ptr = Util.Malloc<T>(count);
+			Count = count;
 		}
 
 		public void Dispose()
 		{
-			if (_ptr != null)
+			if (Ptr != null)
 			{
-				Util.Free(_ptr);
+				Util.Free(Ptr);
 				this = default;
 			}
 		}
