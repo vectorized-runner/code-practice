@@ -12,7 +12,7 @@ namespace Code
 		{
 			if (length < 0)
 			{
-				throw new Exception($"Length {length} can't be negative.");
+				throw new ArgumentOutOfRangeException($"Length {length} can't be negative.");
 			}
 		}
 
@@ -21,12 +21,12 @@ namespace Code
 		{
 			if (index < 0)
 			{
-				throw new ArgumentOutOfRangeException($"Index {index} is negative");
+				throw new IndexOutOfRangeException($"Index {index} is negative");
 			}
 
 			if (index >= length)
 			{
-				throw new ArgumentOutOfRangeException($"Index {index} is out of range of length {length}");
+				throw new IndexOutOfRangeException($"Index {index} is out of range of length {length}");
 			}
 		}
 
