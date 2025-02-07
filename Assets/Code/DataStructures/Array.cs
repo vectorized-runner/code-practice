@@ -1,16 +1,32 @@
+#define DEBUG_CHECKS
 using System;
 
 namespace Code
 {
+	// TODO: This should be allocator-aware (allocator is a field, etc.)
 	public unsafe struct Array<T> where T : unmanaged, IDisposable
 	{
 		public T* Ptr;
-		public int Count;
+		public int Length;
 
-		public Array(int count)
+		public T this[int index]
 		{
-			Ptr = Util.Malloc<T>(count);
-			Count = count;
+			get
+			{
+				Util.CheckIndexInRange(index, Length);
+				return Ptr[index];
+			}
+			set
+			{
+				Util.CheckIndexInRange(index, Length);
+				Ptr[index] = value;
+			}
+		}
+
+		public Array(int length)
+		{
+			Ptr = Util.Malloc<T>(length);
+			Length = length;
 		}
 
 		public void Dispose()
