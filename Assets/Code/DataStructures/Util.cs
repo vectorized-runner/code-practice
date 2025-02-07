@@ -30,9 +30,10 @@ namespace Code
 			}
 		}
 
-		public static T* Malloc<T>(int count) where T : unmanaged
+		public static T* Malloc<T>(int length) where T : unmanaged
 		{
-			return (T*)UnsafeUtility.Malloc(count * sizeof(T), UnsafeUtility.AlignOf<T>(), Allocator.Persistent);
+			return (T*)UnsafeUtility.Malloc(length * sizeof(T), UnsafeUtility.AlignOf<T>(), Allocator.Persistent);
+		}
 		}
 
 		public static void Free(void* ptr)
