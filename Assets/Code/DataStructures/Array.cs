@@ -31,6 +31,7 @@ namespace Code
 
 		public Array(int length)
 		{
+			Util.CheckLength(length);
 			Ptr = Util.Malloc<T>(length);
 			Length = length;
 		}

@@ -8,6 +8,15 @@ namespace Code
 	public static unsafe class Util
 	{
 		[Conditional("DEBUG_CHECKS")]
+		public static void CheckLength(int length)
+		{
+			if (length < 0)
+			{
+				throw new Exception($"Length {length} can't be negative.");
+			}
+		}
+
+		[Conditional("DEBUG_CHECKS")]
 		public static void CheckIndexInRange(int index, int length)
 		{
 			if (index < 0)
