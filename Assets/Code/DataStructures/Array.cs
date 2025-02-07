@@ -4,6 +4,7 @@ using System;
 namespace Code
 {
 	// TODO: This should be allocator-aware (allocator is a field, etc.)
+	// TODO: Ref iterator
 	public unsafe struct Array<T> : IDisposable where T : unmanaged
 	{
 		public T* Ptr;

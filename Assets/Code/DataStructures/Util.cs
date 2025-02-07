@@ -35,7 +35,7 @@ namespace Code
 			return (T*)UnsafeUtility.Malloc(length * sizeof(T), UnsafeUtility.AlignOf<T>(), Allocator.Persistent);
 		}
 
-		public static void Clear<T>(T* memory, int length) where T : unmanaged
+		public static void MemClear<T>(T* memory, int length) where T : unmanaged
 		{
 			UnsafeUtility.MemClear(memory, sizeof(T) * length);
 		}
