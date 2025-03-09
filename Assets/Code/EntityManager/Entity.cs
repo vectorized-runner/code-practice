@@ -31,7 +31,8 @@ namespace CodePractice
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Index, Version);
+            // Smart implementation: Two entities with the same index is only possible if one is destroyed (rare)
+            return Index;
         }
     }
 }
