@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 
-namespace Code
+namespace CodePractice
 {
 	public static unsafe class Util
 	{

@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Code.Tests
+namespace CodePractice.Tests
 {
 	public static class ArrayTests
 	{

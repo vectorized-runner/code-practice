@@ -1,7 +1,7 @@
 #define DEBUG_CHECKS
 using System;
 
-namespace Code
+namespace CodePractice
 {
 	// TODO: This should be allocator-aware (allocator is a field, etc.)
 	// TODO: Ref iterator
