@@ -34,5 +34,10 @@ namespace CodePractice
             // Smart implementation: Two entities with the same index is only possible if one is destroyed (rare)
             return Index;
         }
+
+        public override string ToString()
+        {
+            return Equals(Null) ? "Entity.Null" : $"Entity({Index},{Version})";
+        }
     }
 }
