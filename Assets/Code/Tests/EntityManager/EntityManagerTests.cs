@@ -60,6 +60,27 @@ namespace CodePractice.Tests
         }
 
         [Test]
+        public void CreatedEntityExists()
+        {
+            var em = EntityManager.Create();
+            var entity1 = em.CreateEntity();
+            var entity2 = em.CreateEntity();
+            
+            Assert.IsTrue(em.Exists(entity1));
+            Assert.IsTrue(em.Exists(entity2));
+        }
+
+        [Test]
+        public void DestroyedEntityDoesNotExist()
+        {
+            var em = EntityManager.Create();
+            var entity1 = em.CreateEntity();
+            em.DestroyEntity(entity1);
+            
+            Assert.IsFalse(em.Exists(entity1));
+        }
+
+        [Test]
         public void NullEntityIsZero()
         {
             var entity = Entity.Null;
