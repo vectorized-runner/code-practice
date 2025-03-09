@@ -15,6 +15,20 @@ namespace CodePractice.Tests
         }
 
         [Test]
+        public void IndexGoesUp()
+        {
+            var em = EntityManager.Create();
+            var baseIdx = 1;
+
+            for (int i = 0; i < 100_000; i++)
+            {
+                var entity = em.CreateEntity();
+                Assert.AreEqual(baseIdx + i, entity.Index);
+                Assert.AreEqual(0, entity.Version);
+            }
+        }
+
+        [Test]
         public void DefaultEntityDoesNotExist()
         {
             var em = EntityManager.Create();
