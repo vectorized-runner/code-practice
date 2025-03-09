@@ -29,6 +29,23 @@ namespace CodePractice.Tests
         }
 
         [Test]
+        public void VersionGoesUp()
+        {
+            var em = EntityManager.Create();
+            var baseVer = 1;
+            var entity = em.CreateEntity();
+
+            for (int i = 0; i < 100_000; i++)
+            {
+                em.DestroyEntity(entity);
+                entity = em.CreateEntity();
+                
+                Assert.AreEqual(1, entity.Index);
+                Assert.AreEqual(baseVer + i, entity.Version);
+            }
+        }
+
+        [Test]
         public void DefaultEntityDoesNotExist()
         {
             var em = EntityManager.Create();
