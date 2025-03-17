@@ -88,8 +88,8 @@ namespace CodePractice.Tests
             var entity2 = em.CreateEntity();
             var entity3 = em.CreateEntity();
 
-            Assert.AreEqual(2, entity2.Index);
-            Assert.AreEqual(0, entity2.Version);
+            Assert.AreEqual(2, entity3.Index);
+            Assert.AreEqual(0, entity3.Version);
         }
 
         [Test]
@@ -136,7 +136,14 @@ namespace CodePractice.Tests
             var entity = Entity.Null;
             Assert.IsTrue(entity == default);
         }
-        
-        // TODO: Can't Destroy Entity Not Exists (what should the API be?)
+
+        [Test]
+        public void CanNotDestroyEntityTwice()
+        {
+            var em = EntityManager.Create();
+            var entity = em.CreateEntity();
+            Assert.IsTrue(em.DestroyEntity(entity));
+            Assert.IsFalse(em.DestroyEntity(entity));
+        }
     }
 }
