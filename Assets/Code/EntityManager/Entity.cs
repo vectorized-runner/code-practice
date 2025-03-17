@@ -9,6 +9,12 @@ namespace CodePractice
 
         public static readonly Entity Null = new Entity();
 
+        public Entity(int index, int version)
+        {
+            Index = index;
+            Version = version;
+        }
+
         public static bool operator ==(Entity lhs, Entity rhs)
         {
             return lhs.Index == rhs.Index && lhs.Version == rhs.Version;

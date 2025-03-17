@@ -4,6 +4,8 @@ namespace CodePractice.Tests
 {
     public class EntityManagerTests
     {
+        // TODO: Setup, Teardown (don't leak memory)
+        
         [Test]
         public void CreateEntity()
         {
@@ -91,7 +93,16 @@ namespace CodePractice.Tests
         }
 
         [Test]
-        public void CreatedEntityExists()
+        public void CreatedEntityExistsOnce()
+        {
+            var em = EntityManager.Create();
+            var entity1 = em.CreateEntity();
+            
+            Assert.IsTrue(em.Exists(entity1));
+        }
+
+        [Test]
+        public void CreatedEntityExistsTwice()
         {
             var em = EntityManager.Create();
             var entity1 = em.CreateEntity();
@@ -125,5 +136,7 @@ namespace CodePractice.Tests
             var entity = Entity.Null;
             Assert.IsTrue(entity == default);
         }
+        
+        // TODO: Can't Destroy Entity Not Exists (what should the API be?)
     }
 }
