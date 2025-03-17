@@ -98,3 +98,4 @@ ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
 /Assets/SharedAssets*.meta
 /Assets/Tutorials
 /Assets/Tutorials*.meta
+.DS_Store
