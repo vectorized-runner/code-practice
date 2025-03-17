@@ -7,7 +7,17 @@ namespace CodePractice
         private int _lastUsedIndex;
         private NativeQueue<int> _freeIndices;
         private NativeHashMap<int, int> _versionByIndex;
-
+        
+        // todo: addcomponent
+        // find archetype of entity
+        // get the components of the archetype
+        // if the entity already has the component, exception
+        // add the component to the archetype list
+        // get chunks for archetype
+        // if free chunk exists, add entity data to the archetype
+        // if free chunk doesn't exist, create new empty chunk, add data
+        // let's write all the required API for this
+        
         public static EntityManager Create()
         {
             return new EntityManager
