@@ -1,4 +1,4 @@
-using System;
+using UnityEngine;
 
 namespace CodePractice
 {
@@ -18,33 +18,33 @@ namespace CodePractice
 
         public void* Alloc(int size)
         {
-            if (size <= 0)
-                throw new Exception($"Size must be positive, but it's '{size}'");
-            
+            Debug.Assert(size >= 0);
+
             if (Offset + size <= Length)
             {
-                void* mem = &Buffer[Offset];
+                byte* bufferAsBytePtr = (byte*)Buffer;
+                void* mem = &bufferAsBytePtr[Offset];
                 Offset += size;
                 Util.MemClear(mem, size);
                 return mem;
             }
 
-            throw new Exception($"Allocator is full. Can't allocate '{size}' bytes");
+            return null;
         }
 
-        public void Free()
+        public void Free(void* ptr)
         {
-            throw new System.NotImplementedException();
+            // No-op
+        }
+
+        public void FreeAll()
+        {
+            Offset = 0;
         }
 
         public void Resize(int newSize)
         {
             throw new System.NotImplementedException();
-        }
-
-        public void Rewind()
-        {
-            
         }
     }
 }

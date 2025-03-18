@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using Debug = UnityEngine.Debug;
 
 namespace CodePractice
 {
@@ -28,6 +29,30 @@ namespace CodePractice
             {
                 throw new IndexOutOfRangeException($"Index {index} is out of range of length {length}");
             }
+        }
+
+        public static bool IsPow2(int x)
+        {
+            return (x & (x - 1)) == 0;
+        }
+
+        public static void* AlignForward(void* ptr, int alignment)
+        {
+            return (void*)AlignForward((long)ptr, alignment);
+        }
+        public static long AlignForward(long address, int alignment)
+        {
+            Debug.Assert(alignment >= 0);
+            Debug.Assert(IsPow2(alignment));
+
+            // Same as (address % alignment) but faster as 'alignment' is a power of two
+            var mod = address & (alignment - 1);
+            if (mod == 0)
+            {
+                return address;
+            }
+
+            return address + alignment - mod;
         }
 
         public static void* Malloc(int length, int align)

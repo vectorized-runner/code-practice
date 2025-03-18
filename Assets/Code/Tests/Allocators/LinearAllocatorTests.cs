@@ -35,6 +35,36 @@ namespace CodePractice.Tests
         }
 
         [Test]
+        public void AlignForward_1()
+        {
+            Assert.AreEqual(32, Util.AlignForward(32, 16));
+        }
+        
+        [Test]
+        public void AlignForward_2()
+        {
+            Assert.AreEqual(45, Util.AlignForward(32, 15));
+        }
+        
+        [Test]
+        public void AlignForward_3()
+        {
+            Assert.AreEqual(64, Util.AlignForward(64, 16));
+        }
+        
+        [Test]
+        public void AlignForward_4()
+        {
+            Assert.AreEqual(64, Util.AlignForward(64, 16));
+        }
+        
+        [Test]
+        public void AlignForward_5()
+        {
+            Assert.AreEqual(32, Util.AlignForward(27, 8));
+        }
+
+        [Test]
         public void InBoundsAllocDoesNotFail()
         {
             
