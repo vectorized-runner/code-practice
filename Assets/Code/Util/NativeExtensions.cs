@@ -7,14 +7,14 @@ namespace CodePractice
 {
     public static unsafe class NativeExtensions
     {
-        public static bool ValueEquals<T>(this NativeArray<T> a, NativeArray<T> b) where T : unmanaged, IEquatable<T>
+        public static bool ValueEquals<T>(this NativeArray<T> first, NativeArray<T> second) where T : unmanaged, IEquatable<T>
         {
-            if (a.Length != b.Length)
+            if (first.Length != second.Length)
                 return false;
 
-            for (int i = 0; i < a.Length; i++)
+            for (int i = 0; i < first.Length; i++)
             {
-                if (!a[i].Equals(b[i]))
+                if (!first[i].Equals(second[i]))
                 {
                     return false;
                 }
@@ -23,15 +23,15 @@ namespace CodePractice
             return true;
         }
 
-        public static bool ValueEquals<T>(this NativeHashSet<T> a, NativeHashSet<T> b)
+        public static bool ValueEquals<T>(this NativeHashSet<T> first, NativeHashSet<T> second)
             where T : unmanaged, IEquatable<T>
         {
-            if (a.Count != b.Count)
+            if (first.Count != second.Count)
                 return false;
 
-            foreach (var element in a)
+            foreach (var element in first)
             {
-                if (!b.Contains(element))
+                if (!second.Contains(element))
                     return false;
             }
 
