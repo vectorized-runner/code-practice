@@ -1,9 +1,11 @@
 using System;
+using System.Runtime.CompilerServices;
 using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace CodePractice
 {
-    public static class NativeArrayExtensions
+    public static unsafe class NativeArrayExtensions
     {
         public static bool ValueEquals<T>(this NativeArray<T> a, NativeArray<T> b) where T : unmanaged, IEquatable<T>
         {
@@ -19,6 +21,12 @@ namespace CodePractice
             }
 
             return true;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref T ElementAt<T>(this NativeArray<T> arr, int index) where T : unmanaged
+        {
+            return ref UnsafeUtility.ArrayElementAsRef<T>(arr.GetUnsafePtr(), index);
         }
     }
 }
