@@ -38,6 +38,29 @@ namespace CodePractice
             return true;
         }
 
+        public static bool ValueEquals<TK, TV>(this NativeHashMap<TK, TV> first, NativeHashMap<TK, TV> second)
+            where TK : unmanaged, IEquatable<TK> where TV : unmanaged
+        {
+            if (first.Count != second.Count)
+                return false;
+
+            foreach (var kvPair in first)
+            {
+                if (!second.TryGetValue(kvPair.Key, out var secondValue))
+                {
+                    return false;
+                }
+
+                var firstValue = kvPair.Value;
+                if (!firstValue.Equals(secondValue))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref T ElementAt<T>(this NativeArray<T> arr, int index) where T : unmanaged
         {
