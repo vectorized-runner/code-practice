@@ -14,7 +14,7 @@ namespace CodePractice
             _lastTypeIndex = 0;
         }
         
-        public static int GetTypeIndex<T>() where T : IComponent
+        public static int GetTypeIndex<T>() where T : unmanaged, IComponent
         {
             // TODO: Maybe there's something better? Without resorting to underlying type?
             var type = typeof(T);
