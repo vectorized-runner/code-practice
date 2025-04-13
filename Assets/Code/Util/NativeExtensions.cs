@@ -5,7 +5,7 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace CodePractice
 {
-    public static unsafe class NativeArrayExtensions
+    public static unsafe class NativeExtensions
     {
         public static bool ValueEquals<T>(this NativeArray<T> a, NativeArray<T> b) where T : unmanaged, IEquatable<T>
         {
@@ -18,6 +18,21 @@ namespace CodePractice
                 {
                     return false;
                 }
+            }
+
+            return true;
+        }
+
+        public static bool ValueEquals<T>(this NativeHashSet<T> a, NativeHashSet<T> b)
+            where T : unmanaged, IEquatable<T>
+        {
+            if (a.Count != b.Count)
+                return false;
+
+            foreach (var element in a)
+            {
+                if (!b.Contains(element))
+                    return false;
             }
 
             return true;
