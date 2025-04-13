@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace CodePractice
 {
-    public static class TypeManager
+    public static unsafe class TypeManager
     {
-        private static Dictionary<Type, int> _typeIndexByType;
+        private static Dictionary<Type, TypeInfo> _typeInfoByType;
         private static int _lastTypeIndex;
 
         public static void Initialize()
         {
-            _typeIndexByType = new Dictionary<Type, int>();
+            _typeInfoByType = new Dictionary<Type, TypeInfo>();
             _lastTypeIndex = 0;
         }
         
@@ -19,11 +19,17 @@ namespace CodePractice
             // TODO: Maybe there's something better? Without resorting to underlying type?
             var type = typeof(T);
             
-            if (_typeIndexByType.TryGetValue(type, out var idx))
-                return idx;
+            if (_typeInfoByType.TryGetValue(type, out var idx))
+                return idx.TypeIndex;
 
             var newTypeIdx = ++_lastTypeIndex;
-            _typeIndexByType.Add(type, newTypeIdx);
+            var typeInfo = new TypeInfo
+            {
+                Size = sizeof(T),
+                TypeIndex = newTypeIdx
+            };
+            
+            _typeInfoByType.Add(type, typeInfo);
             return newTypeIdx;
         }
     }
