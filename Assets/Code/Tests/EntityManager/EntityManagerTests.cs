@@ -9,6 +9,7 @@ namespace CodePractice.Tests
         [SetUp]
         public void SetUp()
         {
+            TypeManager.Initialize();
             _em = EntityManager.Create();
         }
 
