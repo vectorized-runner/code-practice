@@ -1,3 +1,4 @@
+using System;
 using Unity.Collections;
 
 namespace CodePractice
@@ -7,6 +8,7 @@ namespace CodePractice
         private int _lastUsedIndex;
         private NativeQueue<int> _freeIndices;
         private NativeHashMap<int, int> _versionByIndex;
+        private NativeList<Archetype> _archetypes;
         
         // todo: addcomponent
         // find archetype of entity
@@ -24,7 +26,8 @@ namespace CodePractice
             {
                 _lastUsedIndex = 0,
                 _freeIndices = new NativeQueue<int>(Allocator.Persistent),
-                _versionByIndex = new NativeHashMap<int, int>(32, Allocator.Persistent)
+                _versionByIndex = new NativeHashMap<int, int>(32, Allocator.Persistent),
+                _archetypes = new NativeList<Archetype>(Allocator.Persistent),
             };
         }
 
@@ -32,6 +35,14 @@ namespace CodePractice
         {
             _freeIndices.Dispose();
             _versionByIndex.Dispose();
+
+            for (int i = 0; i < _archetypes.Length; i++)
+            {
+                _archetypes[i].Dispose();
+            }
+            
+            _archetypes.Dispose();
+        }
         }
         
         public Entity CreateEntity()
