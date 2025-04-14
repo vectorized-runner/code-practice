@@ -6,7 +6,7 @@ namespace CodePractice
     public struct Archetype : IDisposable
     {
         public NativeArray<Chunk> Chunks;
-        public NativeArray<ComponentType> Types;
+        public NativeArray<ComponentType> Components;
         
         public void Dispose()
         {
@@ -16,7 +16,7 @@ namespace CodePractice
             }
             
             Chunks.Dispose();
-            Types.Dispose();
+            Components.Dispose();
         }
     }
 }
