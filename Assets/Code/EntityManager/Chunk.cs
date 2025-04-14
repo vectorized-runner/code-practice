@@ -11,9 +11,12 @@ namespace CodePractice
         // EntityIds
 
         public NativeArray<byte> Memory;
+        // TODO: Make per archetype
         public NativeArray<int> ComponentOffsets;
+        // TODO: Make per archetype
         public NativeArray<int> ComponentSizes;
         public int Count;
+        // TODO: Make per archetype
         public int Capacity;
 
         public const int KiB = 1024;
