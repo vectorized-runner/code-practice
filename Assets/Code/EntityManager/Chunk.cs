@@ -63,6 +63,28 @@ namespace CodePractice
             
             _archetype = archetype;
         }
+        
+        public void AddEntity(Entity entity)
+        {
+            if (IsFull())
+            {
+                throw new Exception("Chunk is full.");
+            }
+
+            var entityIndex = Count;
+            const int entityOffset = 0;
+            int entitySize = sizeof(Entity);
+            var ptr = (byte*)Memory.GetUnsafePtr();
+            UnsafeUtility.MemCpy(ptr + entityOffset + entityIndex * entitySize, &entity, sizeof(Entity));
+            WriteComponent(0, entityIndex, entity);
+
+            for (int i = 0; i < _archetype.Components.Length; i++)
+            {
+                var offset = ComponentOffsets[i];
+                var size = ComponentSizes[i];
+                UnsafeUtility.MemClear(ptr + offset + size * entityIndex, size);
+            }
+        }
         public void Dispose()
         {
             Memory.Dispose();
