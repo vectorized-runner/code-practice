@@ -1,5 +1,6 @@
 #define DEBUG_CHECKS
 using System;
+using Unity.Collections;
 
 namespace CodePractice
 {
@@ -9,6 +10,8 @@ namespace CodePractice
 	{
 		public T* Ptr;
 		public int Length;
+
+		public bool IsCreated => Ptr != null;
 
 		public T this[int index]
 		{
@@ -23,7 +26,7 @@ namespace CodePractice
 				Ptr[index] = value;
 			}
 		}
-
+		
 		public ref T ItemAsRef(int index)
 		{
 			Util.CheckIndexInRange(index, Length);

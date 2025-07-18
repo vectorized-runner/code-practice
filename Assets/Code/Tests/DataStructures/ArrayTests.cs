@@ -12,6 +12,17 @@ namespace CodePractice.Tests
 		{
 			_cleanupArray.Dispose();
 		}
+
+		[Test]
+		public static void RefIterator()
+		{
+			// var arr = new Array<int>(10);
+			//
+			// foreach (ref var item in arr)
+			// {
+			// 	
+			// }
+		}
 		
 		[Test]
 		public static void NegativeIndexThrows()
