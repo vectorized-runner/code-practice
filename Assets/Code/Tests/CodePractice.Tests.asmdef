@@ -4,8 +4,7 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Code",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
         "CodePractice"
     ],
     "includePlatforms": [
