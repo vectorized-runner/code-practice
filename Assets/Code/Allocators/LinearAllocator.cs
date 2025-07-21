@@ -55,7 +55,11 @@ namespace CodePractice
 
         public void Dispose()
         {
-            MemoryUtil.Free(Buffer);
+            if (Buffer != null)
+            {
+                MemoryUtil.Free(Buffer);
+            }
+            
             this = default;
         }
     }
