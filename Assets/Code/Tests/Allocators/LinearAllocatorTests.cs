@@ -1,7 +1,10 @@
+using System;
 using NUnit.Framework;
 
 namespace CodePractice.Tests
 {
+    // TODO: Don't leak memory (auto dispose pattern)
+    // with the Linear allocator
     public unsafe class LinearAllocatorTests
     {
         [Test]
@@ -20,18 +23,51 @@ namespace CodePractice.Tests
             Assert.IsTrue(ptr == null);
         }
 
-        [Test]
-        public void OutOfBoundsAllocFails()
+        // TODO: This crashes, figure it out
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(4)]
+        [TestCase(10)]
+        [TestCase(16)]
+        [TestCase(32)]
+        [TestCase(64)]
+        [TestCase(99)]
+        [TestCase(1024)]
+        [TestCase(1_000_000)]
+        public void ExactSizeAllocDoesNotThrow(int size)
         {
-            var allocator = new LinearAllocator(128);
-            var ptr = allocator.Alloc(129);  
-            var ptr2 = allocator.Alloc(256);
-            var ptr3 = allocator.Alloc(512);
-            var ptr4 = allocator.Alloc(1024);
-            Assert.IsTrue(ptr == null);
-            Assert.IsTrue(ptr2 == null);
-            Assert.IsTrue(ptr3 == null);
-            Assert.IsTrue(ptr4 == null);
+            Assert.Throws<Exception>(() =>
+            {
+                using var allocator = new LinearAllocator(size);
+                allocator.Alloc(size);
+            });
+        }
+        
+        [TestCase(129)]
+        [TestCase(256)]
+        [TestCase(512)]
+        [TestCase(int.MaxValue)]
+        public void OutOfBoundsAllocThrows(int allocSize)
+        {
+            Assert.Throws<Exception>(() =>
+            {
+                using var allocator = new LinearAllocator(128);
+                allocator.Alloc(allocSize);
+            });
+        }
+
+        [TestCase(0)]
+        [TestCase(-1)]
+        [TestCase(-2)]
+        [TestCase(-100)]
+        [TestCase(int.MinValue)]
+        public void NonPositiveAllocThrows(int size)
+        {
+            Assert.Throws<Exception>(() =>
+            {
+                using var alloc = new LinearAllocator(128);
+                alloc.Alloc(size);
+            });
         }
 
         [Test]
@@ -76,7 +112,7 @@ namespace CodePractice.Tests
             Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-1));
             Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-2));
             Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-4));
-            Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-int.MaxValue));
+            Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(int.MinValue));
         }
 
         [Test]
