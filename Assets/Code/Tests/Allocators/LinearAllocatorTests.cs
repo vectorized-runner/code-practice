@@ -34,7 +34,7 @@ namespace CodePractice.Tests
 		[TestCase(1_000_000)]
 		public void ExactSizeAllocDoesNotThrow(int size)
 		{
-			Assert.Throws<Exception>(() =>
+			Assert.DoesNotThrow(() =>
 			{
 				using var allocator = new LinearAllocator(size);
 				allocator.Alloc(size);

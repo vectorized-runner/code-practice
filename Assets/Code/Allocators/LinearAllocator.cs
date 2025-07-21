@@ -26,16 +26,18 @@ namespace CodePractice
         {
             MemoryUtil.CheckAllocSize(size);
 
-            if (Allocated + size <= Length)
+            if (Allocated + size > Length)
             {
-                var bufferAsBytePtr = (byte*)Buffer;
-                void* mem = &bufferAsBytePtr[Allocated];
-                Allocated += size;
-                MemoryUtil.MemClear(mem, size);
-                return mem;
+                throw new Exception(
+                    $"Allocated Size {size} is out of LinearAllocator bounds. Allocated {Allocated} Length {Length}");
             }
+            
+            var bufferAsBytePtr = (byte*)Buffer;
+            void* mem = &bufferAsBytePtr[Allocated];
+            Allocated += size;
+            MemoryUtil.MemClear(mem, size);
+            return mem;
 
-            return null;
         }
 
         public void Clear()
