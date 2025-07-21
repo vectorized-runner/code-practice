@@ -15,10 +15,11 @@ namespace CodePractice.Tests
 		[Test]
 		public void DefaultAllocFails()
 		{
-			using var alloc = new LinearAllocator();
-			var ptr = alloc.Alloc(10);
-
-			Assert.IsTrue(ptr == null);
+			Assert.Throws<Exception>(() =>
+			{
+				using var alloc = new LinearAllocator();
+				alloc.Alloc(10);
+			});
 		}
 
 		[TestCase(1)]
