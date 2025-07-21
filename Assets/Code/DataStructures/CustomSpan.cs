@@ -5,7 +5,7 @@ namespace CodePractice
 {
 	// TODO: CopyTo
 	// TODO: Ref iterator
-	public unsafe struct Span<T> where T : unmanaged
+	public unsafe struct CustomSpan<T> where T : unmanaged
 	{
 		public T* Ptr;
 		public int Length;
@@ -24,7 +24,7 @@ namespace CodePractice
 			}
 		}
 
-		public Span(T* ptr, int length)
+		public CustomSpan(T* ptr, int length)
 		{
 			MemoryUtil.CheckLength(length);
 			Ptr = ptr;
@@ -37,15 +37,15 @@ namespace CodePractice
 			return ref Ptr[index];
 		}
 
-		public Span<T> Slice(int start, int length)
+		public CustomSpan<T> Slice(int start, int length)
 		{
 			MemoryUtil.CheckLength(length);
 			MemoryUtil.CheckIndexInRange(start + length, Length);
 
-			return new Span<T>(Ptr + start, length);
+			return new CustomSpan<T>(Ptr + start, length);
 		}
 
-		public Span<T> Slice(int start)
+		public CustomSpan<T> Slice(int start)
 		{
 			// TODO:
 			// Util.CheckIndexInRange(start, Length);
