@@ -7,13 +7,13 @@ namespace CodePractice
 {
 	public unsafe struct LinearAllocator : IAllocator, IDisposable
 	{
-		public void* Buffer;
+		public byte* Buffer;
 		public int Length;
 		public int Allocated;
 
 		public LinearAllocator(int length)
 		{
-			Buffer = MemoryUtil.Malloc(length);
+			Buffer = (byte*)MemoryUtil.Malloc(length);
 			Length = length;
 			Allocated = 0;
 		}
@@ -21,7 +21,7 @@ namespace CodePractice
 		// stackalloc constructor
 		public LinearAllocator(Span<byte> buffer)
 		{
-			fixed (void* ptr = buffer)
+			fixed (byte* ptr = buffer)
 			{
 				Buffer = ptr;
 				Length = buffer.Length;
@@ -31,7 +31,7 @@ namespace CodePractice
 
 		public LinearAllocator(void* buffer, int length)
 		{
-			Buffer = buffer;
+			Buffer = (byte*)buffer;
 			Length = length;
 			Allocated = 0;
 		}
