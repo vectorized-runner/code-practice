@@ -8,7 +8,9 @@ namespace CodePractice
 {
     public static unsafe class Util
     {
-        [Conditional("DEBUG_CHECKS")]
+        public const string DebugCondition = "DEBUG_CHECKS";
+        
+        [Conditional(DebugCondition)]
         public static void CheckLength(int length)
         {
             if (length < 0)
@@ -17,7 +19,7 @@ namespace CodePractice
             }
         }
 
-        [Conditional("DEBUG_CHECKS")]
+        [Conditional(DebugCondition)]
         public static void CheckIndexInRange(int index, int length)
         {
             if (index < 0)
