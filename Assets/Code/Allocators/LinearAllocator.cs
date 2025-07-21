@@ -35,10 +35,31 @@ namespace CodePractice
 			Length = length;
 			Allocated = 0;
 		}
-
-		public T* Alloc<T>(int count = 1) where T : unmanaged
+		
+		public T* Alloc<T>(int count = 1, bool clearMemory = true) where T : unmanaged
 		{
-			return (T*)Alloc(UnsafeUtility.SizeOf<T>() * count);
+			return (T*)Alloc(UnsafeUtility.SizeOf<T>() * count, UnsafeUtility.AlignOf<T>(), clearMemory);
+		}
+
+		public void* Alloc(int size, int align, bool clearMemory = true)
+		{
+			var currentPtr = &Buffer[Allocated];
+			var alignedPtr = MemoryUtil.AlignForward(currentPtr, align);
+			var alignBytes = (int)((long)alignedPtr - (long)currentPtr);
+
+			if (Allocated + size + alignBytes > Length)
+			{
+				throw new Exception(
+					$"Allocated Size {size} is out of LinearAllocator bounds. Allocated {Allocated} AlignBytes {alignBytes} Length {Length}");
+			}
+
+			Allocated += alignBytes + size;
+			if (clearMemory)
+			{
+				UnsafeUtility.MemClear(alignedPtr, size);
+			}
+
+			return alignedPtr;
 		}
 
 		public void* Alloc(int size, bool clearMemory = true)
@@ -51,8 +72,7 @@ namespace CodePractice
 					$"Allocated Size {size} is out of LinearAllocator bounds. Allocated {Allocated} Length {Length}");
 			}
 
-			var bufferAsBytePtr = (byte*)Buffer;
-			void* mem = &bufferAsBytePtr[Allocated];
+			var mem = &Buffer[Allocated];
 			Allocated += size;
 
 			if (clearMemory)
