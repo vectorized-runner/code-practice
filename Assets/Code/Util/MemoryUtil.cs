@@ -9,6 +9,7 @@ namespace CodePractice
     {
         public const string DebugCondition = "DEBUG_CHECKS";
         public const int DefaultAlign = 16;
+        public const bool DefaultClearMemory = true;
         
         [Conditional(DebugCondition)]
         public static void CheckLength(int length)

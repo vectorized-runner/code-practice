@@ -36,12 +36,12 @@ namespace CodePractice
 			Allocated = 0;
 		}
 		
-		public T* Alloc<T>(int count = 1, bool clearMemory = true) where T : unmanaged
+		public T* Alloc<T>(int count = 1, bool clearMemory = MemoryUtil.DefaultClearMemory) where T : unmanaged
 		{
 			return (T*)Alloc(UnsafeUtility.SizeOf<T>() * count, UnsafeUtility.AlignOf<T>(), clearMemory);
 		}
 
-		public void* Alloc(int size, int align, bool clearMemory = true)
+		public void* Alloc(int size, int align, bool clearMemory = MemoryUtil.DefaultClearMemory)
 		{
 			var currentPtr = &Buffer[Allocated];
 			var alignedPtr = MemoryUtil.AlignForward(currentPtr, align);
@@ -62,7 +62,7 @@ namespace CodePractice
 			return alignedPtr;
 		}
 
-		public void* Alloc(int size, bool clearMemory = true)
+		public void* Alloc(int size, bool clearMemory = MemoryUtil.DefaultClearMemory)
 		{
 			MemoryUtil.CheckAllocSize(size);
 
