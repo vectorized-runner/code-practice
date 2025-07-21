@@ -69,6 +69,23 @@ namespace CodePractice.Tests
 			});
 		}
 
+		[Test]
+		public void StackAllocUsage()
+		{
+			Assert.DoesNotThrow(() =>
+			{
+				// If you free this pointer, it'll crash
+				const int size = 256;
+				var allocator = new LinearAllocator(stackalloc byte[size]);
+				var ptr = (byte*)allocator.Alloc(size);
+
+				for (int i = 0; i < size; i++)
+				{
+					ptr[i] = (byte)i;
+				}
+			});
+		}
+
 		[TestCase(129)]
 		[TestCase(256)]
 		[TestCase(512)]

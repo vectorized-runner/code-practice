@@ -18,6 +18,24 @@ namespace CodePractice
 			Allocated = 0;
 		}
 
+		// stackalloc constructor
+		public LinearAllocator(Span<byte> buffer)
+		{
+			fixed (void* ptr = buffer)
+			{
+				Buffer = ptr;
+				Length = buffer.Length;
+				Allocated = 0;
+			}
+		}
+
+		public LinearAllocator(void* buffer, int length)
+		{
+			Buffer = buffer;
+			Length = length;
+			Allocated = 0;
+		}
+
 		public T* Alloc<T>(int count = 1) where T : unmanaged
 		{
 			return (T*)Alloc(UnsafeUtility.SizeOf<T>() * count);
