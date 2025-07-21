@@ -1,7 +1,7 @@
 #define DEBUG_CHECKS
 using System;
 
-namespace Code
+namespace CodePractice
 {
 	// TODO: CopyTo
 	// TODO: Ref iterator
