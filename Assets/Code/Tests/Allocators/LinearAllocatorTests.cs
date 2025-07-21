@@ -65,6 +65,21 @@ namespace CodePractice.Tests
         }
 
         [Test]
+        public static void AlignForward_6()
+        {
+            Assert.AreEqual(false, Util.IsPowerOfTwo(0));
+        }
+        
+        [Test]
+        public static void AlignForward_7()
+        {
+            Assert.AreEqual(false, Util.IsPowerOfTwo(-1));
+            Assert.AreEqual(false, Util.IsPowerOfTwo(-2));
+            Assert.AreEqual(false, Util.IsPowerOfTwo(-4));
+            Assert.AreEqual(false, Util.IsPowerOfTwo(-int.MaxValue));
+        }
+
+        [Test]
         public void InBoundsAllocDoesNotFail()
         {
             
