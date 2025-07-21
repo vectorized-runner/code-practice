@@ -37,46 +37,46 @@ namespace CodePractice.Tests
         [Test]
         public void AlignForward_1()
         {
-            Assert.AreEqual(32, Util.AlignForward(32, 16));
+            Assert.AreEqual(32, (int)MemoryUtil.AlignForward((void*)32, 16));
         }
         
         [Test]
         public void AlignForward_2()
         {
-            Assert.AreEqual(45, Util.AlignForward(32, 15));
+            Assert.AreEqual(128, (int)MemoryUtil.AlignForward((void*)32, 128));
         }
         
         [Test]
         public void AlignForward_3()
         {
-            Assert.AreEqual(64, Util.AlignForward(64, 16));
+            Assert.AreEqual(64, (int)MemoryUtil.AlignForward((void*)64, 16));
         }
         
         [Test]
         public void AlignForward_4()
         {
-            Assert.AreEqual(64, Util.AlignForward(64, 16));
+            Assert.AreEqual(64, (int)MemoryUtil.AlignForward((void*)64, 16));
         }
         
         [Test]
         public void AlignForward_5()
         {
-            Assert.AreEqual(32, Util.AlignForward(27, 8));
+            Assert.AreEqual(32, (int)MemoryUtil.AlignForward((void*)27, 8));
         }
 
         [Test]
-        public static void AlignForward_6()
+        public static void IsPow_0()
         {
-            Assert.AreEqual(false, Util.IsPowerOfTwo(0));
+            Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(0));
         }
         
         [Test]
-        public static void AlignForward_7()
+        public static void IsPow_1()
         {
-            Assert.AreEqual(false, Util.IsPowerOfTwo(-1));
-            Assert.AreEqual(false, Util.IsPowerOfTwo(-2));
-            Assert.AreEqual(false, Util.IsPowerOfTwo(-4));
-            Assert.AreEqual(false, Util.IsPowerOfTwo(-int.MaxValue));
+            Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-1));
+            Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-2));
+            Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-4));
+            Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-int.MaxValue));
         }
 
         [Test]
