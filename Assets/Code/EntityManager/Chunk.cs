@@ -88,20 +88,24 @@ namespace CodePractice
                 UnsafeUtility.MemClear(ptr + offset + size * entityIndex, size);
             }
         }
+
+        private void WriteComponent<T>(int typeOffset, int idx, T value)
+        {
+            var ptr = (byte*)Memory.GetUnsafePtr() + typeOffset;
+            UnsafeUtility.WriteArrayElement(ptr, idx, value);
+        }
+        
         public void Dispose()
         {
             Memory.Dispose();
+            ComponentSizes.Dispose();
+            ComponentOffsets.Dispose();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsFull()
         {
             return Count == Capacity;
-        }
-        
-        public void AddEntity()
-        {
-            // If full, throw
         }
         
         public int GetEntityIndex(Entity entity)

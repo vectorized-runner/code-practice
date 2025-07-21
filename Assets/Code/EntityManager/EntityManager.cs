@@ -20,6 +20,15 @@ namespace CodePractice
         // if free chunk doesn't exist, create new empty chunk, add data
         // let's write all the required API for this
         
+        // TODO API:
+        // Archetype GetArchetype (Entity)
+        // Chunk[] GetChunks (Archetype)
+        // Chunk GetChunk (Entity)
+        // Chunk. AddEntity (Entity)
+        // Chunk. RemoveAtSwapBack (Entity)
+        // Chunk. GetNativeArray<T> (Component)
+        // Chunk[] Query (T1, T2, T3)
+        
         public static EntityManager Create()
         {
             return new EntityManager
@@ -43,6 +52,74 @@ namespace CodePractice
             
             _archetypes.Dispose();
         }
+
+        public void AddComponentData<T>(Entity entity, T component) where T : unmanaged, IComponent
+        {
+            throw new NotImplementedException();
+        }
+        
+        public void AddComponent<T>(Entity entity) where T : unmanaged, IComponent
+        {
+            throw new NotImplementedException();
+        }
+
+        public T GetComponentData<T>(Entity entity) where T : unmanaged, IComponent
+        {
+            throw new NotImplementedException();
+        }
+
+        public Entity GetLastCreatedEntity()
+        {
+            throw new NotImplementedException();
+        }
+
+        public NativeArray<Entity> GetAllEntities()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Entity Instantiate(ComponentType type)
+        {
+            // From a list of components
+            // I need to find the Archetype
+            // Archetype consists of a list of unique component types
+
+            var temp = new NativeArray<ComponentType>(1, Allocator.Temp);
+            temp[0] = type;
+            var archetypeIndex = GetOrCreateArchetypeIndex(temp);
+            ref var archetype = ref _archetypes.ElementAt(archetypeIndex);
+
+            for (int i = 0; i < archetype.Chunks.Length; i++)
+            {
+                ref var chunk = ref archetype.Chunks.ElementAt(i);
+            }
+            
+            // TODO: Left in here. You can continue
+            // (need to get or add chunk from archetype)
+            // Then you need to index the entity (entity in chunk or something)
+            // then you can fnish
+
+            throw new NotImplementedException();
+        }
+
+        private int GetOrCreateArchetypeIndex(NativeArray<ComponentType> types)
+        {
+            types.Sort();
+            
+            // TODO: This is a very naive implementation
+            for (int i = 0; i < _archetypes.Length; i++)
+            {
+                ref var archetype = ref _archetypes.ElementAt(i);
+                if (archetype.Components.ValueEquals(types))
+                {
+                    return i;
+                }
+            }
+
+            // Create new archetype and return the index
+            var idx = _archetypes.Length;
+            _archetypes.Add(new Archetype { Components = types });
+            return idx;
         }
         
         public Entity CreateEntity()
