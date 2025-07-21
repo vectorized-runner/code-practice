@@ -41,7 +41,7 @@ namespace CodePractice
 			return (T*)Alloc(UnsafeUtility.SizeOf<T>() * count);
 		}
 
-		public void* Alloc(int size)
+		public void* Alloc(int size, bool clearMemory = true)
 		{
 			MemoryUtil.CheckAllocSize(size);
 
@@ -54,7 +54,12 @@ namespace CodePractice
 			var bufferAsBytePtr = (byte*)Buffer;
 			void* mem = &bufferAsBytePtr[Allocated];
 			Allocated += size;
-			MemoryUtil.MemClear(mem, size);
+
+			if (clearMemory)
+			{
+				MemoryUtil.MemClear(mem, size);
+			}
+			
 			return mem;
 		}
 
