@@ -51,6 +51,12 @@ namespace CodePractice
         {
             return x > 0 && (x & (x - 1)) == 0;
         }
+
+        public static bool IsAligned(void* ptr, int align)
+        {
+            CheckAlignment(align);
+            return ((long)ptr & (align - 1)) == 0;
+        }
         
         public static void* AlignForward(void* ptr, int align)
         {

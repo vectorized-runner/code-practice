@@ -158,6 +158,28 @@ namespace CodePractice.Tests
 			Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(int.MinValue));
 		}
 
+		[TestCase(100, 4)]
+		[TestCase(32, 16)]
+		[TestCase(28, 4)]
+		[TestCase(4, 4)]
+		[TestCase(256, 2)]
+		[TestCase(1024, 32)]
+		public void IsAligned_Pass(long memAddress, int align)
+		{
+			Assert.IsTrue(MemoryUtil.IsAligned((void*)memAddress, align));
+		}
+
+		[TestCase(50, 8)]
+		[TestCase(20, 8)]
+		[TestCase(100, 16)]
+		[TestCase(16, 32)]
+		[TestCase(40, 32)]
+		[TestCase(22, 8)]
+		public void IsAligned_Fail(long memAddress, int align)
+		{
+			Assert.IsFalse(MemoryUtil.IsAligned((void*)memAddress, align));
+		}
+		
 		[Test]
 		public void ConsecutiveAllocDoesNotFail()
 		{
