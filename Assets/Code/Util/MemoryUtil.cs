@@ -1,4 +1,3 @@
-#define DEBUG_CHECKS
 using System;
 using System.Diagnostics;
 using Unity.Collections;
@@ -39,6 +38,13 @@ namespace CodePractice
         {
             if (!IsPowerOfTwo(align))
                 throw new Exception($"Alignment {align} must be a power of two.");
+        }
+
+        [Conditional(DebugCondition)]
+        public static void CheckAllocSize(int size)
+        {
+            if (size <= 0)
+                throw new Exception($"Alloc size {size} must be positive");
         }
         
         public static bool IsPowerOfTwo(int x)

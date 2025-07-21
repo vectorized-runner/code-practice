@@ -24,7 +24,7 @@ namespace CodePractice
 
         public void* Alloc(int size)
         {
-            Debug.Assert(size >= 0);
+            MemoryUtil.CheckAllocSize(size);
 
             if (Allocated + size <= Length)
             {
