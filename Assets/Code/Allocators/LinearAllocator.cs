@@ -11,9 +11,9 @@ namespace CodePractice
 		public int Length;
 		public int Allocated;
 
-		public LinearAllocator(int length)
+		public LinearAllocator(int length, int align = MemoryUtil.DefaultAlign)
 		{
-			Buffer = (byte*)MemoryUtil.Malloc(length);
+			Buffer = (byte*)MemoryUtil.Malloc(length, align);
 			Length = length;
 			Allocated = 0;
 		}
@@ -72,7 +72,7 @@ namespace CodePractice
 					$"Allocated Size {size} is out of LinearAllocator bounds. Allocated {Allocated} Length {Length}");
 			}
 
-			var mem = &Buffer[Allocated];
+			void* mem = &Buffer[Allocated];
 			Allocated += size;
 
 			if (clearMemory)

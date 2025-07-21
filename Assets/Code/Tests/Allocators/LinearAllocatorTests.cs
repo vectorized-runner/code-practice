@@ -193,5 +193,32 @@ namespace CodePractice.Tests
 				alloc.Alloc(7);
 			});
 		}
+
+		[Test]
+		public void AlignedAlloc_Pass()
+		{
+			Assert.DoesNotThrow(() =>
+			{
+				using var allocator = new LinearAllocator(1_000_000, 4);
+				var alloc = allocator.Alloc(1, 1024);
+				Assert.IsTrue(MemoryUtil.IsAligned(alloc, 1024));
+				var alloc2 = allocator.Alloc(1, 8);
+				Assert.IsTrue(MemoryUtil.IsAligned(alloc2, 8));
+				var alloc3 = allocator.Alloc(1, 32);
+				Assert.IsTrue(MemoryUtil.IsAligned(alloc3, 32));
+				var alloc4 = allocator.Alloc(1, 64);
+				Assert.IsTrue(MemoryUtil.IsAligned(alloc4, 64));
+			});
+		}
+
+		[Test]
+		public void AlignedAlloc_DoesNotFailOnExactSize()
+		{
+			Assert.DoesNotThrow(() =>
+			{
+				using var allocator = new LinearAllocator(128);
+				allocator.Alloc(64, 64);
+			});
+		}
 	}
 }
