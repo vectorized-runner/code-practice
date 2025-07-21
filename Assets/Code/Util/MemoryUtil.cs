@@ -71,6 +71,7 @@ namespace CodePractice
                 return (void*)ptrValue;
             }
 
+            // The amount of padding required
             return (void*)(ptrValue + align - mod);
         }
 
