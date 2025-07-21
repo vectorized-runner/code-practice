@@ -11,7 +11,7 @@ namespace CodePractice
         public LinearAllocator(int length)
         {
             // TODO: What should be the alignment?
-            Buffer = Util.Malloc(length, 16);
+            Buffer = MemoryUtil.Malloc(length);
             Length = length;
             Offset = 0;
         }

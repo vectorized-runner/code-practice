@@ -9,6 +9,7 @@ namespace CodePractice
     public static unsafe class MemoryUtil
     {
         public const string DebugCondition = "DEBUG_CHECKS";
+        public const int DefaultAlign = 16;
         
         [Conditional(DebugCondition)]
         public static void CheckLength(int length)
@@ -61,7 +62,7 @@ namespace CodePractice
             return (void*)(ptrValue + align - mod);
         }
 
-        public static void* Malloc(int length, int align)
+        public static void* Malloc(int length, int align = DefaultAlign)
         {
             return UnsafeUtility.Malloc(length, align, Allocator.Persistent);
         }
