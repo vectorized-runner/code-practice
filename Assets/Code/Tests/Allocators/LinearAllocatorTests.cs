@@ -41,6 +41,34 @@ namespace CodePractice.Tests
 			});
 		}
 
+		[Test]
+		public void AllocTyped()
+		{
+			Assert.DoesNotThrow(() =>
+			{
+				using var allocator = new LinearAllocator(sizeof(int));
+				var intPtr = allocator.Alloc<int>();
+				*intPtr = 4;
+			});
+		}
+
+		[Test]
+		public void AllocMultipleTyped()
+		{
+			Assert.DoesNotThrow(() =>
+			{
+				var count = 3;
+				var size = sizeof(long);
+				using var allocator = new LinearAllocator(count * size);
+				var longPtr = allocator.Alloc<long>(count);
+
+				for (int i = 0; i < count; i++)
+				{
+					longPtr[i] = i;
+				}
+			});
+		}
+
 		[TestCase(129)]
 		[TestCase(256)]
 		[TestCase(512)]
