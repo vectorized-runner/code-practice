@@ -1,8 +1,8 @@
+#define DEBUG_CHECKS
 using System;
 using System.Diagnostics;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
-using Debug = UnityEngine.Debug;
 
 namespace CodePractice
 {
@@ -33,28 +33,32 @@ namespace CodePractice
             }
         }
 
-        public static bool IsPow2(int x)
+        [Conditional(DebugCondition)]
+        public static void CheckAlignment(int align)
         {
-            return (x & (x - 1)) == 0;
+            if (!IsPowerOfTwo(align))
+                throw new Exception($"Alignment {align} must be a power of two.");
         }
+        
+        public static bool IsPowerOfTwo(int x)
+        {
+            return x > 0 && (x & (x - 1)) == 0;
+        }
+        
+        public static void* AlignForward(void* ptr, int align)
+        {
+            CheckAlignment(align);
 
-        public static void* AlignForward(void* ptr, int alignment)
-        {
-            return (void*)AlignForward((long)ptr, alignment);
-        }
-        public static long AlignForward(long address, int alignment)
-        {
-            Debug.Assert(alignment >= 0);
-            Debug.Assert(IsPow2(alignment));
+            var ptrValue = (long)ptr;
 
             // Same as (address % alignment) but faster as 'alignment' is a power of two
-            var mod = address & (alignment - 1);
+            var mod = ptrValue & (align - 1);
             if (mod == 0)
             {
-                return address;
+                return (void*)ptrValue;
             }
 
-            return address + alignment - mod;
+            return (void*)(ptrValue + align - mod);
         }
 
         public static void* Malloc(int length, int align)
