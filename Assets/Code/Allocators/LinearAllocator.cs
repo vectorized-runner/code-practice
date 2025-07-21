@@ -1,50 +1,62 @@
+using System;
 using UnityEngine;
+
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable FieldCanBeMadeReadOnly.Global
 
 namespace CodePractice
 {
-    public unsafe struct LinearAllocator : IAllocator
+    // TODO: Linear Allocator user-provided initial buffer
+    // TODO: Linear Allocator grows or not?
+    // TODO: Typed Linear allocator?
+    public unsafe struct LinearAllocator : IAllocator, IDisposable
     {
         public void* Buffer;
         public int Length;
-        public int Offset;
+        public int Allocated;
 
         public LinearAllocator(int length)
         {
-            // TODO: What should be the alignment?
             Buffer = MemoryUtil.Malloc(length);
             Length = length;
-            Offset = 0;
+            Allocated = 0;
         }
 
         public void* Alloc(int size)
         {
             Debug.Assert(size >= 0);
 
-            if (Offset + size <= Length)
+            if (Allocated + size <= Length)
             {
-                byte* bufferAsBytePtr = (byte*)Buffer;
-                void* mem = &bufferAsBytePtr[Offset];
-                Offset += size;
-                Util.MemClear(mem, size);
+                var bufferAsBytePtr = (byte*)Buffer;
+                void* mem = &bufferAsBytePtr[Allocated];
+                Allocated += size;
+                MemoryUtil.MemClear(mem, size);
                 return mem;
             }
 
             return null;
         }
 
-        public void Free(void* ptr)
+        public void Clear()
         {
-            // No-op
+            Allocated = 0;
         }
 
-        public void FreeAll()
+        public void Free()
         {
-            Offset = 0;
+            Dispose();
         }
 
         public void Resize(int newSize)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            MemoryUtil.Free(Buffer);
+            this = default;
         }
     }
 }
