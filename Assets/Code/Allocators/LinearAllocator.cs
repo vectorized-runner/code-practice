@@ -5,6 +5,9 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace CodePractice
 {
+	// TODO: Don't clear memory
+	// TODO: Bitshift Alignment hack
+	// TODO: Do we need to align original Buffer? I don't think so
 	public unsafe struct LinearAllocator : IAllocator, IDisposable
 	{
 		public byte* Buffer;
