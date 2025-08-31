@@ -1,4 +1,3 @@
-using System.Text;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -19,12 +18,10 @@ namespace Code.Algorithms.Tests
             
             Debug.Log(MergeSort.ArrToStr(arr));
             
-            for (int i = 0; i < arr.Length; i++)
+            for (int i = 0; i < arr.Length - 1; i++)
             {
                 Assert.IsTrue(arr[i] <= arr[i + 1]);
             }
         }
-
-
     }
 }
