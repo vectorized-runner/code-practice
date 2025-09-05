@@ -1,27 +1,27 @@
 using System.Runtime.CompilerServices;
 using NUnit.Framework;
 using Unity.Burst;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.PerformanceTesting;
 using Random = Unity.Mathematics.Random;
 
-public unsafe class BurstOptimizationExample
+[BurstCompile]
+public static unsafe class BurstOptimizationExample
 {
 	private const int arrayCount = 1_000_000;
 
 	[Test, Performance]
-	public void BurstAdd()
+	public static void BurstAdd()
 	{
 		int[] first = null;
 		int[] second = null;
 		Random random;
+		int* firstPtr = null;
+		int* secondPtr = null;
 
 		Measure.Method(() =>
 			{
-				fixed (int* firstPtr = first)
-				fixed (int* secondPtr = second)
-				{
-					BurstAdd_Impl(firstPtr, secondPtr, arrayCount);
-				}
+				BurstAdd_Impl(firstPtr, secondPtr, arrayCount);
 			})
 			.WarmupCount(10)
 			.MeasurementCount(10)
@@ -30,6 +30,8 @@ public unsafe class BurstOptimizationExample
 			{
 				first = new int[arrayCount];
 				second = new int[arrayCount];
+				firstPtr = (int*)UnsafeUtility.AddressOf(ref first[0]);
+				secondPtr = (int*)UnsafeUtility.AddressOf(ref second[0]);
 				random = new Random(123456);
 
 				for (int i = 0; i < arrayCount; i++)
@@ -42,7 +44,7 @@ public unsafe class BurstOptimizationExample
 	}
 
 	[Test, Performance]
-	public void DefaultAdd()
+	public static void DefaultAdd()
 	{
 		int[] first = null;
 		int[] second = null;
@@ -56,6 +58,7 @@ public unsafe class BurstOptimizationExample
 			{
 				first = new int[arrayCount];
 				second = new int[arrayCount];
+	
 				random = new Random(123456);
 
 				for (int i = 0; i < arrayCount; i++)
@@ -67,16 +70,17 @@ public unsafe class BurstOptimizationExample
 			.Run();
 	}
 
-	[MethodImpl(MethodImplOptions.NoInlining)]
+	[BurstCompile]
 	private static void BurstAdd_Impl([NoAlias] int* a, [NoAlias] int* b, int count)
 	{
+		// Unity.Burst.CompilerServices.Aliasing.ExpectNotAliased(a, b);
+		
 		for (var i = 0; i < count; i++)
 		{
 			a[i] += b[i];
 		}
 	}
 
-	[MethodImpl(MethodImplOptions.NoInlining)]
 	private static void Add_Impl(int[] a, int[] b, int count)
 	{
 		for (var i = 0; i < count; i++)
