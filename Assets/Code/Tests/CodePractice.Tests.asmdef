@@ -5,7 +5,9 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Unity.Mathematics",
-        "CodePractice"
+        "CodePractice",
+        "Unity.PerformanceTesting",
+        "Unity.Burst"
     ],
     "includePlatforms": [
         "Editor"
