@@ -9,10 +9,10 @@ namespace CodePractice
     {
         private T[] _array;
         private int _count;
-        
+
         public int Count => _count;
         public bool IsEmpty => Count != 0;
-        
+
         public MinHeap()
         {
         }
@@ -23,9 +23,13 @@ namespace CodePractice
 
         public void Clear()
         {
-            
+            _count = 0;
         }
-        
+
+        public void BuildHeap()
+        {
+        }
+
         public void Add(T newElement)
         {
             _array[0] = newElement; // Init sentinel
@@ -45,7 +49,7 @@ namespace CodePractice
 
                 _array = tmp;
             }
-            
+
             // Example: Count=0, HoleIdx=1, makes sense since we leave sentinel at index 0
             var holeIdx = ++_count;
 
@@ -56,15 +60,15 @@ namespace CodePractice
                 _array[holeIdx] = _array[holeIdx / 2];
                 holeIdx /= 2;
             }
-            
+
             _array[holeIdx] = newElement;
         }
-        
+
         public T Peek()
         {
             return _array[1];
         }
-        
+
         public T Remove()
         {
             if (_count == 0)
@@ -80,7 +84,7 @@ namespace CodePractice
         private void BubbleDown(int holeIdx)
         {
             var temp = _array[holeIdx];
-            
+
             while (holeIdx * 2 <= _count) // While at least one child
             {
                 // Assume left child
@@ -92,6 +96,7 @@ namespace CodePractice
                     // Use right child instead
                     smallerChildIdx++;
                 }
+
                 // If Parent > Smaller Child, move up
                 if (_array[holeIdx].CompareTo(_array[smallerChildIdx]) > 0)
                 {
@@ -106,12 +111,5 @@ namespace CodePractice
 
             _array[holeIdx] = temp;
         }
-
-        public void BuildHeap()
-        {
-            
-        }
-
-
     }
 }
