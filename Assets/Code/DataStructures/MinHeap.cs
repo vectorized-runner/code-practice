@@ -79,28 +79,32 @@ namespace CodePractice
 
         private void BubbleDown(int holeIdx)
         {
+            var temp = _array[holeIdx];
+            
             while (holeIdx * 2 <= _count) // While at least one child
             {
-                var left = holeIdx * 2;
-                var right = left + 1;
-                var smaller = left;
+                // Assume left child
+                var smallerChildIdx = holeIdx * 2;
 
-                // Choose smaller child
-                if (right <= _count && _array[right].CompareTo(_array[left]) < 0)
+                // Choose smaller child, compare left with right
+                if (smallerChildIdx <= _count && _array[smallerChildIdx].CompareTo(_array[smallerChildIdx + 1]) < 0)
                 {
-                    smaller = right;
+                    // Use right child instead
+                    smallerChildIdx++;
                 }
-                // If Parent > Smaller Child, swap
-                if (_array[holeIdx].CompareTo(_array[smaller]) > 0)
+                // If Parent > Smaller Child, move up
+                if (_array[holeIdx].CompareTo(_array[smallerChildIdx]) > 0)
                 {
-                    (_array[holeIdx], _array[smaller]) = (_array[smaller], _array[holeIdx]);
-                    holeIdx = smaller;
+                    _array[holeIdx] = _array[smallerChildIdx];
+                    holeIdx = smallerChildIdx;
                 }
                 else
                 {
                     break;
                 }
             }
+
+            _array[holeIdx] = temp;
         }
 
         public void BuildHeap()
