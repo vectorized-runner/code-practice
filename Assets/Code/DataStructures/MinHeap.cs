@@ -4,6 +4,7 @@ namespace CodePractice
 {
     // Why is sentinel used in the implementation
     // 1- Clean Math: Parent -> 1/2, LeftChild -> i*2, RightChild -> i*2 + 1
+    // 2- We need to Terminate at root, but we don't want to check holeIdx > 1 each iteration (extra branch every iteration)
     public class MinHeap<T> where T : IComparable<T>
     {
         private T[] _array;
@@ -25,9 +26,9 @@ namespace CodePractice
             
         }
         
-        public void Add(T item)
+        public void Add(T newElement)
         {
-            _array[0] = item; // Init sentinel
+            _array[0] = newElement; // Init sentinel
 
             // Check require resize
             // TODO: Use a better logic here, why x * 2 + 1
@@ -49,14 +50,14 @@ namespace CodePractice
             var holeIdx = ++_count;
 
             // Bubble up
-            // Notice: Idx / 2 always gives parent idx
-            while (_array[holeIdx / 2].CompareTo(item) > 0)
+            // While (Parent > NewElement), shift parent down
+            while (_array[holeIdx / 2].CompareTo(newElement) > 0)
             {
                 _array[holeIdx] = _array[holeIdx / 2];
                 holeIdx /= 2;
             }
             
-            _array[holeIdx] = item;
+            _array[holeIdx] = newElement;
         }
         
         public T Peek()
