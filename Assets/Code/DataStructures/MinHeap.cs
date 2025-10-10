@@ -1,4 +1,6 @@
 using System;
+using Unity.Mathematics;
+using UnityEngine;
 
 namespace CodePractice
 {
@@ -11,14 +13,21 @@ namespace CodePractice
         private int _count;
 
         public int Count => _count;
+        // Notice index 0 is reserved for sentinel, capacity=16 can hold 15 items.
+        public int Capacity => _array.Length;
         public bool IsEmpty => Count != 0;
 
-        public MinHeap()
+        public MinHeap(int initialCapacity = 16)
         {
+            const int minCapacity = 4;
+            _array = new T[math.max(minCapacity, math.ceilpow2(initialCapacity))];
         }
 
         public MinHeap(T[] items)
         {
+            _array = items;
+            _count = items.Length;
+            BuildHeap();
         }
 
         public void Clear()
@@ -32,23 +41,24 @@ namespace CodePractice
 
         public void Add(T newElement)
         {
-            _array[0] = newElement; // Init sentinel
-
             // Check require resize
             // TODO: Use a better logic here, why x * 2 + 1
-            if (_array.Length == _count + 1)
+            var capacity = _array.Length;
+            var requiredCapacity = _count + 1;
+            if (capacity == requiredCapacity)
             {
-                var currentSize = _array.Length;
-                var newSize = currentSize * 2 + 1;
-                var tmp = new T[newSize];
+                var newCapacity = math.ceilpow2(capacity * 2);
+                var tmp = new T[newCapacity];
 
-                for (int i = 0; i < currentSize; i++)
+                for (int i = 0; i < capacity; i++)
                 {
                     tmp[i] = _array[i];
                 }
 
                 _array = tmp;
             }
+            
+            _array[0] = newElement; // Init sentinel
 
             // Example: Count=0, HoleIdx=1, makes sense since we leave sentinel at index 0
             var holeIdx = ++_count;
