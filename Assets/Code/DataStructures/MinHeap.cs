@@ -30,6 +30,11 @@ namespace CodePractice
             BuildHeap();
         }
 
+        public T[] GetInternalArray()
+        {
+            return _array;
+        }
+
         public void Clear()
         {
             _count = 0;
@@ -42,7 +47,6 @@ namespace CodePractice
         public void Add(T newElement)
         {
             // Check require resize
-            // TODO: Use a better logic here, why x * 2 + 1
             var capacity = _array.Length;
             var requiredCapacity = _count + 1;
             if (capacity == requiredCapacity)
@@ -89,6 +93,19 @@ namespace CodePractice
             _array[1] = _array[_count--];
             BubbleDown(1);
             return result;
+        }
+
+        public bool Contains(T item)
+        {
+            for (int i = 0; i < _count + 1; i++)
+            {
+                if (_array[i].Equals(item))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void BubbleDown(int holeIdx)
