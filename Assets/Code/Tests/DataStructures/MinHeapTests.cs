@@ -1,9 +1,29 @@
+using System;
+using System.Text;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace CodePractice.Tests
 {
     public class MinHeapTests
     {
+        private static void PrintHeap<T>(MinHeap<T> heap) where T : IComparable<T>
+        {
+            var sb = new StringBuilder();
+            var arr = heap.GetInternalArray();
+            sb.Append("[");
+            
+            for (int i = 1; i < heap.Count + 1; i++)
+            {
+                sb.Append(arr[i]);
+                sb.Append(", ");
+            }
+
+            sb.Append("]");
+
+            Debug.Log(sb.ToString());
+        }
+        
         [Test]
         public void ResizeProperly()
         {
@@ -90,6 +110,19 @@ namespace CodePractice.Tests
         }
 
         [Test]
+        public void DoesNotContain()
+        {
+            var heap = new MinHeap<int>();
+            heap.Add(9);
+            heap.Add(1);
+            heap.Add(0);
+            heap.Add(-3);
+            heap.Add(15);
+
+            Assert.IsFalse(heap.Contains(int.MinValue));
+        }
+
+        [Test]
         public void Contains()
         {
             var heap = new MinHeap<int>();
@@ -104,6 +137,31 @@ namespace CodePractice.Tests
             Assert.IsTrue(heap.Contains(0));
             Assert.IsTrue(heap.Contains(-3));
             Assert.IsTrue(heap.Contains(15));
+        }
+        
+        [Test]
+        public void AddRemove_2()
+        {
+            var heap = new MinHeap<int>();
+            heap.Add(9);
+            heap.Add(1);
+            heap.Add(0);
+            heap.Add(-3);
+            heap.Add(15);
+
+            var intArr = heap.GetInternalArray();
+            for (int i = 0; i < intArr.Length; i++)
+            {
+                intArr[i] = int.MinValue;
+            }
+            
+            Assert.AreEqual(5, heap.Count);
+            Assert.AreEqual(-3, heap.Remove());
+            Assert.AreEqual(4, heap.Count);
+            Assert.AreEqual(0, heap.Remove());
+            Assert.AreEqual(1, heap.Remove());
+            Assert.AreEqual(9, heap.Remove());
+            Assert.AreEqual(15, heap.Remove());
         }
 
         [Test]
