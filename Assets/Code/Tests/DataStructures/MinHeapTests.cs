@@ -76,6 +76,60 @@ namespace CodePractice.Tests
             heap.Remove();
             Assert.AreEqual(0, heap.Count);
         }
+
+        [Test]
+        public void AddRemove_0()
+        {
+            var heap = new MinHeap<int>();
+            heap.Add(9);
+            heap.Add(1);
+            heap.Add(0);
+            Assert.AreEqual(0, heap.Remove());
+            Assert.AreEqual(1, heap.Remove());
+            Assert.AreEqual(9, heap.Remove());
+        }
+
+        [Test]
+        public void Contains()
+        {
+            var heap = new MinHeap<int>();
+            heap.Add(9);
+            heap.Add(1);
+            heap.Add(0);
+            heap.Add(-3);
+            heap.Add(15);
+
+            Assert.IsTrue(heap.Contains(9));
+            Assert.IsTrue(heap.Contains(1));
+            Assert.IsTrue(heap.Contains(0));
+            Assert.IsTrue(heap.Contains(-3));
+            Assert.IsTrue(heap.Contains(15));
+        }
+
+        [Test]
+        public void AddRemove_1()
+        {
+            var heap = new MinHeap<int>();
+            heap.Add(9);
+            heap.Add(1);
+            heap.Add(0);
+            heap.Add(-3);
+            heap.Add(int.MinValue);
+
+            var intArr = heap.GetInternalArray();
+            for (int i = 0; i < intArr.Length; i++)
+            {
+                intArr[i] = int.MinValue;
+            }
+            
+            Assert.AreEqual(5, heap.Count);
+            Assert.AreEqual(int.MinValue, heap.Remove());
+            Assert.AreEqual(4, heap.Count);
+            Assert.AreEqual(-3, heap.Remove());
+            Assert.AreEqual(0, heap.Remove());
+            Assert.AreEqual(1, heap.Remove());
+            Assert.AreEqual(9, heap.Remove());
+        }
         
         [Test]
         public void AddRemove()
