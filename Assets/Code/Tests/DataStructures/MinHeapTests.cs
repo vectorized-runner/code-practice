@@ -7,6 +7,41 @@ namespace CodePractice.Tests
 {
     public class MinHeapTests
     {
+        private static bool IsValidHeap<T>(MinHeap<T> heap) where T : IComparable<T>
+        {
+            // Brute force
+            var arr = heap.GetInternalArray();
+            var len = arr.Length;
+            var lastIdx = len - 1;
+            
+            // Don't check sentinel
+            for (int i = 1; i < len; i++)
+            {
+                var leftIdx = 2 * i;
+                var rightIdx = 2 * i + 1;
+
+                if (leftIdx <= lastIdx)
+                {
+                    // Parent needs to be smaller
+                    if (arr[i].CompareTo(arr[leftIdx]) > 0)
+                    {
+                        return false;
+                    }
+                }
+
+                if (rightIdx <= lastIdx)
+                {
+                    // Parent needs to be smaller
+                    if (arr[i].CompareTo(arr[rightIdx]) > 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+        
         private static void PrintHeap<T>(MinHeap<T> heap) where T : IComparable<T>
         {
             var sb = new StringBuilder();
