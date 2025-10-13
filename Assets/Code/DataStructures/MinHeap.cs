@@ -90,6 +90,7 @@ namespace CodePractice
 
             var result = _array[1];
             // Notice post-decrement since we start from index 1
+            // Moves last item to the top, then restoring heap property by shifting the tree again.
             _array[1] = _array[_count--];
             BubbleDown(1);
             return result;
