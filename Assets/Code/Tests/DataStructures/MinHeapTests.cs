@@ -52,11 +52,11 @@ namespace CodePractice.Tests
             for (int i = 0; i < heap.Count; i++)
             {
                 sb.Append(arr[i]);
-                sb.Append(", ");
+                sb.Append($" [{i}], ");
             }
 
             sb.Append(arr[heap.Count]);
-            sb.Append("]");
+            sb.Append($" [{heap.Count}]]");
 
             Debug.Log(sb.ToString());
         }

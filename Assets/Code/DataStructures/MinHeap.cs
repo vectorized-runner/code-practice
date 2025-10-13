@@ -111,21 +111,21 @@ namespace CodePractice
         private void BubbleDown(int holeIdx)
         {
             var temp = _array[holeIdx];
-
+            
             while (holeIdx * 2 <= _count) // While at least one child
             {
                 // Assume left child
                 var smallerChildIdx = holeIdx * 2;
-
+                
                 // Choose smaller child, compare left with right
-                if (smallerChildIdx <= _count && _array[smallerChildIdx].CompareTo(_array[smallerChildIdx + 1]) < 0)
+                if (smallerChildIdx != _count && _array[smallerChildIdx].CompareTo(_array[smallerChildIdx + 1]) > 0)
                 {
                     // Use right child instead
                     smallerChildIdx++;
                 }
 
                 // If Parent > Smaller Child, move up
-                if (_array[holeIdx].CompareTo(_array[smallerChildIdx]) > 0)
+                if (temp.CompareTo(_array[smallerChildIdx]) > 0)
                 {
                     _array[holeIdx] = _array[smallerChildIdx];
                     holeIdx = smallerChildIdx;
