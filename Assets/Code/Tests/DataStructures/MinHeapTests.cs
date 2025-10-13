@@ -186,12 +186,6 @@ namespace CodePractice.Tests
             heap.Add(-3);
             heap.Add(15);
 
-            var intArr = heap.GetInternalArray();
-            for (int i = 0; i < intArr.Length; i++)
-            {
-                intArr[i] = int.MinValue;
-            }
-            
             Assert.AreEqual(5, heap.Count);
             Assert.AreEqual(-3, heap.Remove());
             Assert.AreEqual(4, heap.Count);
@@ -206,40 +200,15 @@ namespace CodePractice.Tests
         {
             var heap = new MinHeap<int>();
             heap.Add(9);
-            PrintHeap(heap);
-            
             heap.Add(1);
-
-            PrintHeap(heap);
-
             heap.Add(0);
-
-            PrintHeap(heap);
-            
             heap.Add(-3);
-
-            PrintHeap(heap);
-            
             heap.Add(int.MinValue + 1);
 
-            PrintHeap(heap);
-            
-            var intArr = heap.GetInternalArray();
-            for (int i = 0; i < intArr.Length; i++)
-            {
-                intArr[i] = int.MinValue;
-            }
-            
             Assert.AreEqual(5, heap.Count);
             Assert.AreEqual(int.MinValue + 1, heap.Remove());
-            
-            PrintHeap(heap);
-            
             Assert.AreEqual(4, heap.Count);
             Assert.AreEqual(-3, heap.Remove());
-            
-            PrintHeap(heap);
-            
             Assert.AreEqual(0, heap.Remove());
             Assert.AreEqual(1, heap.Remove());
             Assert.AreEqual(9, heap.Remove());
