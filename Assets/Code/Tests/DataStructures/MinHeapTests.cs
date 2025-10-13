@@ -12,8 +12,8 @@ namespace CodePractice.Tests
             // Brute force
             var arr = heap.GetInternalArray();
             var len = arr.Length;
-            var lastIdx = len - 1;
-            
+            var lastIdx = heap.Count;
+
             // Don't check sentinel
             for (int i = 1; i < len; i++)
             {
