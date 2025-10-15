@@ -21,6 +21,7 @@ namespace CodePractice
         {
             const int minCapacity = 4;
             _array = new T[math.max(minCapacity, math.ceilpow2(initialCapacity))];
+            _count = 0;
         }
 
         public MinHeap(T[] items)
@@ -32,6 +33,8 @@ namespace CodePractice
             {
                 _array[i] = items[i];
             }
+
+            _count = items.Length;
             
             BuildHeap();
         }
@@ -48,7 +51,7 @@ namespace CodePractice
 
         private void BuildHeap()
         {
-            for (int i = 0; i < _count / 2; i++)
+            for (int i = _count / 2; i > 0; i--)
             {
                 BubbleDown(i);
             }

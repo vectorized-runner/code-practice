@@ -66,8 +66,27 @@ namespace CodePractice.Tests
 
             Debug.Log(sb.ToString());
         }
+        
         [Test]
-        public void BuildHeapFromArray()
+        public void BuildHeapFromArray_Small()
+        {
+            var cnt = 32;
+            var ints = new int[cnt];
+            var random = new Random(439589345);
+
+            for (int i = 0; i < ints.Length; i++)
+            {
+                ints[i] = random.NextInt(-1000, 1000);
+            }
+
+            var heap = new MinHeap<int>(ints);
+            PrintHeap(heap);
+            Assert.AreEqual(-1, GetHeapViolationIdx(heap));
+            Assert.AreEqual(cnt, heap.Count);
+        }
+        
+        [Test]
+        public void BuildHeapFromArray_Big()
         {
             var ints = new int[50_000];
             var random = new Random(4249853);
@@ -79,6 +98,7 @@ namespace CodePractice.Tests
 
             var heap = new MinHeap<int>(ints);
             Assert.IsTrue(IsValidHeap(heap));
+            Assert.AreEqual(50_000, heap.Count);
         }
         
         [Test]
