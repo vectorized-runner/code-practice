@@ -8,7 +8,7 @@ namespace CodePractice.Tests
 {
     public class MinHeapTests
     {
-        private static bool IsValidHeap<T>(MinHeap<T> heap) where T : IComparable<T>
+        private static int GetHeapViolationIdx<T>(MinHeap<T> heap) where T : IComparable<T>
         {
             // Brute force
             var arr = heap.GetInternalArray();
@@ -26,7 +26,7 @@ namespace CodePractice.Tests
                     // Parent needs to be smaller
                     if (arr[i].CompareTo(arr[leftIdx]) > 0)
                     {
-                        return false;
+                        return i;
                     }
                 }
 
@@ -35,12 +35,17 @@ namespace CodePractice.Tests
                     // Parent needs to be smaller
                     if (arr[i].CompareTo(arr[rightIdx]) > 0)
                     {
-                        return false;
+                        return i;
                     }
                 }
             }
 
-            return true;
+            return -1;
+        }
+        
+        private static bool IsValidHeap<T>(MinHeap<T> heap) where T : IComparable<T>
+        {
+            return GetHeapViolationIdx(heap) == -1;
         }
         
         private static void PrintHeap<T>(MinHeap<T> heap) where T : IComparable<T>
