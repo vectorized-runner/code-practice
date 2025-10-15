@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using NUnit.Framework;
 using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 namespace CodePractice.Tests
 {
@@ -59,6 +60,20 @@ namespace CodePractice.Tests
             sb.Append($" [{heap.Count}]]");
 
             Debug.Log(sb.ToString());
+        }
+        [Test]
+        public void BuildHeapFromArray()
+        {
+            var ints = new int[50_000];
+            var random = new Random(4249853);
+
+            for (int i = 0; i < ints.Length; i++)
+            {
+                ints[i] = random.NextInt();
+            }
+
+            var heap = new MinHeap<int>(ints);
+            Assert.IsTrue(IsValidHeap(heap));
         }
         
         [Test]

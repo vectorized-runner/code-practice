@@ -25,8 +25,14 @@ namespace CodePractice
 
         public MinHeap(T[] items)
         {
-            _array = items;
-            _count = items.Length;
+            var capacity = math.ceilpow2(items.Length + 1);
+            _array = new T[capacity];
+
+            for (int i = 1; i < items.Length; i++)
+            {
+                _array[i] = items[i];
+            }
+            
             BuildHeap();
         }
 
@@ -40,8 +46,12 @@ namespace CodePractice
             _count = 0;
         }
 
-        public void BuildHeap()
+        private void BuildHeap()
         {
+            for (int i = 0; i < _count / 2; i++)
+            {
+                BubbleDown(i);
+            }
         }
 
         public void Add(T newElement)
