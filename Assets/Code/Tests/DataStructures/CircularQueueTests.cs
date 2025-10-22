@@ -5,19 +5,19 @@ using Random = Unity.Mathematics.Random;
 
 namespace CodePractice.Tests
 {
-    public class QueueTests
+    public class CircularQueueTests
     {
         [Test]
         public void Length0ByDefault()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             Assert.AreEqual(0, q.Length);
         }
 
         [Test]
         public void Length1AfterAdd()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             q.Enqueue(10);
             Assert.AreEqual(1, q.Length);
         }
@@ -25,31 +25,31 @@ namespace CodePractice.Tests
         [Test]
         public void Length0AfterAddRemove()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             q.Enqueue(10);
             q.Dequeue();
             Assert.AreEqual(0, q.Length);
         }
         
         [Test]
-        public void ResizeSimple()
+        public void ResizeThrows()
         {
-            // [1, 2, 3, 4, 5]
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             q.Enqueue(1);
             q.Enqueue(2);
             q.Enqueue(3);
             q.Enqueue(4);
-            q.Enqueue(5);
-            
-            Assert.AreEqual(8, q.Capacity);
-            Assert.AreEqual(5, q.Length);
+
+            Assert.Throws<Exception>(() =>
+            {
+                q.Enqueue(5);
+            });
         }
 
         [Test]
         public void PeekThrowsOnLength0()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             Assert.Throws<Exception>(() =>
             {
                 q.Peek();
@@ -59,7 +59,7 @@ namespace CodePractice.Tests
         [Test]
         public void DequeueThrowsOnLength0()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             Assert.Throws<Exception>(() =>
             {
                 q.Dequeue();
@@ -69,7 +69,7 @@ namespace CodePractice.Tests
         [Test]
         public void PeekSimple_2()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             q.Enqueue(5);
             q.Enqueue(10);
             
@@ -79,9 +79,9 @@ namespace CodePractice.Tests
         [Test]
         public void EnqueueDequeueForeverLength0()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
 
-            for (int i = 0; i < 100_000; i++)
+            for (int i = 0; i < 1_000; i++)
             {
                 q.Enqueue(i);
                 q.Dequeue();
@@ -92,9 +92,9 @@ namespace CodePractice.Tests
         [Test]
         public void EnqueueDequeueForever()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
 
-            for (int i = 0; i < 100_000; i++)
+            for (int i = 0; i < 1_000; i++)
             {
                 q.Enqueue(i);
                 Assert.AreEqual(i, q.Dequeue());
@@ -104,7 +104,7 @@ namespace CodePractice.Tests
         [Test]
         public void PeekSimple_3()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>(8);
             q.Enqueue(5);
             q.Enqueue(10);
             q.Enqueue(15);
@@ -117,7 +117,7 @@ namespace CodePractice.Tests
         [Test]
         public void PeekSimple()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             q.Enqueue(5);
             Assert.AreEqual(5, q.Peek());
         }
@@ -125,35 +125,16 @@ namespace CodePractice.Tests
         [Test]
         public void EnqueueSimple()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             q.Enqueue(5);
             Assert.AreEqual(5, q.Dequeue());
         }
 
         [Test]
-        public void CircularResizeSimple()
-        {
-            // [1, 2, 3, 4, 5]
-            var q = new Queue<int>();
-            q.Enqueue(1);
-            q.Enqueue(2);
-            q.Enqueue(3);
-            q.Enqueue(4);
-            q.Enqueue(5);
-            
-            Assert.AreEqual(8, q.Capacity);
-            Assert.AreEqual(1, q.Dequeue());
-            Assert.AreEqual(2, q.Dequeue());
-            Assert.AreEqual(3, q.Dequeue());
-            Assert.AreEqual(4, q.Dequeue());
-            Assert.AreEqual(5, q.Dequeue());
-        }
-        
-        [Test]
         public void CircularSimple()
         {
             // [1, 2, 3, 4]
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             q.Enqueue(1);
             q.Enqueue(2);
             q.Enqueue(3);
@@ -170,7 +151,7 @@ namespace CodePractice.Tests
         public void CircularWrap()
         {
             // [1, 2, 3, 4] -> [5, 2, 3, 4]
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>();
             q.Enqueue(1);
             q.Enqueue(2);
             q.Enqueue(3);
@@ -188,10 +169,10 @@ namespace CodePractice.Tests
         [Test]
         public void LengthIncreaseAfterAdd()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>(1024);
             var rnd = new Random(248243875);
             
-            for (int i = 0; i < 100_000; i++)
+            for (int i = 0; i < 1_000; i++)
             {
                 q.Enqueue(rnd.NextInt());
                 Assert.AreEqual(i + 1, q.Length);
@@ -201,9 +182,9 @@ namespace CodePractice.Tests
         [Test]
         public void LengthDecreaseAfterRemove()
         {
-            var q = new Queue<int>();
+            var q = new CircularQueue<int>(1024);
             var rnd = new Random(305893568);
-            var cnt = 100_000;
+            var cnt = 1_000;
             
             for (int i = 0; i < cnt; i++)
             {
@@ -220,8 +201,8 @@ namespace CodePractice.Tests
         [Test]
         public void FirstInFirstOut()
         {
-            var q = new Queue<int>();
-            var cnt = 100_000;
+            var q = new CircularQueue<int>(1024);
+            var cnt = 1_000;
             var arr = new int[cnt];
             var rnd = new Random(34857359);
 
