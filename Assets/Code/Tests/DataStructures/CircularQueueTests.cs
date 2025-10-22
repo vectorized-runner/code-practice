@@ -216,7 +216,7 @@ namespace CodePractice.Tests
             for (int i = 0; i < cnt; i++)
             {
                 var val = q.Dequeue();
-                Assert.AreEqual(arr[cnt - i - 1], val);
+                Assert.AreEqual(i, Array.IndexOf(arr, val));
             }
         }
     }
