@@ -8,15 +8,15 @@ namespace Code
     {
         private UnsafeHashMap<int, int> _versionByIndex;
         private UnsafeQueue<int> _freeIndices;
-        private int _lastUsedVersion;
-        
+        private int _lastUsedIndex;
+
         public static GenIdManager Create()
         {
-            return new GenIdManager()
+            return new GenIdManager
             {
                 _versionByIndex = new UnsafeHashMap<int, int>(64, Allocator.Persistent),
                 _freeIndices = new UnsafeQueue<int>(Allocator.Persistent),
-                _lastUsedVersion = 0,
+                _lastUsedIndex = 0,
             };
         }
 
@@ -28,18 +28,33 @@ namespace Code
                 return new GenId(idx, version);
             }
 
-            idx = ++_lastUsedVersion;
+            idx = ++_lastUsedIndex;
+            _versionByIndex.Add(idx, 0);
             return new GenId(idx, 0);
         }
 
         public bool DestroyId(GenId id)
         {
-            throw new NotImplementedException();
+            if (!Exists(id))
+            {
+                return false;
+            }
+
+            var idx = id.Index;
+            _freeIndices.Enqueue(idx);
+            _versionByIndex[idx]++;
+            return true;
         }
 
         public bool Exists(GenId id)
         {
-            throw new NotImplementedException();
+            var idx = id.Index;
+            if (idx > _lastUsedIndex || idx <= 0)
+            {
+                return false;
+            }
+
+            return _versionByIndex[idx] == id.Version;
         }
 
         public void Dispose()

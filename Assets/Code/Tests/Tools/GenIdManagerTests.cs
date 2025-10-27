@@ -39,7 +39,7 @@ namespace Code.Tests
                 _genIdManager.Dispose();
             });
         }
-
+        
         [Test]
         public static void FirstIdIsOne()
         {
@@ -49,6 +49,7 @@ namespace Code.Tests
         [Test]
         public static void SecondId()
         {
+            _genIdManager.CreateId();
             Assert.AreEqual(new GenId(2, 0), _genIdManager.CreateId());
         }
 
@@ -60,6 +61,15 @@ namespace Code.Tests
         }
 
         [Test]
+        public static void IndexRecycle()
+        {
+            var id = _genIdManager.CreateId();
+            _genIdManager.DestroyId(id);
+            
+            Assert.AreEqual(new GenId(1, 1), _genIdManager.CreateId());
+        }
+        
+        [Test]
         public static void DestroyIdDoesNotWorkTwice()
         {
             var id = _genIdManager.CreateId();
@@ -70,7 +80,14 @@ namespace Code.Tests
         [Test]
         public static void DoesNotExistByDefault()
         {
-            Assert.IsFalse(_genIdManager.Exists(new GenId(1, 0)));
+            for (int i = -100; i < 100; i++)
+            {
+                for (int j = -100; j < 100; j++)
+                {
+                    Assert.IsFalse(_genIdManager.Exists(new GenId(i, j)));
+                }
+            }
+            
         }
 
         [Test]
@@ -108,6 +125,7 @@ namespace Code.Tests
                 var newId = _genIdManager.CreateId();
                 Assert.AreEqual(previous.Version + 1, newId.Version);
                 Assert.AreEqual(previous.Index, newId.Index);
+                previous = newId;
             }
         }
 
