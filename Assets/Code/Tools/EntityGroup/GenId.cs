@@ -6,7 +6,7 @@ namespace Code
     {
         public int Index;
         public int Version;
-
+        
         public GenId(int index, int version)
         {
             Index = index;
