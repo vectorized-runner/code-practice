@@ -37,5 +37,10 @@ namespace Code
         {
             return Index;
         }
+
+        public override string ToString()
+        {
+            return $"({Index},{Version})";
+        }
     }
 }
