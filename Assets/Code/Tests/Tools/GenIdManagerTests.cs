@@ -11,7 +11,7 @@ namespace Code.Tests
         // No Exception on Double dispose
 
         private static GenIdManager _genIdManager;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -39,7 +39,7 @@ namespace Code.Tests
                 _genIdManager.Dispose();
             });
         }
-        
+
         [Test]
         public static void FirstIdIsOne()
         {
@@ -50,6 +50,42 @@ namespace Code.Tests
         public static void SecondId()
         {
             Assert.AreEqual(new GenId(2, 0), _genIdManager.CreateId());
+        }
+
+        [Test]
+        public static void DestroyIdWorksAfterCreated()
+        {
+            var id = _genIdManager.CreateId();
+            Assert.IsTrue(_genIdManager.DestroyId(id));
+        }
+
+        [Test]
+        public static void DestroyIdDoesNotWorkTwice()
+        {
+            var id = _genIdManager.CreateId();
+            _genIdManager.DestroyId(id);
+            Assert.IsFalse(_genIdManager.DestroyId(id));
+        }
+
+        [Test]
+        public static void DoesNotExistByDefault()
+        {
+            Assert.IsFalse(_genIdManager.Exists(new GenId(1, 0)));
+        }
+
+        [Test]
+        public static void ExistsAfterCreated()
+        {
+            var id = _genIdManager.CreateId();
+            Assert.IsTrue(_genIdManager.Exists(id));
+        }
+
+        [Test]
+        public static void DoesNotExistAfterDestroyed()
+        {
+            var id = _genIdManager.CreateId();
+            _genIdManager.DestroyId(id);
+            Assert.IsFalse(_genIdManager.Exists(id));
         }
 
         [Test]
@@ -88,18 +124,18 @@ namespace Code.Tests
 
             var id11 = _genIdManager.CreateId();
             var id21 = _genIdManager.CreateId();
-            
+
             Assert.AreEqual(id11.Index, id10.Index);
             Assert.AreEqual(id10.Version + 1, id11.Version);
-            
+
             Assert.AreEqual(id20.Index, id21.Index);
             Assert.AreEqual(id20.Version + 1, id21.Version);
 
             var id40 = _genIdManager.CreateId();
-            
+
             Assert.AreEqual(new GenId(4, 0), id40);
         }
-        
+
         [Test]
         public static void TestEqual_0()
         {
