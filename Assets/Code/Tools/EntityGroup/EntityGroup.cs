@@ -5,42 +5,37 @@ namespace Code
 {
     public struct EntityGroup<T> : IDisposable where T : unmanaged, IEquatable<T>
     {
-        // API:
-        // Add, Remove, RemoveAtSwapBack, Contains,
-        // Exception on Remove while iterating
-        // IndexOf
-        // T implements IEquatable
-
-        // Reasoning for this: Data Oriented Coding booster
-        // Entities are stored as array
-
         public NativeList<T> Entities;
         public NativeList<GenId> Ids;
         public NativeHashMap<GenId, int> IdToIndex;
         public bool IsCreated;
-        
+
         public int Length => Entities.Length;
 
         public static EntityGroup<T> Create(int initialCapacity)
         {
+            if (initialCapacity < 0)
+                throw new Exception("Capacity should be positive");
+
             return new EntityGroup<T>
             {
                 Entities = new NativeList<T>(initialCapacity, Allocator.Persistent),
                 IdToIndex = new NativeHashMap<GenId, int>(initialCapacity, Allocator.Persistent),
                 Ids = new NativeList<GenId>(initialCapacity, Allocator.Persistent),
+                IsCreated = true,
             };
         }
 
         public void Add(GenId id, T entity)
         {
             var count = Entities.Length;
-            if (IdToIndex.TryAdd(id, count))
+            if (!IdToIndex.TryAdd(id, count))
             {
-                Entities.Add(entity);
-                Ids.Add(id);
+                throw new Exception($"Entity '{id}' already exists.");
             }
 
-            throw new Exception($"Entity '{id}' already exists.");
+            Entities.Add(entity);
+            Ids.Add(id);
         }
 
         public int IndexOf(GenId id)
@@ -63,12 +58,13 @@ namespace Code
             var id = Ids[idx];
             var lastIdx = Ids.Length - 1;
 
-            if (idx == lastIdx)
-            {
-                Ids.RemoveAt(lastIdx);
-                Entities.RemoveAt(lastIdx);
-            }
-            else
+            // Implementation could be correct without lastIdx check
+            // if (idx == lastIdx)
+            // {
+            //     Ids.RemoveAt(lastIdx);
+            //     Entities.RemoveAt(lastIdx);
+            // }
+            // else
             {
                 var lastId = Ids[lastIdx];
                 Entities.RemoveAtSwapBack(idx);
@@ -77,9 +73,6 @@ namespace Code
             }
 
             IdToIndex.Remove(id);
-
-            // TODO: Do we need to handle differently if it's the last element
-            // TODO: Do we need to handle differently if len == 0
         }
 
         public void RemoveAtSwapBack(GenId id)
@@ -89,9 +82,13 @@ namespace Code
 
         public void Dispose()
         {
-            Entities.Dispose();
-            IdToIndex.Dispose();
-            Ids.Dispose();
+            if (IsCreated)
+            {
+                Entities.Dispose();
+                IdToIndex.Dispose();
+                Ids.Dispose();
+                IsCreated = false;
+            }
         }
     }
 }
