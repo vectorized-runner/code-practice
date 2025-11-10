@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
-using UnityEngine;
 
 namespace CodePractice
 {
@@ -30,7 +29,7 @@ namespace CodePractice
     // https://github.com/dotnet/runtime/issues/43486
     // https://github.com/dotnet/runtime/issues/97526
     [StructLayout(LayoutKind.Explicit, Pack = 4)]
-    public unsafe struct SmallBuffer
+    public unsafe struct SmallBufferInt
         // <T> where T : unmanaged // Total Size: 16 + 4 = 20 bytes
     {
         [FieldOffset(0)]
@@ -46,7 +45,7 @@ namespace CodePractice
         public int Length;
 
         private const int _smallBufferSize = 16; // Only 16 bytes come for free
-
+        
         public int this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -70,7 +69,7 @@ namespace CodePractice
             }
         }
 
-        public SmallBuffer(Span<int> items)
+        public SmallBufferInt(Span<int> items)
         {
             var len = items.Length;
             var byteSize = sizeof(int) * len;
