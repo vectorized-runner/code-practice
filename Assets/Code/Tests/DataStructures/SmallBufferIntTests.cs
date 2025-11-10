@@ -16,6 +16,20 @@ namespace CodePractice.Tests
         {
             Assert.AreEqual(20, sizeof(SmallBufferInt));
         }
+
+        [Test]
+        public void DataIsNullByDefault()
+        {
+            var buf = new SmallBufferInt();
+            Assert.IsTrue(buf.Data == null);
+        }
+
+        [Test]
+        public void UseBufferByDefault()
+        {
+            var buf = new SmallBufferInt();
+            Assert.IsTrue(buf.IsUsingBuffer());
+        }
         
         [Test]
         public void CheckContent_SmallBufferUsed_Simple()
