@@ -57,12 +57,12 @@ namespace CodePractice
                     throw new IndexOutOfRangeException($"Index {index} is out of range.");
                 }
 
-                // Means that we didn't use the small buffer
-                if (Data != null)
+                var byteSize = sizeof(int) * Length;
+                if (byteSize > _smallBufferSize)
                 {
                     return Data[index];
                 }
-
+                
                 fixed (byte* buf = Buffer)
                 {
                     return ((int*)buf)[index];
@@ -90,11 +90,16 @@ namespace CodePractice
             else
             {
                 Data = (int*)UnsafeUtility.Malloc(byteSize, UnsafeUtility.AlignOf<int>(), Allocator.Persistent);
-
+                
                 for (int i = 0; i < len; i++)
                 {
                     Data[i] = items[i];
                 }
+            }
+
+            if (Length != len)
+            {
+                throw new Exception($"Overwritten on length, Length is {Length}");
             }
         }
     }

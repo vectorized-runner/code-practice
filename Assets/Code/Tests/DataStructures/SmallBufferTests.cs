@@ -16,6 +16,22 @@ namespace CodePractice.Tests
         {
             Assert.AreEqual(20, sizeof(SmallBuffer));
         }
+        
+        [Test]
+        public void CheckContent_SmallBufferUsed_Simple()
+        {
+            var buf = new SmallBuffer(new[] { 10 });
+            Assert.AreEqual(10, buf[0]);
+        }
+        
+        [Test]
+        public void CheckContent_SmallBufferUsed_Simple2()
+        {
+            var buf = new SmallBuffer(new[] { 10, 5, 2 });
+            Assert.AreEqual(10, buf[0]);
+            Assert.AreEqual(5, buf[1]);
+            Assert.AreEqual(2, buf[2]);
+        }
 
         [Test]
         public void CheckContent_SmallBufferUsed()
