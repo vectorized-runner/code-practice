@@ -45,6 +45,12 @@ namespace CodePractice
         public int Length;
 
         private const int _smallBufferSize = 16; // Only 16 bytes come for free
+
+        public bool IsUsingBuffer()
+        {
+            var byteSize = sizeof(int) * Length;
+            return byteSize <= _smallBufferSize;
+        }
         
         public int this[int index]
         {
@@ -56,8 +62,7 @@ namespace CodePractice
                     throw new IndexOutOfRangeException($"Index {index} is out of range.");
                 }
 
-                var byteSize = sizeof(int) * Length;
-                if (byteSize <= _smallBufferSize)
+                if (IsUsingBuffer())
                 {
                     fixed (byte* buf = Buffer)
                     {
@@ -94,11 +99,6 @@ namespace CodePractice
                 {
                     Data[i] = items[i];
                 }
-            }
-
-            if (Length != len)
-            {
-                throw new Exception($"Overwritten on length, Length is {Length}");
             }
         }
     }
