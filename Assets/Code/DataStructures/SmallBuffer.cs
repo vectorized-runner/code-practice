@@ -3,39 +3,51 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine;
 
 namespace CodePractice
 {
-    public struct SmallBufferEnumerator<T> where T : unmanaged
-    {
-        private readonly SmallBuffer<T> _buffer;
-        private int _index;
-
-        public SmallBufferEnumerator(SmallBuffer<T> buffer)
-        {
-            _buffer = buffer;
-            _index = 0;
-        }
-
-        // TODO: ??? - does this automatically convert?
-    }
+    // public struct SmallBufferEnumerator<T> where T : unmanaged
+    // {
+    //     private readonly SmallBuffer<T> _buffer;
+    //     private int _index;
+    //
+    //     public SmallBufferEnumerator(SmallBuffer<T> buffer)
+    //     {
+    //         _buffer = buffer;
+    //         _index = 0;
+    //     }
+    //
+    //     // TODO: ??? - does this automatically convert?
+    // }
 
 // TODO: This
 // TODO: AsSpan
 // TODO: ForEach
 // TODO: IDisposable
-    [StructLayout(LayoutKind.Explicit)]
-    public unsafe struct SmallBuffer<T> where T : unmanaged // Total Size: 16 + 4 = 20 bytes
+    // Can't make this Generic!, implementation is blocked by C# compiler:
+    // System.TypeLoadException : Generic Type Definition failed to init, due to: Generic class cannot have explicit layout.
+    // https://github.com/dotnet/runtime/issues/43486
+    // https://github.com/dotnet/runtime/issues/97526
+    [StructLayout(LayoutKind.Explicit, Pack = 4)]
+    public unsafe struct SmallBuffer
+        // <T> where T : unmanaged // Total Size: 16 + 4 = 20 bytes
     {
-        [FieldOffset(0)] public fixed byte Buffer[_smallBufferSize];
+        [FieldOffset(0)]
+        public fixed byte Buffer[_smallBufferSize];
 
-        [FieldOffset(0)] public T* Data;
+        // Implementation is blocked, C# doesn't allow this:
+        // [FieldOffset(0)] public T* Data;
 
-        [FieldOffset(8)] public int Length;
+        [FieldOffset(0)]
+        public int* Data;
+        
+        [FieldOffset(_smallBufferSize)]
+        public int Length;
 
         private const int _smallBufferSize = 16; // Only 16 bytes come for free
 
-        public T this[int index]
+        public int this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
@@ -53,16 +65,17 @@ namespace CodePractice
 
                 fixed (byte* buf = Buffer)
                 {
-                    return ((T*)buf)[index];
+                    return ((int*)buf)[index];
                 }
             }
         }
 
-        public SmallBuffer(Span<T> items)
+        public SmallBuffer(Span<int> items)
         {
             var len = items.Length;
-            var byteSize = sizeof(T) * len;
+            var byteSize = sizeof(int) * len;
             Length = len;
+            Data = null;
 
             if (byteSize >= _smallBufferSize)
             {
@@ -70,15 +83,13 @@ namespace CodePractice
                 {
                     for (int i = 0; i < len; i++)
                     {
-                        ((T*)buf)[i] = items[i];
+                        ((int*)buf)[i] = items[i];
                     }
                 }
-
-                Data = null;
             }
             else
             {
-                Data = (T*)UnsafeUtility.Malloc(byteSize, UnsafeUtility.AlignOf<T>(), Allocator.Persistent);
+                Data = (int*)UnsafeUtility.Malloc(byteSize, UnsafeUtility.AlignOf<int>(), Allocator.Persistent);
 
                 for (int i = 0; i < len; i++)
                 {

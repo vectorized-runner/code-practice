@@ -6,31 +6,21 @@ namespace CodePractice.Tests
     public unsafe class SmallBufferTests
     {
         [Test]
+        public void IntPtrSize()
+        {
+            Assert.AreEqual(8, sizeof(int*));
+        }
+
+        [Test]
         public void SmallBufferSize()
         {
-            Assert.AreEqual(20, sizeof(SmallBuffer<int>));
-        }
-
-        [Test]
-        public void CheckIsUsingSmallBuffer()
-        {
-            var buf = new SmallBuffer<int>(new[] { 10 });
-            Assert.IsTrue(buf.Data == null);
-            Assert.IsFalse(IsBufferZero(buf.Buffer, 4));
-        }
-
-        [Test]
-        public void CheckIsUsingSmallBuffer_Boundary()
-        {
-            var buf = new SmallBuffer<int>(new[] { 10, 5, 2, 1 });
-            Assert.IsTrue(buf.Data == null);
-            Assert.IsFalse(IsBufferZero(buf.Buffer, 4));
+            Assert.AreEqual(20, sizeof(SmallBuffer));
         }
 
         [Test]
         public void CheckContent_SmallBufferUsed()
         {
-            var buf = new SmallBuffer<int>(new[] { 10, 5, 2, 1 });
+            var buf = new SmallBuffer(new[] { 10, 5, 2, 1 });
             Assert.AreEqual(10, buf[0]);
             Assert.AreEqual(5, buf[1]);
             Assert.AreEqual(2, buf[2]);
@@ -42,7 +32,7 @@ namespace CodePractice.Tests
         {
             Assert.Throws<IndexOutOfRangeException>(() =>
             {
-                var buf = new SmallBuffer<int>(new[] { 10, 5, 2, 1 });
+                var buf = new SmallBuffer(new[] { 10, 5, 2, 1 });
                 var myItem = buf[5];
             });
         }
@@ -50,23 +40,15 @@ namespace CodePractice.Tests
         [Test]
         public void BothZeroByDefault()
         {
-            var buf = new SmallBuffer<int>();
+            var buf = new SmallBuffer();
             Assert.IsTrue(buf.Data == null);
-            Assert.IsTrue(IsBufferZero(buf.Buffer, 16));
-        }
-
-        [Test]
-        public void CheckIsUsingPointer()
-        {
-            var buf = new SmallBuffer<int>(new int[] { 2, -100, 43249023, 0, 348727452 });
-            Assert.IsTrue(buf.Data != null);
             Assert.IsTrue(IsBufferZero(buf.Buffer, 16));
         }
 
         [Test]
         public void CheckContent_UsingPointer()
         {
-            var buf = new SmallBuffer<int>(new int[] { 2, -100, 43249023, 0, 348727452 });
+            var buf = new SmallBuffer(new int[] { 2, -100, 43249023, 0, 348727452 });
 
             Assert.AreEqual(2, buf[0]);
             Assert.AreEqual(-100, buf[1]);
