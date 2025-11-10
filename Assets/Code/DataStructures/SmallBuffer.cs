@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace CodePractice
 {
@@ -25,20 +27,20 @@ namespace CodePractice
     [StructLayout(LayoutKind.Explicit)]
     public unsafe struct SmallBuffer<T> where T : unmanaged // Total Size: 16 + 4 = 20 bytes
     {
-        [FieldOffset(0)] public fixed byte Buffer[_smallBufferLength];
+        [FieldOffset(0)] public fixed byte Buffer[_smallBufferSize];
 
         [FieldOffset(0)] public T* Data;
 
-        [FieldOffset(8)] public int Count;
+        [FieldOffset(8)] public int Length;
 
-        private const int _smallBufferLength = 16; // Only 16 bytes come for free
+        private const int _smallBufferSize = 16; // Only 16 bytes come for free
 
         public T this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                if (index >= Count || index < 0)
+                if (index >= Length || index < 0)
                 {
                     throw new IndexOutOfRangeException($"Index {index} is out of range.");
                 }
@@ -58,8 +60,31 @@ namespace CodePractice
 
         public SmallBuffer(Span<T> items)
         {
-            var byteSize = sizeof(T) * items.Length;
-            throw new NotImplementedException();
+            var len = items.Length;
+            var byteSize = sizeof(T) * len;
+            Length = len;
+
+            if (byteSize >= _smallBufferSize)
+            {
+                fixed (byte* buf = Buffer)
+                {
+                    for (int i = 0; i < len; i++)
+                    {
+                        ((T*)buf)[i] = items[i];
+                    }
+                }
+
+                Data = null;
+            }
+            else
+            {
+                Data = (T*)UnsafeUtility.Malloc(byteSize, UnsafeUtility.AlignOf<T>(), Allocator.Persistent);
+
+                for (int i = 0; i < len; i++)
+                {
+                    Data[i] = items[i];
+                }
+            }
         }
     }
 }

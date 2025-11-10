@@ -18,7 +18,7 @@ namespace CodePractice.Tests
             Assert.IsTrue(buf.Data == null);
             Assert.IsFalse(IsBufferZero(buf.Buffer, 4));
         }
-        
+
         [Test]
         public void CheckIsUsingSmallBuffer_Boundary()
         {
@@ -61,6 +61,18 @@ namespace CodePractice.Tests
             var buf = new SmallBuffer<int>(new int[] { 2, -100, 43249023, 0, 348727452 });
             Assert.IsTrue(buf.Data != null);
             Assert.IsTrue(IsBufferZero(buf.Buffer, 16));
+        }
+
+        [Test]
+        public void CheckContent_UsingPointer()
+        {
+            var buf = new SmallBuffer<int>(new int[] { 2, -100, 43249023, 0, 348727452 });
+
+            Assert.AreEqual(2, buf[0]);
+            Assert.AreEqual(-100, buf[1]);
+            Assert.AreEqual(43249023, buf[2]);
+            Assert.AreEqual(0, buf[3]);
+            Assert.AreEqual(348727452, buf[4]);
         }
 
         private static bool IsBufferZero(byte* buf, int size)
