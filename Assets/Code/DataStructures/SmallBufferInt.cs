@@ -57,15 +57,15 @@ namespace CodePractice
                 }
 
                 var byteSize = sizeof(int) * Length;
-                if (byteSize > _smallBufferSize)
+                if (byteSize <= _smallBufferSize)
                 {
-                    return Data[index];
+                    fixed (byte* buf = Buffer)
+                    {
+                        return ((int*)buf)[index];
+                    }
                 }
-                
-                fixed (byte* buf = Buffer)
-                {
-                    return ((int*)buf)[index];
-                }
+
+                return Data[index];
             }
         }
 
@@ -76,7 +76,7 @@ namespace CodePractice
             Length = len;
             Data = null;
 
-            if (byteSize >= _smallBufferSize)
+            if (byteSize <= _smallBufferSize)
             {
                 fixed (byte* buf = Buffer)
                 {
