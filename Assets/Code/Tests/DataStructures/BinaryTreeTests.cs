@@ -55,10 +55,28 @@ namespace CodePractice.Tests
             Assert.AreEqual(81, preOrder[5]);
             Assert.AreEqual(40, preOrder[6]);
         }
+
         [Test]
-        public void BinaryTree_1()
+        public void BinaryTree_InOrder_1()
         {
-   
+            var tree = GetTree_1();
+            var inOrder = tree.InOrder();
+
+            Assert.AreEqual(7, inOrder.Count);
+
+            Assert.AreEqual(29, inOrder[0]);
+            Assert.AreEqual(41, inOrder[1]);
+            Assert.AreEqual(6, inOrder[2]);
+            Assert.AreEqual(17, inOrder[3]);
+            Assert.AreEqual(81, inOrder[4]);
+            Assert.AreEqual(9, inOrder[5]);
+            Assert.AreEqual(40, inOrder[6]);
+        }
+
+        [Test]
+        public void BinaryTree_PostOrder_1()
+        {
+            
         }
     }
 }

@@ -48,7 +48,9 @@ namespace CodePractice
 
         public List<T> InOrder()
         {
-            
+            var result = new List<T>();
+            Root.InOrder(result);
+            return result;
         }
 
         public List<T> PostOrder()
@@ -75,6 +77,21 @@ namespace CodePractice
             if (Right != null)
             {
                 Right.PreOrder(result);
+            }
+        }
+
+        public void InOrder(List<T> result)
+        {
+            if (Left != null)
+            {
+                Left.InOrder(result);
+            }
+            
+            result.Add(Item);
+
+            if (Right != null)
+            {
+                Right.InOrder(result);
             }
         }
     }
