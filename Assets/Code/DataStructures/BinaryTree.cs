@@ -21,17 +21,17 @@ namespace CodePractice
 
         public int GetMax()
         {
-            
+            throw new NotImplementedException();
         }
 
         public int Sum()
         {
-            
+            throw new NotImplementedException();
         }
 
         public int CountLeaves()
         {
-            
+            throw new NotImplementedException();
         }
 
         public List<T> GetElements()
@@ -41,7 +41,9 @@ namespace CodePractice
 
         public List<T> PreOrder()
         {
-            
+            var result = new List<T>();
+            Root.PreOrder(result);
+            return result;
         }
 
         public List<T> InOrder()
@@ -51,7 +53,7 @@ namespace CodePractice
 
         public List<T> PostOrder()
         {
-            
+            throw new NotImplementedException();
         }
     }
 
@@ -60,5 +62,20 @@ namespace CodePractice
         public T Item;
         public BinaryTreeNode<T> Left;
         public BinaryTreeNode<T> Right;
+
+        public void PreOrder(List<T> result)
+        {
+            result.Add(Item);
+
+            if (Left != null)
+            {
+                Left.PreOrder(result);
+            }
+
+            if (Right != null)
+            {
+                Right.PreOrder(result);
+            }
+        }
     }
 }
