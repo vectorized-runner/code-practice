@@ -76,7 +76,18 @@ namespace CodePractice.Tests
         [Test]
         public void BinaryTree_PostOrder_1()
         {
-            
+            var tree = GetTree_1();
+            var postOrder = tree.PostOrder();
+
+            Assert.AreEqual(7, postOrder.Count);
+
+            Assert.AreEqual(29, postOrder[0]);
+            Assert.AreEqual(6, postOrder[1]);
+            Assert.AreEqual(41, postOrder[2]);
+            Assert.AreEqual(81, postOrder[3]);
+            Assert.AreEqual(40, postOrder[4]);
+            Assert.AreEqual(9, postOrder[5]);
+            Assert.AreEqual(17, postOrder[6]);
         }
     }
 }

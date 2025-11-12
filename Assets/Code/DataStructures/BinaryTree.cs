@@ -55,7 +55,9 @@ namespace CodePractice
 
         public List<T> PostOrder()
         {
-            throw new NotImplementedException();
+            var result = new List<T>();
+            Root.PostOrder(result);
+            return result;
         }
     }
 
@@ -93,6 +95,21 @@ namespace CodePractice
             {
                 Right.InOrder(result);
             }
+        }
+
+        public void PostOrder(List<T> result)
+        {
+            if (Left != null)
+            {
+                Left.PostOrder(result);
+            }
+            
+            if (Right != null)
+            {
+                Right.PostOrder(result);
+            }
+            
+            result.Add(Item);
         }
     }
 }
