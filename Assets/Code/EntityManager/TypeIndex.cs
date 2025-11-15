@@ -2,6 +2,12 @@ using System;
 
 namespace CodePractice
 {
+    internal struct TypeIndex<T> where T: IComponent
+    {
+        // ReSharper disable once StaticMemberInGenericType
+        public static readonly int Value = GlobalTypeIndex.GetUniqueValue();
+    }
+
     public struct TypeIndex : IEquatable<TypeIndex>
     {
         public int Value;
