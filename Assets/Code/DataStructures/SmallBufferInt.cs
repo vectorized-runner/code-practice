@@ -6,24 +6,6 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace CodePractice
 {
-    // public struct SmallBufferEnumerator<T> where T : unmanaged
-    // {
-    //     private readonly SmallBuffer<T> _buffer;
-    //     private int _index;
-    //
-    //     public SmallBufferEnumerator(SmallBuffer<T> buffer)
-    //     {
-    //         _buffer = buffer;
-    //         _index = 0;
-    //     }
-    //
-    //     // TODO: ??? - does this automatically convert?
-    // }
-
-// TODO: This
-// TODO: AsSpan
-// TODO: ForEach
-// TODO: IDisposable
     // Can't make this Generic!, implementation is blocked by C# compiler:
     // System.TypeLoadException : Generic Type Definition failed to init, due to: Generic class cannot have explicit layout.
     // https://github.com/dotnet/runtime/issues/43486
