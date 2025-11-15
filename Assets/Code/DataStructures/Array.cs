@@ -4,8 +4,8 @@ using Unity.Collections;
 
 namespace CodePractice
 {
-	// TODO: This should be allocator-aware (allocator is a field, etc.)
-	// TODO: Ref iterator
+	// TODO-Arr: This should be allocator-aware (allocator is a field, etc.)
+	// TODO-Arr: Ref iterator
 	public unsafe struct Array<T> : IDisposable, IEquatable<Array<T>> where T : unmanaged
 	{
 		public T* Ptr;

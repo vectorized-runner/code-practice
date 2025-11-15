@@ -10,25 +10,6 @@ namespace CodePractice
         private NativeHashMap<int, int> _versionByIndex;
         private NativeList<Archetype> _archetypes;
         
-        // todo: addcomponent
-        // find archetype of entity
-        // get the components of the archetype
-        // if the entity already has the component, exception
-        // add the component to the archetype list
-        // get chunks for archetype
-        // if free chunk exists, add entity data to the archetype
-        // if free chunk doesn't exist, create new empty chunk, add data
-        // let's write all the required API for this
-        
-        // TODO API:
-        // Archetype GetArchetype (Entity)
-        // Chunk[] GetChunks (Archetype)
-        // Chunk GetChunk (Entity)
-        // Chunk. AddEntity (Entity)
-        // Chunk. RemoveAtSwapBack (Entity)
-        // Chunk. GetNativeArray<T> (Component)
-        // Chunk[] Query (T1, T2, T3)
-        
         public static EntityManager Create()
         {
             return new EntityManager
@@ -94,7 +75,7 @@ namespace CodePractice
                 ref var chunk = ref archetype.Chunks.ElementAt(i);
             }
             
-            // TODO: Left in here. You can continue
+            // TODO-ECS: Left in here. You can continue
             // (need to get or add chunk from archetype)
             // Then you need to index the entity (entity in chunk or something)
             // then you can fnish
@@ -106,7 +87,7 @@ namespace CodePractice
         {
             types.Sort();
             
-            // TODO: This is a very naive implementation
+            // TODO-ECS: This is a very naive implementation
             for (int i = 0; i < _archetypes.Length; i++)
             {
                 ref var archetype = ref _archetypes.ElementAt(i);

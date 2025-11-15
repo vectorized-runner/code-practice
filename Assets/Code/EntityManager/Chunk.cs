@@ -11,12 +11,12 @@ namespace CodePractice
         // EntityIds
 
         public NativeArray<byte> Memory;
-        // TODO: Make per archetype
+        // TODO-ECS: Make per archetype
         public NativeArray<int> ComponentOffsets;
-        // TODO: Make per archetype
+        // TODO-ECS: Make per archetype
         public NativeArray<int> ComponentSizes;
         public int Count;
-        // TODO: Make per archetype
+        // TODO-ECS: Make per archetype
         public int Capacity;
 
         public const int KiB = 1024;
@@ -35,7 +35,7 @@ namespace CodePractice
             };
         }
 
-        // TODO: You're left in here
+        // TODO-ECS: You're left in here
         // Calculate how many entities can fit (including the Entity size)
         // Calculate offsets by type and save
         // Adding entity -> Write to each individual array

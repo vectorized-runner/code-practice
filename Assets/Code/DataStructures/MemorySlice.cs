@@ -3,9 +3,9 @@ using System;
 
 namespace CodePractice
 {
-	// TODO: CopyTo
-	// TODO: Ref iterator
-	public unsafe struct CustomSpan<T> where T : unmanaged
+	// TODO-MemorySlice: CopyTo
+	// TODO-MemorySlice: Ref iterator
+	public unsafe struct MemorySlice<T> where T : unmanaged
 	{
 		public T* Ptr;
 		public int Length;
@@ -24,7 +24,7 @@ namespace CodePractice
 			}
 		}
 
-		public CustomSpan(T* ptr, int length)
+		public MemorySlice(T* ptr, int length)
 		{
 			MemoryUtil.CheckLength(length);
 			Ptr = ptr;
@@ -37,20 +37,12 @@ namespace CodePractice
 			return ref Ptr[index];
 		}
 
-		public CustomSpan<T> Slice(int start, int length)
+		public MemorySlice<T> Slice(int start, int length)
 		{
 			MemoryUtil.CheckLength(length);
 			MemoryUtil.CheckIndexInRange(start + length, Length);
 
-			return new CustomSpan<T>(Ptr + start, length);
-		}
-
-		public CustomSpan<T> Slice(int start)
-		{
-			// TODO:
-			// Util.CheckIndexInRange(start, Length);
-			// return 
-			throw new NotImplementedException();
+			return new MemorySlice<T>(Ptr + start, length);
 		}
 	}
 }

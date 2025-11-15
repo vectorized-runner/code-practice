@@ -31,7 +31,7 @@ namespace CodePractice
 		// Add some simple tests 
 		public void* Alloc(int size, int align, bool clearMemory = MemoryUtil.DefaultClearMemory)
 		{
-			// TODO: 
+			// TODO-StackAllocator: 
 			throw new NotImplementedException();
 		}
 
@@ -42,7 +42,7 @@ namespace CodePractice
 
 		public void Dispose()
 		{
-			// TODO release managed resources here
+			// TODO-StackAllocator release managed resources here
 		}
 	}
 }
