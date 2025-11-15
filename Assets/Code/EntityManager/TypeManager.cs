@@ -1,9 +1,27 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using UnityEngine;
 
 namespace CodePractice
 {
-    // TODO: How does Unity make this efficient (with flags and shit)?
+    public struct TypeIndex<T> where T: IComponent
+    {
+        // ReSharper disable once StaticMemberInGenericType
+        public static readonly int Value = GlobalTypeIndex.GetUniqueValue();
+    }
+
+    public static class GlobalTypeIndex
+    {
+        private static int _value;
+
+        public static int GetUniqueValue()
+        {
+            return Interlocked.Increment(ref _value);
+        }
+    }
+    
+    // TODO-ECS: How does Unity make this efficient (with flags and shit)?
     public static unsafe class TypeManager
     {
         private static Dictionary<Type, int> _typeIndexByType;
@@ -22,21 +40,7 @@ namespace CodePractice
         
         public static int GetTypeIndex<T>() where T : unmanaged, IComponent
         {
-            // TODO: Maybe there's something better? Without resorting to underlying type?
-            var type = typeof(T);
-            
-            if (_typeIndexByType.TryGetValue(type, out var idx))
-                return idx;
-
-            var newTypeIdx = _typeInfos.Count;
-            var typeInfo = new TypeInfo
-            {
-                Size = sizeof(T),
-                TypeIndex = newTypeIdx
-            };
-            _typeInfos.Add(typeInfo);
-            _typeIndexByType.Add(type, newTypeIdx);
-            return newTypeIdx;
+            return TypeIndex<T>.Value;
         }
     }
 }

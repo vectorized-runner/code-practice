@@ -292,7 +292,37 @@ namespace CodePractice.Tests
             _em.AddComponent<TestComponent>(e);
             Assert.AreEqual(new TestComponent(), _em.GetComponentData<TestComponent>(e));
         }
+
+        [Test]
+        public void GetTypeIndexPositive()
+        {
+            var typeIdx = TypeManager.GetTypeIndex<Transform>();
+            Assert.IsTrue(typeIdx > 0);
+        }
+
+        [Test]
+        public void GetTypeIndexUnique()
+        {
+            var transformIdx = TypeManager.GetTypeIndex<Transform>();
+            var renderBoundsIdx = TypeManager.GetTypeIndex<RenderBounds>();
+            
+            Assert.AreNotEqual(transformIdx, renderBoundsIdx);
+        }
         
-        // TODO: Archetype with no components isn't allowed
+        // TODO-ECS:
+        // How does the flow work:
+        // For a set of components, there exists a query
+        // For a query, there exists archetypes
+        // For an archetype, there exists chunks
+        // For a chunk, there exists Entity and Component arrays, per-entity
+        // So work inside out -> Start with the Chunk
+        
+        public struct Transform : IComponent
+        {
+        }
+
+        public struct RenderBounds : IComponent
+        {
+        }
     }
 }
