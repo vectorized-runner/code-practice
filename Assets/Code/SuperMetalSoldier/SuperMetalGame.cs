@@ -99,6 +99,10 @@ namespace SuperMetalSoldier
                     // We don't determine the position, the physics engine does
                     // Player.Position += moveInput.x0y() * moveSpeedMultiplier * dt;
                 }
+                else
+                {
+                    Player.Velocity = float3.zero; // TODO-SPS
+                }
                 
                 Player.Rotation = quaternion.identity;
             }
