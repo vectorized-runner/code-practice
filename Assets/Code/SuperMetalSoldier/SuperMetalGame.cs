@@ -83,6 +83,11 @@ namespace SuperMetalSoldier
                 Player.Position = _playerRb.position;
                 // TODO: SPS, maybe sync back the Velocity too
             }
+
+            // Gravity
+            {
+                Player.Velocity += -math.up() * Config.Gravity * dt;
+            }
             
             // Update Player Pos
             {

@@ -12,5 +12,7 @@ namespace SuperMetalSoldier
 
         public float3 CameraOffset;
         public float CameraLookUpOffset;
+
+        public float Gravity;
     }
 }
