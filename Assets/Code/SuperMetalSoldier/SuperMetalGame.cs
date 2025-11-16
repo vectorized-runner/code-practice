@@ -111,6 +111,11 @@ namespace SuperMetalSoldier
                 
                 Player.Rotation = quaternion.identity;
             }
+            
+            // Sync to Physics
+            {
+                _playerRb.linearVelocity = Player.Velocity;
+            }
 
             // Update Camera
             {
@@ -120,15 +125,8 @@ namespace SuperMetalSoldier
                 var lookDir = playerPos + new float3(0f, Config.CameraLookUpOffset, 0f) - newCameraPos;
                 Camera.Rotation = quaternion.LookRotation(lookDir, math.up());
             }
-        }
 
-        private void FixedUpdate()
-        {
-            // Sync Physics
-            // _playerRb.MovePosition(Player.Position);
-            // _playerRb.MoveRotation(Player.Rotation);
-
-            _playerRb.linearVelocity = Player.Velocity;
+   
         }
 
         private void LateUpdate()
