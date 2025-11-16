@@ -86,21 +86,24 @@ namespace SuperMetalSoldier
                 Player.Velocity = _playerRb.linearVelocity;
             }
             
-            const float upOffset = 0.1f;
-            var raycastPos = Player.Position + math.up() * (upOffset - Config.PlayerBodyLength);
-            var isGrounded = Physics.Raycast(raycastPos, -math.up(), Config.GroundedDistanceCheck, -1,
-                QueryTriggerInteraction.Ignore);
-            
-            Debug.DrawRay(raycastPos, -math.up() * Config.GroundedDistanceCheck, Color.yellow, 0.1f);
-
             // This is to track movement over time
             Debug.DrawRay(Player.Position, -math.up(), Color.red, Config.PlayerMovementTrailDuration);
+
+            // IsGrounded logic
+            {
+                const float upOffset = 0.1f;
+                var raycastPos = Player.Position + math.up() * (upOffset - Config.PlayerBodyLength);
+                var isGrounded = Physics.Raycast(raycastPos, -math.up(), Config.GroundedDistanceCheck, -1,
+                    QueryTriggerInteraction.Ignore);
             
-            Player.IsGrounded = isGrounded;
+                Debug.DrawRay(raycastPos, -math.up() * Config.GroundedDistanceCheck, Color.yellow, 0.1f);
+
+                Player.IsGrounded = isGrounded;
+            }
 
             // Gravity
             {
-                if (!isGrounded)
+                if (!Player.IsGrounded)
                 {
                     Player.Velocity += -math.up() * Config.Gravity * dt;
                     Player.IsApplyingGravity = true;
