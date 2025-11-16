@@ -121,8 +121,8 @@ namespace SuperMetalSoldier
                 
                 if (!allZero)
                 {
-                    var targetVelocity = Player.Velocity.xz * acceleration * dt;
-                    Player.Velocity.xz += targetVelocity;
+                    var targetVelocity = Player.Velocity.xz + acceleration * dt;
+                    Player.Velocity.xz = targetVelocity;
                     
                     // We don't determine the position, the physics engine does
                     // Player.Position += moveInput.x0y() * moveSpeedMultiplier * dt;
