@@ -117,11 +117,12 @@ namespace SuperMetalSoldier
                 var allZero = math.all(moveInput == float2.zero);
                 var isRunning = Input.GetKey(KeyCode.LeftShift);
                 var accelerationConstant = isRunning ? Config.PlayerRunAcceleration : Config.PlayerWalkAcceleration;
-                var acceleration = math.normalize(moveInput).x0y() * accelerationConstant;
+                var acceleration = math.normalize(moveInput) * accelerationConstant;
                 
                 if (!allZero)
                 {
-                    Player.Velocity += acceleration * dt;
+                    var targetVelocity = Player.Velocity.xz * acceleration * dt;
+                    Player.Velocity.xz += targetVelocity;
                     
                     // We don't determine the position, the physics engine does
                     // Player.Position += moveInput.x0y() * moveSpeedMultiplier * dt;
