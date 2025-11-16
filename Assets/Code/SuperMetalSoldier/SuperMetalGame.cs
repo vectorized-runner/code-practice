@@ -65,10 +65,12 @@ namespace SuperMetalSoldier
             {
                 var moveInput = GetPlayerMoveInput();
                 var allZero = math.all(moveInput == float2.zero);
+                var isRunning = Input.GetKey(KeyCode.LeftShift);
+                var moveSpeedMultiplier = isRunning ? Config.PlayerRunSpeed : Config.PlayerWalkSpeed;
                 
                 if (!allZero)
                 {
-                    Player.Position += moveInput.x0y() * Config.PlayerMoveSpeed * dt;
+                    Player.Position += moveInput.x0y() * moveSpeedMultiplier * dt;
                 }
                 
                 Player.Rotation = quaternion.identity;
