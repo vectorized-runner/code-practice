@@ -20,6 +20,7 @@ namespace SuperMetalSoldier
         public float3 Velocity;
         public quaternion Rotation;
         public float JumpDuration;
+        public bool IsGrounded;
     }
 
     [Serializable]
@@ -83,6 +84,15 @@ namespace SuperMetalSoldier
                 Player.Position = _playerRb.position;
                 Player.Velocity = _playerRb.linearVelocity;
             }
+            
+            const float upOffset = 0.1f;
+            var raycastPos = Player.Position + math.up() * (upOffset - Config.PlayerBodyLength);
+            var isGrounded = Physics.Raycast(raycastPos, -math.up(), Config.GroundedDistanceCheck, -1,
+                QueryTriggerInteraction.Ignore);
+            
+            Debug.DrawRay(raycastPos, -math.up() * Config.GroundedDistanceCheck, Color.yellow, 0.1f);
+
+            Player.IsGrounded = isGrounded;
 
             // Gravity
             {
