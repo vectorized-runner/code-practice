@@ -92,6 +92,9 @@ namespace SuperMetalSoldier
             
             Debug.DrawRay(raycastPos, -math.up() * Config.GroundedDistanceCheck, Color.yellow, 0.1f);
 
+            // This is to track movement over time
+            Debug.DrawRay(Player.Position, -math.up(), Color.red, Config.PlayerMovementTrailDuration);
+            
             Player.IsGrounded = isGrounded;
 
             // Gravity
