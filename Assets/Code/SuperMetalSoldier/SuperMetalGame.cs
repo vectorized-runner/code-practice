@@ -121,8 +121,16 @@ namespace SuperMetalSoldier
                 
                 if (!allZero)
                 {
-                    var targetVelocity = Player.Velocity.xz + acceleration * dt;
-                    Player.Velocity.xz = targetVelocity;
+                    var desiredVelocity = Player.Velocity.xz + acceleration * dt;
+                    var len = math.length(desiredVelocity);
+                    var maxSpeed = isRunning ? Config.PlayerRunMaxHorizontalSpeed : Config.PlayerWalkMaxHorizontalSpeed;
+                    if (len >= maxSpeed)
+                    {
+                        var normalized = desiredVelocity / len;
+                        desiredVelocity = normalized * maxSpeed;
+                    }
+
+                    Player.Velocity.xz = desiredVelocity;
                     
                     // We don't determine the position, the physics engine does
                     // Player.Position += moveInput.x0y() * moveSpeedMultiplier * dt;
