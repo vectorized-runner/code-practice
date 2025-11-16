@@ -21,6 +21,7 @@ namespace SuperMetalSoldier
         public quaternion Rotation;
         public float JumpDuration;
         public bool IsGrounded;
+        public bool IsApplyingGravity;
     }
 
     [Serializable]
@@ -102,6 +103,11 @@ namespace SuperMetalSoldier
                 if (!isGrounded)
                 {
                     Player.Velocity += -math.up() * Config.Gravity * dt;
+                    Player.IsApplyingGravity = true;
+                }
+                else
+                {
+                    Player.IsApplyingGravity = false;
                 }
             }
             
