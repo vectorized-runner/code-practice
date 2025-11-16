@@ -96,7 +96,10 @@ namespace SuperMetalSoldier
 
             // Gravity
             {
-                Player.Velocity += -math.up() * Config.Gravity * dt;
+                if (!isGrounded)
+                {
+                    Player.Velocity += -math.up() * Config.Gravity * dt;
+                }
             }
             
             // Update Player Pos
