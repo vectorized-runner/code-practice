@@ -65,15 +65,15 @@ namespace CodePractice
             // I need to find the Archetype
             // Archetype consists of a list of unique component types
 
-            var temp = new NativeArray<ComponentType>(1, Allocator.Temp);
-            temp[0] = type;
-            var archetypeIndex = GetOrCreateArchetypeIndex(temp);
-            ref var archetype = ref _archetypes.ElementAt(archetypeIndex);
-
-            for (int i = 0; i < archetype.Chunks.Length; i++)
-            {
-                ref var chunk = ref archetype.Chunks.ElementAt(i);
-            }
+            // var temp = new NativeArray<ComponentType>(1, Allocator.Temp);
+            // temp[0] = type;
+            // var archetypeIndex = GetOrCreateArchetypeIndex(temp);
+            // ref var archetype = ref _archetypes.ElementAt(archetypeIndex);
+            //
+            // for (int i = 0; i < archetype.Chunks.Length; i++)
+            // {
+            //     ref var chunk = ref archetype.Chunks.ElementAt(i);
+            // }
             
             // TODO-ECS: Left in here. You can continue
             // (need to get or add chunk from archetype)
@@ -88,19 +88,21 @@ namespace CodePractice
             types.Sort();
             
             // TODO-ECS: This is a very naive implementation
-            for (int i = 0; i < _archetypes.Length; i++)
-            {
-                ref var archetype = ref _archetypes.ElementAt(i);
-                if (archetype.Components.ValueEquals(types))
-                {
-                    return i;
-                }
-            }
+            // for (int i = 0; i < _archetypes.Length; i++)
+            // {
+            //     ref var archetype = ref _archetypes.ElementAt(i);
+            //     if (archetype.Components.ValueEquals(types))
+            //     {
+            //         return i;
+            //     }
+            // }
+            //
+            // // Create new archetype and return the index
+            // var idx = _archetypes.Length;
+            // _archetypes.Add(new Archetype { Components = types });
+            // return idx;
 
-            // Create new archetype and return the index
-            var idx = _archetypes.Length;
-            _archetypes.Add(new Archetype { Components = types });
-            return idx;
+            return -1;
         }
         
         public Entity CreateEntity()
@@ -113,6 +115,11 @@ namespace CodePractice
             var newIdx = ++_lastUsedIndex;
             _versionByIndex[newIdx] = 0;
             return new Entity(newIdx, 0);
+        }
+
+        public Entity CreateEntity(Archetype archetype)
+        {
+            throw new NotImplementedException();
         }
 
         public bool DestroyEntity(Entity entity)

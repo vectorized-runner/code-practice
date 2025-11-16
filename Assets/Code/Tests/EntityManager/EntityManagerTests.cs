@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Unity.Collections;
 
 namespace CodePractice.Tests
 {
@@ -307,6 +308,12 @@ namespace CodePractice.Tests
             var renderBoundsIdx = TypeManager.GetTypeIndex<RenderBounds>();
             
             Assert.AreNotEqual(transformIdx, renderBoundsIdx);
+        }
+
+        [Test]
+        public void CreateEntityWithArchetypeDoesNotFail()
+        {
+            // TODO-ECS:
         }
         
         // TODO-ECS:
