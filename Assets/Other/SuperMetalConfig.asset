@@ -18,8 +18,16 @@ MonoBehaviour:
     z: 0
   PlayerWalkSpeed: 5
   PlayerRunSpeed: 10
+  PlayerDeceleration: 5
+  PlayerJumpCooldown: 0
+  JumpPushAmount: 10
+  GroundedDistanceCheck: 0.2
+  PlayerBodyLength: 1
+  StopVelocityLengthThreshold: 0.1
+  PlayerMovementTrailDuration: 5
   CameraOffset:
     x: 0
     y: 3
     z: -5
   CameraLookUpOffset: 1.25
+  Gravity: 10
