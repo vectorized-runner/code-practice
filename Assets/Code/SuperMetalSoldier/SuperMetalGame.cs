@@ -81,7 +81,7 @@ namespace SuperMetalSoldier
             // Sync back from physics engine
             {
                 Player.Position = _playerRb.position;
-                // TODO: SPS, maybe sync back the Velocity too
+                Player.Velocity = _playerRb.linearVelocity;
             }
 
             // Gravity
