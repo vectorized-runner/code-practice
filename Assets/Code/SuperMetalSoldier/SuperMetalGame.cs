@@ -119,7 +119,21 @@ namespace SuperMetalSoldier
                 }
                 else
                 {
-                    Player.Velocity = float3.zero; // TODO-SPS
+                    Debug.Assert(Config.StopVelocityLengthThreshold > 0.001f);
+                    var len = math.length(Player.Velocity.xz);
+                    
+                    if (len < Config.StopVelocityLengthThreshold)
+                    {
+                        Player.Velocity.xz = float2.zero;
+                    }
+                    else
+                    {
+                        // Decelerate
+                        var decelerationDir = -math.normalize(Player.Velocity.xz);
+                        var velocityXZ = Player.Velocity.xz;
+                        velocityXZ += decelerationDir * dt * Config.PlayerDeceleration;
+                        Player.Velocity.xz = velocityXZ;
+                    }
                 }
                 
                 Player.Rotation = quaternion.identity;
