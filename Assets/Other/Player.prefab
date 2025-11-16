@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7984399545692241392}
   - component: {fileID: 1454447558327536042}
   - component: {fileID: 6749205516554519457}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,4 +137,4 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
