@@ -86,6 +86,7 @@ namespace SuperMetalSoldier
             // Sync back from physics engine
             {
                 Player.Position = _playerRb.position;
+                Player.Rotation = _playerRb.rotation;
                 Player.Velocity = _playerRb.linearVelocity;
             }
             
@@ -152,7 +153,15 @@ namespace SuperMetalSoldier
                     }
 
                     Player.Velocity.xz = desiredVelocity;
-                    
+
+
+                    var currentLookDir = math.forward(Player.Rotation);
+                    var lookPosition = Player.Position + moveInput.x0y();
+                   // var lookDir = lookPosition - Player.Position
+                    var wantedRotation = quaternion.LookRotation(moveInput.x0y(), math.up());
+                    Debug.DrawRay(lookPosition, math.up(), Color.cyan, 10f);
+                    Player.Rotation = wantedRotation;
+
                     // We don't determine the position, the physics engine does
                     // Player.Position += moveInput.x0y() * moveSpeedMultiplier * dt;
                 }
@@ -174,13 +183,12 @@ namespace SuperMetalSoldier
                         Player.Velocity.xz = velocityXZ;
                     }
                 }
-                
-                Player.Rotation = quaternion.identity;
             }
             
             // Sync to Physics
             {
                 _playerRb.linearVelocity = Player.Velocity;
+                _playerRb.rotation = Player.Rotation;
             }
 
             // Update Camera
@@ -191,8 +199,6 @@ namespace SuperMetalSoldier
                 var lookDir = playerPos + new float3(0f, Config.CameraLookUpOffset, 0f) - newCameraPos;
                 Camera.Rotation = quaternion.LookRotation(lookDir, math.up());
             }
-
-   
         }
 
         private void LateUpdate()
