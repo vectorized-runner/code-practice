@@ -17,7 +17,9 @@ namespace SuperMetalSoldier
     public struct PlayerData
     {
         public float3 Position;
+        public float3 Velocity;
         public quaternion Rotation;
+        public float JumpDuration;
     }
 
     [Serializable]
@@ -34,6 +36,7 @@ namespace SuperMetalSoldier
         public GameObject PlayerRender;
         public SuperMetalConfig Config;
         public Camera CameraRender;
+        private Rigidbody _playerRb;
         
         private void Start()
         {
@@ -41,6 +44,8 @@ namespace SuperMetalSoldier
             {
                 Player.Position = Config.PlayerInitialPos;
             }
+
+            _playerRb = PlayerRender.GetComponent<Rigidbody>();
         }
 
         private float2 GetPlayerMoveInput()
@@ -72,6 +77,12 @@ namespace SuperMetalSoldier
         private void Update()
         {
             var dt = Time.deltaTime;
+
+            // Sync back from physics engine
+            {
+                Player.Position = _playerRb.position;
+                // TODO: SPS, maybe sync back the Velocity too
+            }
             
             // Update Player Pos
             {
@@ -79,10 +90,14 @@ namespace SuperMetalSoldier
                 var allZero = math.all(moveInput == float2.zero);
                 var isRunning = Input.GetKey(KeyCode.LeftShift);
                 var moveSpeedMultiplier = isRunning ? Config.PlayerRunSpeed : Config.PlayerWalkSpeed;
+                var velocity = math.normalize(moveInput).x0y() * moveSpeedMultiplier;
                 
                 if (!allZero)
                 {
-                    Player.Position += moveInput.x0y() * moveSpeedMultiplier * dt;
+                    Player.Velocity = velocity;
+                    
+                    // We don't determine the position, the physics engine does
+                    // Player.Position += moveInput.x0y() * moveSpeedMultiplier * dt;
                 }
                 
                 Player.Rotation = quaternion.identity;
@@ -96,12 +111,15 @@ namespace SuperMetalSoldier
                 var lookDir = playerPos + new float3(0f, Config.CameraLookUpOffset, 0f) - newCameraPos;
                 Camera.Rotation = quaternion.LookRotation(lookDir, math.up());
             }
+        }
 
-            // Sync Render
-            {
-                PlayerRender.transform.position = Player.Position;
-                PlayerRender.transform.rotation = Player.Rotation;
-            }
+        private void FixedUpdate()
+        {
+            // Sync Physics
+            // _playerRb.MovePosition(Player.Position);
+            // _playerRb.MoveRotation(Player.Rotation);
+
+            _playerRb.linearVelocity = Player.Velocity;
         }
 
         private void LateUpdate()
@@ -111,6 +129,7 @@ namespace SuperMetalSoldier
                 CameraRender.transform.position = Camera.Position;
                 CameraRender.transform.rotation = Camera.Rotation;
             }
+            
         }
     }
 
