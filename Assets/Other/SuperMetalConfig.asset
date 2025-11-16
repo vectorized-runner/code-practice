@@ -18,3 +18,8 @@ MonoBehaviour:
     z: 0
   PlayerWalkSpeed: 5
   PlayerRunSpeed: 10
+  CameraOffset:
+    x: 0
+    y: 3
+    z: -5
+  CameraLookUpOffset: 1.25

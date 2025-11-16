@@ -19,16 +19,28 @@ namespace SuperMetalSoldier
         public float3 Position;
         public quaternion Rotation;
     }
+
+    [Serializable]
+    public struct CameraData
+    {
+        public float3 Position;
+        public quaternion Rotation;
+    }
     
     public class SuperMetalGame : MonoBehaviour
     {
         public PlayerData Player;
+        public CameraData Camera;
         public GameObject PlayerRender;
         public SuperMetalConfig Config;
+        public Camera CameraRender;
         
         private void Start()
         {
-            
+            // Init player pos
+            {
+                Player.Position = Config.PlayerInitialPos;
+            }
         }
 
         private float2 GetPlayerMoveInput()
@@ -76,11 +88,28 @@ namespace SuperMetalSoldier
                 Player.Rotation = quaternion.identity;
             }
 
+            // Update Camera
+            {
+                var playerPos = Player.Position;
+                var newCameraPos = playerPos + Config.CameraOffset;
+                Camera.Position = newCameraPos;
+                var lookDir = playerPos + new float3(0f, Config.CameraLookUpOffset, 0f) - newCameraPos;
+                Camera.Rotation = quaternion.LookRotation(lookDir, math.up());
+            }
 
             // Sync Render
             {
                 PlayerRender.transform.position = Player.Position;
                 PlayerRender.transform.rotation = Player.Rotation;
+            }
+        }
+
+        private void LateUpdate()
+        {
+            // Sync Camera
+            {
+                CameraRender.transform.position = Camera.Position;
+                CameraRender.transform.rotation = Camera.Rotation;
             }
         }
     }
