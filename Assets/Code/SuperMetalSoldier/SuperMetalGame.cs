@@ -20,8 +20,10 @@ namespace SuperMetalSoldier
         public float3 Velocity;
         public quaternion Rotation;
         public float JumpDuration;
+        public float JumpLandedTime;
         public bool IsGrounded;
         public bool IsApplyingGravity;
+        public float LastGroundedTime;
     }
 
     [Serializable]
@@ -79,6 +81,7 @@ namespace SuperMetalSoldier
         private void Update()
         {
             var dt = Time.deltaTime;
+            var time = Time.time;
 
             // Sync back from physics engine
             {
@@ -98,7 +101,22 @@ namespace SuperMetalSoldier
             
                 Debug.DrawRay(raycastPos, -math.up() * Config.GroundedDistanceCheck, Color.yellow, 0.1f);
 
+                if(!Player.IsGrounded && isGrounded)
+                {
+                    Player.LastGroundedTime = time;
+                }
+                
                 Player.IsGrounded = isGrounded;
+            }
+
+            // Jump
+            {
+                var isJumpOutOfCooldown = time - Player.LastGroundedTime > Config.PlayerJumpCooldownAfterGrounded;
+                var canJump = Player.IsGrounded && isJumpOutOfCooldown;
+                if (canJump && Input.GetKeyDown(KeyCode.Space))
+                {
+                    Player.Velocity += math.up() * Config.JumpPushAmount;
+                }
             }
 
             // Gravity

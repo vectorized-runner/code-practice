@@ -12,7 +12,7 @@ namespace SuperMetalSoldier
         public float PlayerWalkMaxHorizontalSpeed;
         public float PlayerRunMaxHorizontalSpeed;
         public float PlayerDeceleration;
-        public float PlayerJumpCooldown;
+        public float PlayerJumpCooldownAfterGrounded;
         public float JumpPushAmount;
         public float GroundedDistanceCheck;
         public float PlayerBodyLength;
