@@ -7,8 +7,8 @@ namespace SuperMetalSoldier
     public class SuperMetalConfig : ScriptableObject
     {
         public float3 PlayerInitialPos;
-        public float PlayerWalkSpeed;
-        public float PlayerRunSpeed;
+        public float PlayerWalkAcceleration;
+        public float PlayerRunAcceleration;
         public float PlayerDeceleration;
         public float PlayerJumpCooldown;
         public float JumpPushAmount;
