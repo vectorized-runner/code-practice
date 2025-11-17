@@ -19,7 +19,7 @@ namespace SuperMetalSoldier
         Walk,
         Run,
     }
-    
+
     [Serializable]
     public struct PlayerData
     {
@@ -40,7 +40,7 @@ namespace SuperMetalSoldier
         public float3 Position;
         public quaternion Rotation;
     }
-    
+
     public class SuperMetalGame : MonoBehaviour
     {
         public PlayerData Player;
@@ -50,7 +50,7 @@ namespace SuperMetalSoldier
         public Camera CameraRender;
         private Rigidbody _playerRb;
         private Animator _playerAnimator;
-        
+
         private void Start()
         {
             // Init player pos
@@ -66,7 +66,7 @@ namespace SuperMetalSoldier
         private float2 GetPlayerMoveInput()
         {
             var result = float2.zero;
-            
+
             if (Input.GetKey(KeyCode.W))
             {
                 result += new float2(0, 1);
@@ -100,7 +100,7 @@ namespace SuperMetalSoldier
                 Player.Rotation = _playerRb.rotation;
                 Player.Velocity = _playerRb.linearVelocity;
             }
-            
+
             // This is to track movement over time
             Debug.DrawRay(Player.Position, -math.up(), Color.red, Config.PlayerMovementTrailDuration);
 
@@ -110,14 +110,14 @@ namespace SuperMetalSoldier
                 var raycastPos = Player.Position + math.up() * (upOffset - Config.PlayerBodyLength);
                 var isGrounded = Physics.Raycast(raycastPos, -math.up(), Config.GroundedDistanceCheck, -1,
                     QueryTriggerInteraction.Ignore);
-            
+
                 Debug.DrawRay(raycastPos, -math.up() * Config.GroundedDistanceCheck, Color.yellow, 0.1f);
 
-                if(!Player.IsGrounded && isGrounded)
+                if (!Player.IsGrounded && isGrounded)
                 {
                     Player.LastGroundedTime = time;
                 }
-                
+
                 Player.IsGrounded = isGrounded;
             }
 
@@ -143,16 +143,16 @@ namespace SuperMetalSoldier
                     Player.IsApplyingGravity = false;
                 }
             }
-            
+
             var runInput = Input.GetKey(KeyCode.LeftShift);
-            
+
             // Update Player Pos
             {
                 var moveInput = GetPlayerMoveInput();
                 var allZero = math.all(moveInput == float2.zero);
                 var accelerationConstant = runInput ? Config.PlayerRunAcceleration : Config.PlayerWalkAcceleration;
                 var acceleration = math.normalize(moveInput) * accelerationConstant;
-                
+
                 if (!allZero)
                 {
                     var desiredVelocity = Player.Velocity.xz + acceleration * dt;
@@ -183,7 +183,7 @@ namespace SuperMetalSoldier
                 {
                     Debug.Assert(Config.StopVelocityLengthThreshold > 0.001f);
                     var len = math.length(Player.Velocity.xz);
-                    
+
                     if (len < Config.StopVelocityLengthThreshold)
                     {
                         Player.Velocity.xz = float2.zero;
@@ -202,7 +202,7 @@ namespace SuperMetalSoldier
             // Update anim
             {
                 var previousState = Player.AnimationState;
-                
+
                 if (runInput)
                 {
                     Player.AnimationState = AnimationState.Run;
@@ -221,7 +221,7 @@ namespace SuperMetalSoldier
                         Player.AnimationState = AnimationState.Walk;
                     }
                 }
-                
+
                 // Sync to Animator
                 var newState = Player.AnimationState;
                 if (previousState != newState)
@@ -229,13 +229,13 @@ namespace SuperMetalSoldier
                     _playerAnimator.SetTrigger(AnimationStateToStr(newState));
                 }
             }
-            
+
             // Sync to Physics
             {
                 _playerRb.linearVelocity = Player.Velocity;
                 _playerRb.rotation = Player.Rotation;
             }
-            
+
             // Update Camera
             {
                 var playerPos = Player.Position;
@@ -268,9 +268,6 @@ namespace SuperMetalSoldier
                 CameraRender.transform.position = Camera.Position;
                 CameraRender.transform.rotation = Camera.Rotation;
             }
-            
         }
     }
-
 }
-
