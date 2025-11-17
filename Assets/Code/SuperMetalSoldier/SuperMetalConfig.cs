@@ -18,6 +18,7 @@ namespace SuperMetalSoldier
         public float PlayerBodyLength;
         public float StopVelocityLengthThreshold;
         public float PlayerMovementTrailDuration;
+        public float PlayerTurnAnglePerSec;
         
         public float3 CameraOffset;
         public float CameraLookUpOffset;

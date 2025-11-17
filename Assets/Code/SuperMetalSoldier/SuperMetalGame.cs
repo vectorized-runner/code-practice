@@ -155,12 +155,14 @@ namespace SuperMetalSoldier
                     Player.Velocity.xz = desiredVelocity;
 
 
-                    var currentLookDir = math.forward(Player.Rotation);
+                    // Turn
                     var lookPosition = Player.Position + moveInput.x0y();
                    // var lookDir = lookPosition - Player.Position
                     var wantedRotation = quaternion.LookRotation(moveInput.x0y(), math.up());
+                    var rotateDegrees = Config.PlayerTurnAnglePerSec * dt;
+                    var rotation = Quaternion.RotateTowards(Player.Rotation, wantedRotation, rotateDegrees);
                     Debug.DrawRay(lookPosition, math.up(), Color.cyan, 10f);
-                    Player.Rotation = wantedRotation;
+                    Player.Rotation = rotation;
 
                     // We don't determine the position, the physics engine does
                     // Player.Position += moveInput.x0y() * moveSpeedMultiplier * dt;
