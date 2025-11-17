@@ -12,6 +12,13 @@ namespace SuperMetalSoldier
             return new float3(f.x, 0f, f.y);
         }
     }
+
+    public enum AnimationState
+    {
+        Idle,
+        Walk,
+        Run,
+    }
     
     [Serializable]
     public struct PlayerData
@@ -24,6 +31,7 @@ namespace SuperMetalSoldier
         public bool IsGrounded;
         public bool IsApplyingGravity;
         public float LastGroundedTime;
+        public AnimationState AnimationState;
     }
 
     [Serializable]
@@ -41,15 +49,18 @@ namespace SuperMetalSoldier
         public SuperMetalConfig Config;
         public Camera CameraRender;
         private Rigidbody _playerRb;
+        private Animator _playerAnimator;
         
         private void Start()
         {
             // Init player pos
             {
                 Player.Position = Config.PlayerInitialPos;
+                Player.AnimationState = AnimationState.Idle;
             }
 
             _playerRb = PlayerRender.GetComponent<Rigidbody>();
+            _playerAnimator = PlayerRender.GetComponentInChildren<Animator>();
         }
 
         private float2 GetPlayerMoveInput()
@@ -133,19 +144,20 @@ namespace SuperMetalSoldier
                 }
             }
             
+            var runInput = Input.GetKey(KeyCode.LeftShift);
+            
             // Update Player Pos
             {
                 var moveInput = GetPlayerMoveInput();
                 var allZero = math.all(moveInput == float2.zero);
-                var isRunning = Input.GetKey(KeyCode.LeftShift);
-                var accelerationConstant = isRunning ? Config.PlayerRunAcceleration : Config.PlayerWalkAcceleration;
+                var accelerationConstant = runInput ? Config.PlayerRunAcceleration : Config.PlayerWalkAcceleration;
                 var acceleration = math.normalize(moveInput) * accelerationConstant;
                 
                 if (!allZero)
                 {
                     var desiredVelocity = Player.Velocity.xz + acceleration * dt;
                     var len = math.length(desiredVelocity);
-                    var maxSpeed = isRunning ? Config.PlayerRunMaxHorizontalSpeed : Config.PlayerWalkMaxHorizontalSpeed;
+                    var maxSpeed = runInput ? Config.PlayerRunMaxHorizontalSpeed : Config.PlayerWalkMaxHorizontalSpeed;
                     if (len >= maxSpeed)
                     {
                         var normalized = desiredVelocity / len;
@@ -157,7 +169,7 @@ namespace SuperMetalSoldier
 
                     // Turn
                     var lookPosition = Player.Position + moveInput.x0y();
-                   // var lookDir = lookPosition - Player.Position
+                    // var lookDir = lookPosition - Player.Position
                     var wantedRotation = quaternion.LookRotation(moveInput.x0y(), math.up());
                     var rotateDegrees = Config.PlayerTurnAnglePerSec * dt;
                     var rotation = Quaternion.RotateTowards(Player.Rotation, wantedRotation, rotateDegrees);
@@ -186,13 +198,44 @@ namespace SuperMetalSoldier
                     }
                 }
             }
+
+            // Update anim
+            {
+                var previousState = Player.AnimationState;
+                
+                if (runInput)
+                {
+                    Player.AnimationState = AnimationState.Run;
+                }
+                else
+                {
+                    // Check velocity
+                    const float walkVelocityThreshold = 0.1f;
+                    var horizontalVelocity = math.length(Player.Velocity.xz);
+                    if (horizontalVelocity < walkVelocityThreshold)
+                    {
+                        Player.AnimationState = AnimationState.Idle;
+                    }
+                    else
+                    {
+                        Player.AnimationState = AnimationState.Walk;
+                    }
+                }
+                
+                // Sync to Animator
+                var newState = Player.AnimationState;
+                if (previousState != newState)
+                {
+                    _playerAnimator.SetTrigger(AnimationStateToStr(newState));
+                }
+            }
             
             // Sync to Physics
             {
                 _playerRb.linearVelocity = Player.Velocity;
                 _playerRb.rotation = Player.Rotation;
             }
-
+            
             // Update Camera
             {
                 var playerPos = Player.Position;
@@ -200,6 +243,21 @@ namespace SuperMetalSoldier
                 Camera.Position = newCameraPos;
                 var lookDir = playerPos + new float3(0f, Config.CameraLookUpOffset, 0f) - newCameraPos;
                 Camera.Rotation = quaternion.LookRotation(lookDir, math.up());
+            }
+        }
+
+        private string AnimationStateToStr(AnimationState state)
+        {
+            switch (state)
+            {
+                case AnimationState.Idle:
+                    return "Idle";
+                case AnimationState.Walk:
+                    return "Walk";
+                case AnimationState.Run:
+                    return "Run";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
         }
 
