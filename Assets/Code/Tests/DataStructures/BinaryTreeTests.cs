@@ -1,3 +1,4 @@
+using System.Runtime.Remoting;
 using NUnit.Framework;
 
 namespace CodePractice.Tests
@@ -37,6 +38,58 @@ namespace CodePractice.Tests
             };
 
             return tree;
+        }
+
+        private BinaryTree<MyInt> GetBST()
+        {
+            return new BinaryTree<MyInt>()
+            {
+                Root = new BinaryTreeNode<MyInt>
+                {
+                    Item = 55,
+                    Left = new BinaryTreeNode<MyInt>
+                    {
+                        Item = 29,
+                        Left = new BinaryTreeNode<MyInt>
+                        {
+                            Item = -3
+                        },
+                        Right = new BinaryTreeNode<MyInt>
+                        {
+                            Item = 42
+                        }
+                    },
+                    Right = new BinaryTreeNode<MyInt>
+                    {
+                        Item = 87,
+                        Left = new BinaryTreeNode<MyInt>
+                        {
+                            Item = 60
+                        },
+                        Right = new BinaryTreeNode<MyInt>
+                        {
+                            Item = 91
+                        }
+                    }
+                }
+            };
+        }
+
+        [Test]
+        public void BST_Contains_1()
+        {
+            var bst = GetBST();
+            Assert.IsTrue(bst.BST_Contains(29));
+            Assert.IsTrue(bst.BST_Contains(55));
+            Assert.IsTrue(bst.BST_Contains(-3));
+            Assert.IsTrue(bst.BST_Contains(42));
+            Assert.IsTrue(bst.BST_Contains(87));
+            Assert.IsTrue(bst.BST_Contains(60));
+            Assert.IsTrue(bst.BST_Contains(91));
+            
+            Assert.IsFalse(bst.BST_Contains(-1));
+            Assert.IsFalse(bst.BST_Contains(0));
+            Assert.IsFalse(bst.BST_Contains(3498));
         }
 
         [Test]

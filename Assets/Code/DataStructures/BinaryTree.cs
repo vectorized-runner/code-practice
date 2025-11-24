@@ -33,6 +33,11 @@ namespace CodePractice
 
         public int Depth;
 
+        public bool BST_Contains(T item)
+        {
+            return Root.BST_Contains(item);
+        }
+
         public bool IsFull()
         {
             return Root.IsFull();
@@ -85,6 +90,32 @@ namespace CodePractice
         public T Item;
         public BinaryTreeNode<T> Left;
         public BinaryTreeNode<T> Right;
+
+        public bool BST_Contains(T item)
+        {
+            if (item.GetValue() == Item.GetValue())
+            {
+                return true;
+            }
+
+            if (item.GetValue() > Item.GetValue())
+            {
+                // Search right
+                if (Right == null)
+                {
+                    return false;
+                }
+
+                return Right.BST_Contains(item);
+            }
+
+            if (Left == null)
+            {
+                return false;
+            }
+
+            return Left.BST_Contains(item);
+        }
 
         public bool IsFull()
         {
