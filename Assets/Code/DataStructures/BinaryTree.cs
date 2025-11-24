@@ -50,7 +50,7 @@ namespace CodePractice
 
         public int Sum()
         {
-            throw new NotImplementedException();
+            return Root.Sum();
         }
 
         public int CountLeaves()
@@ -110,7 +110,19 @@ namespace CodePractice
 
         public int Sum()
         {
-            
+            var sum = Item.GetValue();
+
+            if (Left != null)
+            {
+                sum += Left.Sum();
+            }
+
+            if (Right != null)
+            {
+                sum += Right.Sum();
+            }
+
+            return sum;
         }
 
         public void PreOrder(List<T> result)

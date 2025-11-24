@@ -40,6 +40,13 @@ namespace CodePractice.Tests
         }
 
         [Test]
+        public void BinaryTree_Sum()
+        {
+            Assert.AreEqual(
+                17 + 41 + 29 + 6 + 9 + 81 + 40, GetTree_1().Sum());
+        }
+
+        [Test]
         public void BinaryTree_GetMax()
         {
             Assert.AreEqual(81, GetTree_1().GetMax());
