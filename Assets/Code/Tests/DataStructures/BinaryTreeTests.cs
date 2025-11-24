@@ -76,6 +76,24 @@ namespace CodePractice.Tests
         }
 
         [Test]
+        public void IsEmpty_1()
+        {
+            Assert.IsFalse(GetBST().IsEmpty());
+        }
+
+        [Test]
+        public void IsEmpty_2()
+        {
+            Assert.IsFalse(GetTree_1().IsEmpty());
+        }
+
+        [Test]
+        public void IsEmpty_3()
+        {
+            Assert.IsTrue(new BinaryTree<MyInt>().IsEmpty());
+        }
+
+        [Test]
         public void BST_Contains_1()
         {
             var bst = GetBST();

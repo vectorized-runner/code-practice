@@ -9,6 +9,11 @@ namespace CodePractice
 
         public int Depth;
 
+        public bool IsEmpty()
+        {
+            return Root == null;
+        }
+
         public bool BST_Contains(T item)
         {
             return Root.BST_Contains(item);
