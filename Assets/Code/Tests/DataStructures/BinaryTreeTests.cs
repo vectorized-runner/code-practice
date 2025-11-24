@@ -4,32 +4,32 @@ namespace CodePractice.Tests
 {
     public class BinaryTreeTests
     {
-        private BinaryTree<int> GetTree_1()
+        private BinaryTree<MyInt> GetTree_1()
         {
-            var tree = new BinaryTree<int>();
-            tree.Root = new BinaryTreeNode<int>
+            var tree = new BinaryTree<MyInt>();
+            tree.Root = new BinaryTreeNode<MyInt>
             {
                 Item = 17,
-                Left = new BinaryTreeNode<int>
+                Left = new BinaryTreeNode<MyInt>
                 {
                     Item = 41,
-                    Left = new BinaryTreeNode<int>
+                    Left = new BinaryTreeNode<MyInt>
                     {
                         Item = 29,
                     },
-                    Right = new BinaryTreeNode<int>
+                    Right = new BinaryTreeNode<MyInt>
                     {
                         Item = 6
                     }
                 },
-                Right = new BinaryTreeNode<int>()
+                Right = new BinaryTreeNode<MyInt>()
                 {
                     Item = 9,
-                    Left = new BinaryTreeNode<int>()
+                    Left = new BinaryTreeNode<MyInt>()
                     {
                         Item = 81
                     },
-                    Right = new BinaryTreeNode<int>()
+                    Right = new BinaryTreeNode<MyInt>()
                     {
                         Item = 40,
                     }

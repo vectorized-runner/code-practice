@@ -3,7 +3,30 @@ using System.Collections.Generic;
 
 namespace CodePractice
 {
-    public class BinaryTree<T>
+    public struct MyInt : IValue
+    {
+        public int Value;
+        
+        public static implicit operator MyInt(int i)
+        {
+            return new MyInt
+            {
+                Value = i
+            };
+        }
+
+        public int GetValue()
+        {
+            return Value;
+        }
+    }
+    
+    public interface IValue
+    {
+        public int GetValue();
+    }
+
+    public class BinaryTree<T> where T : IValue
     {
         public BinaryTreeNode<T> Root;
 
