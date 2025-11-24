@@ -47,13 +47,13 @@ namespace CodePractice.Tests
 
             Assert.AreEqual(7, preOrder.Count);
 
-            Assert.AreEqual(17, preOrder[0]);
-            Assert.AreEqual(41, preOrder[1]);
-            Assert.AreEqual(29, preOrder[2]);
-            Assert.AreEqual(6, preOrder[3]);
-            Assert.AreEqual(9, preOrder[4]);
-            Assert.AreEqual(81, preOrder[5]);
-            Assert.AreEqual(40, preOrder[6]);
+            Assert.AreEqual(17, preOrder[0].Value);
+            Assert.AreEqual(41, preOrder[1].Value);
+            Assert.AreEqual(29, preOrder[2].Value);
+            Assert.AreEqual(6, preOrder[3].Value);
+            Assert.AreEqual(9, preOrder[4].Value);
+            Assert.AreEqual(81, preOrder[5].Value);
+            Assert.AreEqual(40, preOrder[6].Value);
         }
 
         [Test]
@@ -64,13 +64,13 @@ namespace CodePractice.Tests
 
             Assert.AreEqual(7, inOrder.Count);
 
-            Assert.AreEqual(29, inOrder[0]);
-            Assert.AreEqual(41, inOrder[1]);
-            Assert.AreEqual(6, inOrder[2]);
-            Assert.AreEqual(17, inOrder[3]);
-            Assert.AreEqual(81, inOrder[4]);
-            Assert.AreEqual(9, inOrder[5]);
-            Assert.AreEqual(40, inOrder[6]);
+            Assert.AreEqual(29, inOrder[0].Value);
+            Assert.AreEqual(41, inOrder[1].Value);
+            Assert.AreEqual(6, inOrder[2].Value);
+            Assert.AreEqual(17, inOrder[3].Value);
+            Assert.AreEqual(81, inOrder[4].Value);
+            Assert.AreEqual(9, inOrder[5].Value);
+            Assert.AreEqual(40, inOrder[6].Value);
         }
 
         [Test]
@@ -81,13 +81,13 @@ namespace CodePractice.Tests
 
             Assert.AreEqual(7, postOrder.Count);
 
-            Assert.AreEqual(29, postOrder[0]);
-            Assert.AreEqual(6, postOrder[1]);
-            Assert.AreEqual(41, postOrder[2]);
-            Assert.AreEqual(81, postOrder[3]);
-            Assert.AreEqual(40, postOrder[4]);
-            Assert.AreEqual(9, postOrder[5]);
-            Assert.AreEqual(17, postOrder[6]);
+            Assert.AreEqual(29, postOrder[0].Value);
+            Assert.AreEqual(6, postOrder[1].Value);
+            Assert.AreEqual(41, postOrder[2].Value);
+            Assert.AreEqual(81, postOrder[3].Value);
+            Assert.AreEqual(40, postOrder[4].Value);
+            Assert.AreEqual(9, postOrder[5].Value);
+            Assert.AreEqual(17, postOrder[6].Value);
         }
     }
 }

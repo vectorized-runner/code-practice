@@ -84,7 +84,7 @@ namespace CodePractice
         }
     }
 
-    public class BinaryTreeNode<T>
+    public class BinaryTreeNode<T> where T : IValue
     {
         public T Item;
         public BinaryTreeNode<T> Left;
