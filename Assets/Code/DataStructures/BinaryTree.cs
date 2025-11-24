@@ -35,7 +35,7 @@ namespace CodePractice
 
         public bool IsFull()
         {
-            throw new NotImplementedException();
+            return Root.IsFull();
         }
 
         public int GetHeight()
@@ -56,11 +56,6 @@ namespace CodePractice
         public int CountLeaves()
         {
             return Root.CountLeaves();
-        }
-
-        public List<T> GetElements()
-        {
-            throw new NotImplementedException();
         }
 
         public List<T> PreOrder()
@@ -90,6 +85,26 @@ namespace CodePractice
         public T Item;
         public BinaryTreeNode<T> Left;
         public BinaryTreeNode<T> Right;
+
+        public bool IsFull()
+        {
+            if (Left == null && Right == null)
+            {
+                return true;
+            }
+            
+            if (Left == null)
+            {
+                return false;
+            }
+
+            if (Right == null)
+            {
+                return false;
+            }
+
+            return Left.IsFull() && Right.IsFull();
+        }
 
         public int CountLeaves()
         {

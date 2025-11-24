@@ -40,6 +40,12 @@ namespace CodePractice.Tests
         }
 
         [Test]
+        public void BinaryTree_IsFull()
+        {
+            Assert.IsTrue(GetTree_1().IsFull());
+        }
+
+        [Test]
         public void BinaryTree_CountLeaves()
         {
             Assert.AreEqual(4, GetTree_1().CountLeaves());
