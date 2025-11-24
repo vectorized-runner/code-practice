@@ -93,10 +93,24 @@ namespace CodePractice
 
         public int GetMax()
         {
-            var leftMax = Left == null ? int.MinValue : Left.GetMax();
-            var rightMax = Right == null ? int.MinValue : Right.GetMax();
+            var max = Item.GetValue();
+
+            if (Left != null)
+            {
+                max = math.max(Left.GetMax(), max);
+            }
+
+            if (Right != null)
+            {
+                max = math.max(Right.GetMax(), max);
+            }
+
+            return max;
+        }
+
+        public int Sum()
+        {
             
-            return math.max(Item.GetValue(), math.max(leftMax, rightMax));
         }
 
         public void PreOrder(List<T> result)
