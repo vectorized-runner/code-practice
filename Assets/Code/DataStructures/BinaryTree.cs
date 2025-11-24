@@ -55,7 +55,7 @@ namespace CodePractice
 
         public int CountLeaves()
         {
-            throw new NotImplementedException();
+            return Root.CountLeaves();
         }
 
         public List<T> GetElements()
@@ -90,6 +90,26 @@ namespace CodePractice
         public T Item;
         public BinaryTreeNode<T> Left;
         public BinaryTreeNode<T> Right;
+
+        public int CountLeaves()
+        {
+            if (Left == null && Right == null)
+            {
+                return 1;
+            }
+
+            if (Left == null)
+            {
+                return Right.CountLeaves();
+            }
+
+            if (Right == null)
+            {
+                return Left.CountLeaves();
+            }
+
+            return Left.CountLeaves() + Right.CountLeaves();
+        }
 
         public int GetHeight()
         {
