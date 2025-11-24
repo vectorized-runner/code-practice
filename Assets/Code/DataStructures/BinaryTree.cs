@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 
 namespace CodePractice
 {
@@ -44,7 +45,7 @@ namespace CodePractice
 
         public int GetMax()
         {
-            throw new NotImplementedException();
+            return Root.GetMax();
         }
 
         public int Sum()
@@ -89,6 +90,14 @@ namespace CodePractice
         public T Item;
         public BinaryTreeNode<T> Left;
         public BinaryTreeNode<T> Right;
+
+        public int GetMax()
+        {
+            var leftMax = Left == null ? int.MinValue : Left.GetMax();
+            var rightMax = Right == null ? int.MinValue : Right.GetMax();
+            
+            return math.max(Item.GetValue(), math.max(leftMax, rightMax));
+        }
 
         public void PreOrder(List<T> result)
         {
