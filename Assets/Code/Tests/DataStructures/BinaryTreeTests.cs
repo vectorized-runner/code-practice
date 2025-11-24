@@ -40,6 +40,12 @@ namespace CodePractice.Tests
         }
 
         [Test]
+        public void BinaryTree_GetHeight()
+        {
+            Assert.AreEqual(2, GetTree_1().GetHeight());
+        }
+
+        [Test]
         public void BinaryTree_Sum()
         {
             Assert.AreEqual(

@@ -38,9 +38,9 @@ namespace CodePractice
             throw new NotImplementedException();
         }
 
-        public int Height()
+        public int GetHeight()
         {
-            throw new NotImplementedException();
+            return Root.GetHeight();
         }
 
         public int GetMax()
@@ -90,6 +90,24 @@ namespace CodePractice
         public T Item;
         public BinaryTreeNode<T> Left;
         public BinaryTreeNode<T> Right;
+
+        public int GetHeight()
+        {
+            if (Left == null && Right == null)
+            {
+                return 0;
+            }
+            if (Left == null)
+            {
+                return 1 + Right.GetHeight();
+            }
+            if (Right == null)
+            {
+                return 1 + Left.GetHeight();
+            }
+
+            return 1 + math.max(Left.GetHeight(), Right.GetHeight());
+        }
 
         public int GetMax()
         {
