@@ -87,6 +87,9 @@ namespace SuperMetalSoldier
 				IdManager = IdManager.Create();
 				
 				Enemies = new EntityGroup<EnemyData>(32);
+				
+				// For simplicity, for now
+				EnemyAuthorings = FindObjectsByType<EnemyAuthoring>(FindObjectsSortMode.None);
 
 				foreach (var authoring in EnemyAuthorings)
 				{
