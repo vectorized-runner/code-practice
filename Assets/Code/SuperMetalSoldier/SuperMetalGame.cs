@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using Code;
 using Unity.Mathematics;
 using UnityEngine;
+using Object = System.Object;
 
 namespace SuperMetalSoldier
 {
@@ -35,6 +38,13 @@ namespace SuperMetalSoldier
 	}
 
 	[Serializable]
+	public struct EnemyData
+	{
+		public float3 Position;
+		public quaternion Rotation;
+	}
+
+	[Serializable]
 	public struct CameraData
 	{
 		public float3 Position;
@@ -51,6 +61,12 @@ namespace SuperMetalSoldier
 		private Rigidbody _playerRb;
 		private Animator _playerAnimator;
 
+		public EnemyAuthoring[] EnemyAuthorings;
+		public EntityGroup<EnemyData> Enemies;
+		public Dictionary<Id, GameObject> EnemyIdToRender = new();
+
+		public IdManager IdManager;
+
 		public static SuperMetalGame Instance { get; private set; }
 
 		private void Awake()
@@ -66,8 +82,37 @@ namespace SuperMetalSoldier
 				Player.AnimationState = AnimationState.Idle;
 			}
 
+			// Init enemies
+			{
+				IdManager = IdManager.Create();
+				
+				Enemies = new EntityGroup<EnemyData>(32);
+
+				foreach (var authoring in EnemyAuthorings)
+				{
+					var id = IdManager.CreateId();
+					Enemies.Add(id, new EnemyData
+					{
+						Position = authoring.transform.position,
+						Rotation = authoring.transform.rotation,
+					});
+
+					var enemyRender = Instantiate(Config.EnemyPrefab);
+					EnemyIdToRender.Add(id, enemyRender);
+					
+					// Authoring isn't required at Runtime
+					Destroy(authoring.gameObject);
+				}
+			}
+
 			_playerRb = PlayerRender.GetComponent<Rigidbody>();
 			_playerAnimator = PlayerRender.GetComponentInChildren<Animator>();
+		}
+
+		private void OnDestroy()
+		{
+			Enemies.Dispose();
+			IdManager.Dispose();
 		}
 
 		private float2 GetPlayerMoveInput()
@@ -249,6 +294,18 @@ namespace SuperMetalSoldier
 				Camera.Position = newCameraPos;
 				var lookDir = playerPos + new float3(0f, Config.CameraLookUpOffset, 0f) - newCameraPos;
 				Camera.Rotation = quaternion.LookRotation(lookDir, math.up());
+			}
+
+			// Sync Enemies back
+			{
+				for (var index = 0; index < Enemies.Entities.Length; index++)
+				{
+					ref var enemy = ref Enemies.Entities.ElementAt(index);
+					var id = Enemies.Ids[index];
+					var render = EnemyIdToRender[id];
+					render.transform.position = enemy.Position;
+					render.transform.rotation = enemy.Rotation;
+				}
 			}
 		}
 

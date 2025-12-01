@@ -3,7 +3,9 @@
     "rootNamespace": "",
     "references": [
         "Unity.Mathematics",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "CodePractice",
+        "Unity.Collections"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

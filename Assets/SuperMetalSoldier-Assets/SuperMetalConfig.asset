@@ -34,3 +34,4 @@ MonoBehaviour:
     z: -5
   CameraLookUpOffset: 1.25
   Gravity: 10
+  EnemyPrefab: {fileID: 7979765650037733686, guid: 67117efb504eb4ce4bd19a2459478340, type: 3}

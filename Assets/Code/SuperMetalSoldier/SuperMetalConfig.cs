@@ -24,5 +24,7 @@ namespace SuperMetalSoldier
         public float CameraLookUpOffset;
 
         public float Gravity;
+
+        public GameObject EnemyPrefab;
     }
 }
