@@ -3,7 +3,7 @@ using Unity.Collections;
 
 namespace Code
 {
-    public struct EntityGroup<T> : IDisposable where T : unmanaged, IEquatable<T>
+    public struct EntityGroup<T> : IDisposable where T : unmanaged
     {
         public NativeList<T> Entities;
         public NativeList<Id> Ids;
