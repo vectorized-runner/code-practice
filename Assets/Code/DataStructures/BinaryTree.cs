@@ -1,42 +1,47 @@
-using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 
 namespace CodePractice
 {
-    public class BinaryTree<T>
+    public class BinaryTree<T> where T : IValue
     {
         public BinaryTreeNode<T> Root;
 
         public int Depth;
 
-        public bool IsFull()
+        public bool IsEmpty()
         {
-            throw new NotImplementedException();
+            return Root == null;
         }
 
-        public int Height()
+        public bool BST_Contains(T item)
         {
-            throw new NotImplementedException();
+            return Root.BST_Contains(item);
+        }
+
+        public bool IsFull()
+        {
+            return Root.IsFull();
+        }
+
+        public int GetHeight()
+        {
+            return Root.GetHeight();
         }
 
         public int GetMax()
         {
-            throw new NotImplementedException();
+            return Root.GetMax();
         }
 
         public int Sum()
         {
-            throw new NotImplementedException();
+            return Root.Sum();
         }
 
         public int CountLeaves()
         {
-            throw new NotImplementedException();
-        }
-
-        public List<T> GetElements()
-        {
-            throw new NotImplementedException();
+            return Root.CountLeaves();
         }
 
         public List<T> PreOrder()
@@ -61,11 +66,129 @@ namespace CodePractice
         }
     }
 
-    public class BinaryTreeNode<T>
+    public class BinaryTreeNode<T> where T : IValue
     {
         public T Item;
         public BinaryTreeNode<T> Left;
         public BinaryTreeNode<T> Right;
+
+        public bool BST_Contains(T item)
+        {
+            if (item.GetValue() == Item.GetValue())
+            {
+                return true;
+            }
+
+            if (item.GetValue() > Item.GetValue())
+            {
+                // Search right
+                if (Right == null)
+                {
+                    return false;
+                }
+
+                return Right.BST_Contains(item);
+            }
+
+            if (Left == null)
+            {
+                return false;
+            }
+
+            return Left.BST_Contains(item);
+        }
+
+        public bool IsFull()
+        {
+            if (Left == null && Right == null)
+            {
+                return true;
+            }
+            
+            if (Left == null)
+            {
+                return false;
+            }
+
+            if (Right == null)
+            {
+                return false;
+            }
+
+            return Left.IsFull() && Right.IsFull();
+        }
+
+        public int CountLeaves()
+        {
+            if (Left == null && Right == null)
+            {
+                return 1;
+            }
+
+            if (Left == null)
+            {
+                return Right.CountLeaves();
+            }
+
+            if (Right == null)
+            {
+                return Left.CountLeaves();
+            }
+
+            return Left.CountLeaves() + Right.CountLeaves();
+        }
+
+        public int GetHeight()
+        {
+            if (Left == null && Right == null)
+            {
+                return 0;
+            }
+            if (Left == null)
+            {
+                return 1 + Right.GetHeight();
+            }
+            if (Right == null)
+            {
+                return 1 + Left.GetHeight();
+            }
+
+            return 1 + math.max(Left.GetHeight(), Right.GetHeight());
+        }
+
+        public int GetMax()
+        {
+            var max = Item.GetValue();
+
+            if (Left != null)
+            {
+                max = math.max(Left.GetMax(), max);
+            }
+
+            if (Right != null)
+            {
+                max = math.max(Right.GetMax(), max);
+            }
+
+            return max;
+        }
+
+        public int Sum()
+        {
+            var sum = Item.GetValue();
+
+            if (Left != null)
+            {
+                sum += Left.Sum();
+            }
+
+            if (Right != null)
+            {
+                sum += Right.Sum();
+            }
+
+            return sum;
+        }
 
         public void PreOrder(List<T> result)
         {
