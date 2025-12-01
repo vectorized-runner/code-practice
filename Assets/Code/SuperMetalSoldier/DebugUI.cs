@@ -14,12 +14,10 @@ namespace SuperMetalSoldier
 		{
 			var sb = new StringBuilder();
 
-			sb.AppendLine();
-
 			// Data
 			{
 				var game = SuperMetalGame.Instance;
-				sb.AppendLine($"SpeedXZ: {math.length(game.Player.Velocity.xz)}");
+				sb.AppendLine($"SpeedXZ: {math.length(game.Player.Velocity.xz):f2}");
 			}
 
 			Text.text = sb.ToString();

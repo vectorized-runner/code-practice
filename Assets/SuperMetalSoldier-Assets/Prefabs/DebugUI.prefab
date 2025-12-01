@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 8730627369064431921}
   - component: {fileID: 5546989790584277828}
   - component: {fileID: 8808815323909086882}
+  - component: {fileID: 884279995776830384}
   m_Layer: 5
   m_Name: DebugUI
   m_TagString: Untagged
@@ -357,3 +358,16 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
+--- !u!114 &884279995776830384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4549925120327186247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42cec63eaf3544ee3aa909fa0fc38603, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 1253438695126786959}
