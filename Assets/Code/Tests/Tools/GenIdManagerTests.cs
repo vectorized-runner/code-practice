@@ -27,7 +27,7 @@ namespace Code.Tests
         [Test]
         public void DefaultDoesNotExist()
         {
-            Assert.IsFalse(_genIdManager.Exists(new GenId()));
+            Assert.IsFalse(_genIdManager.Exists(new Id()));
         }
 
         [Test]
@@ -43,14 +43,14 @@ namespace Code.Tests
         [Test]
         public static void FirstIdIsOne()
         {
-            Assert.AreEqual(new GenId(1, 0), _genIdManager.CreateId());
+            Assert.AreEqual(new Id(1, 0), _genIdManager.CreateId());
         }
 
         [Test]
         public static void SecondId()
         {
             _genIdManager.CreateId();
-            Assert.AreEqual(new GenId(2, 0), _genIdManager.CreateId());
+            Assert.AreEqual(new Id(2, 0), _genIdManager.CreateId());
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Code.Tests
             var id = _genIdManager.CreateId();
             _genIdManager.DestroyId(id);
             
-            Assert.AreEqual(new GenId(1, 1), _genIdManager.CreateId());
+            Assert.AreEqual(new Id(1, 1), _genIdManager.CreateId());
         }
         
         [Test]
@@ -84,7 +84,7 @@ namespace Code.Tests
             {
                 for (int j = -100; j < 100; j++)
                 {
-                    Assert.IsFalse(_genIdManager.Exists(new GenId(i, j)));
+                    Assert.IsFalse(_genIdManager.Exists(new Id(i, j)));
                 }
             }
             
@@ -110,7 +110,7 @@ namespace Code.Tests
         {
             for (int i = 0; i < 1_000; i++)
             {
-                Assert.AreEqual(new GenId(i + 1, 0), _genIdManager.CreateId());
+                Assert.AreEqual(new Id(i + 1, 0), _genIdManager.CreateId());
             }
         }
 
@@ -151,7 +151,7 @@ namespace Code.Tests
 
             var id40 = _genIdManager.CreateId();
 
-            Assert.AreEqual(new GenId(4, 0), id40);
+            Assert.AreEqual(new Id(4, 0), id40);
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace Code.Tests
             {
                 for (int j = -100; j < 100; j++)
                 {
-                    Assert.AreEqual(new GenId(i, j), new GenId(i, j));
+                    Assert.AreEqual(new Id(i, j), new Id(i, j));
                 }
             }
         }
@@ -175,7 +175,7 @@ namespace Code.Tests
                 {
                     if (i != j)
                     {
-                        Assert.AreNotEqual(new GenId(i, j), new GenId(j, i));
+                        Assert.AreNotEqual(new Id(i, j), new Id(j, i));
                     }
                 }
             }

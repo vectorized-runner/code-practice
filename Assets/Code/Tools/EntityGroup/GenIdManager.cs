@@ -20,20 +20,20 @@ namespace Code
             };
         }
 
-        public GenId CreateId()
+        public Id CreateId()
         {
             if (_freeIndices.TryDequeue(out var idx))
             {
                 var version = _versionByIndex[idx];
-                return new GenId(idx, version);
+                return new Id(idx, version);
             }
 
             idx = ++_lastUsedIndex;
             _versionByIndex.Add(idx, 0);
-            return new GenId(idx, 0);
+            return new Id(idx, 0);
         }
 
-        public bool DestroyId(GenId id)
+        public bool DestroyId(Id id)
         {
             if (!Exists(id))
             {
@@ -46,7 +46,7 @@ namespace Code
             return true;
         }
 
-        public bool Exists(GenId id)
+        public bool Exists(Id id)
         {
             var idx = id.Index;
             if (idx > _lastUsedIndex || idx <= 0)

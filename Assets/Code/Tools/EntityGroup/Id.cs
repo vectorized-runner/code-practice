@@ -2,35 +2,35 @@ using System;
 
 namespace Code
 {
-    public struct GenId : IEquatable<GenId>
+    public struct Id : IEquatable<Id>
     {
         public int Index;
         public int Version;
         
-        public GenId(int index, int version)
+        public Id(int index, int version)
         {
             Index = index;
             Version = version;
         }
 
-        public static bool operator ==(GenId left, GenId right)
+        public static bool operator ==(Id left, Id right)
         {
             return left.Index == right.Index && left.Version == right.Version;
         }
 
-        public static bool operator !=(GenId left, GenId right)
+        public static bool operator !=(Id left, Id right)
         {
             return !(left == right);
         }
 
-        public bool Equals(GenId other)
+        public bool Equals(Id other)
         {
             return this == other;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is GenId other && Equals(other);
+            return obj is Id other && Equals(other);
         }
 
         public override int GetHashCode()

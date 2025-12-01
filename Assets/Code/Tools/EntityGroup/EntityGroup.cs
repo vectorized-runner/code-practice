@@ -6,8 +6,8 @@ namespace Code
     public struct EntityGroup<T> : IDisposable where T : unmanaged, IEquatable<T>
     {
         public NativeList<T> Entities;
-        public NativeList<GenId> Ids;
-        public NativeHashMap<GenId, int> IdToIndex;
+        public NativeList<Id> Ids;
+        public NativeHashMap<Id, int> IdToIndex;
         public bool IsCreated;
 
         public int Length => Entities.Length;
@@ -20,13 +20,13 @@ namespace Code
             return new EntityGroup<T>
             {
                 Entities = new NativeList<T>(initialCapacity, Allocator.Persistent),
-                IdToIndex = new NativeHashMap<GenId, int>(initialCapacity, Allocator.Persistent),
-                Ids = new NativeList<GenId>(initialCapacity, Allocator.Persistent),
+                IdToIndex = new NativeHashMap<Id, int>(initialCapacity, Allocator.Persistent),
+                Ids = new NativeList<Id>(initialCapacity, Allocator.Persistent),
                 IsCreated = true,
             };
         }
 
-        public void Add(GenId id, T entity)
+        public void Add(Id id, T entity)
         {
             var count = Entities.Length;
             if (!IdToIndex.TryAdd(id, count))
@@ -38,7 +38,7 @@ namespace Code
             Ids.Add(id);
         }
 
-        public int IndexOf(GenId id)
+        public int IndexOf(Id id)
         {
             if (IdToIndex.TryGetValue(id, out var idx))
             {
@@ -48,7 +48,7 @@ namespace Code
             return -1;
         }
 
-        public bool Contains(GenId id)
+        public bool Contains(Id id)
         {
             return IndexOf(id) != -1;
         }
@@ -75,7 +75,7 @@ namespace Code
             IdToIndex.Remove(id);
         }
 
-        public void RemoveAtSwapBack(GenId id)
+        public void RemoveAtSwapBack(Id id)
         {
             RemoveAtSwapBack(IdToIndex[id]);
         }

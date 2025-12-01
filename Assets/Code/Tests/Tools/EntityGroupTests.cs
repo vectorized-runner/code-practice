@@ -41,7 +41,7 @@ namespace Code.Tests
         public void AddThenContains()
         {
             var grp = EntityGroup<int>.Create(1);
-            var id = new GenId(1, 1);
+            var id = new Id(1, 1);
             grp.Add(id, 0);
 
             Assert.IsTrue(grp.Contains(id));
@@ -51,7 +51,7 @@ namespace Code.Tests
         public void DoesNotContainByDefault()
         {
             var grp = EntityGroup<int>.Create(1);
-            Assert.IsFalse(grp.Contains(new GenId(1, 1)));
+            Assert.IsFalse(grp.Contains(new Id(1, 1)));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace Code.Tests
         public void RemoveWorksAfterAdd()
         {
             var grp = EntityGroup<int>.Create(1);
-            var id = new GenId(1, 1);
+            var id = new Id(1, 1);
             grp.Add(id, 0);
             grp.RemoveAtSwapBack(id);
 
@@ -76,9 +76,9 @@ namespace Code.Tests
         public void CheckItemAfterRemove()
         {
             var grp = EntityGroup<int>.Create(1);
-            var id0 = new GenId(1, 1);
-            var id1 = new GenId(2, 1);
-            var id2 = new GenId(3, 1);
+            var id0 = new Id(1, 1);
+            var id1 = new Id(2, 1);
+            var id2 = new Id(3, 1);
 
             grp.Add(id0, 0);
             grp.Add(id1, 1);
