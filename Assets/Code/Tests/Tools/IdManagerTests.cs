@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace Code.Tests
 {
-    public class GenIdManagerTests
+    public class IdManagerTests
     {
         // Work with Index & Version 
         // Default Index = 0, Version for each index is 0
@@ -10,24 +10,24 @@ namespace Code.Tests
         // Exists -> Index >= LastUsedIndex
         // No Exception on Double dispose
 
-        private static GenIdManager _genIdManager;
+        private static IdManager _idManager;
 
         [SetUp]
         public void Setup()
         {
-            _genIdManager = GenIdManager.Create();
+            _idManager = IdManager.Create();
         }
 
         [TearDown]
         public void TearDown()
         {
-            _genIdManager.Dispose();
+            _idManager.Dispose();
         }
 
         [Test]
         public void DefaultDoesNotExist()
         {
-            Assert.IsFalse(_genIdManager.Exists(new Id()));
+            Assert.IsFalse(_idManager.Exists(new Id()));
         }
 
         [Test]
@@ -35,46 +35,46 @@ namespace Code.Tests
         {
             Assert.DoesNotThrow(() =>
             {
-                _genIdManager.Dispose();
-                _genIdManager.Dispose();
+                _idManager.Dispose();
+                _idManager.Dispose();
             });
         }
         
         [Test]
         public static void FirstIdIsOne()
         {
-            Assert.AreEqual(new Id(1, 0), _genIdManager.CreateId());
+            Assert.AreEqual(new Id(1, 0), _idManager.CreateId());
         }
 
         [Test]
         public static void SecondId()
         {
-            _genIdManager.CreateId();
-            Assert.AreEqual(new Id(2, 0), _genIdManager.CreateId());
+            _idManager.CreateId();
+            Assert.AreEqual(new Id(2, 0), _idManager.CreateId());
         }
 
         [Test]
         public static void DestroyIdWorksAfterCreated()
         {
-            var id = _genIdManager.CreateId();
-            Assert.IsTrue(_genIdManager.DestroyId(id));
+            var id = _idManager.CreateId();
+            Assert.IsTrue(_idManager.DestroyId(id));
         }
 
         [Test]
         public static void IndexRecycle()
         {
-            var id = _genIdManager.CreateId();
-            _genIdManager.DestroyId(id);
+            var id = _idManager.CreateId();
+            _idManager.DestroyId(id);
             
-            Assert.AreEqual(new Id(1, 1), _genIdManager.CreateId());
+            Assert.AreEqual(new Id(1, 1), _idManager.CreateId());
         }
         
         [Test]
         public static void DestroyIdDoesNotWorkTwice()
         {
-            var id = _genIdManager.CreateId();
-            _genIdManager.DestroyId(id);
-            Assert.IsFalse(_genIdManager.DestroyId(id));
+            var id = _idManager.CreateId();
+            _idManager.DestroyId(id);
+            Assert.IsFalse(_idManager.DestroyId(id));
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace Code.Tests
             {
                 for (int j = -100; j < 100; j++)
                 {
-                    Assert.IsFalse(_genIdManager.Exists(new Id(i, j)));
+                    Assert.IsFalse(_idManager.Exists(new Id(i, j)));
                 }
             }
             
@@ -93,16 +93,16 @@ namespace Code.Tests
         [Test]
         public static void ExistsAfterCreated()
         {
-            var id = _genIdManager.CreateId();
-            Assert.IsTrue(_genIdManager.Exists(id));
+            var id = _idManager.CreateId();
+            Assert.IsTrue(_idManager.Exists(id));
         }
 
         [Test]
         public static void DoesNotExistAfterDestroyed()
         {
-            var id = _genIdManager.CreateId();
-            _genIdManager.DestroyId(id);
-            Assert.IsFalse(_genIdManager.Exists(id));
+            var id = _idManager.CreateId();
+            _idManager.DestroyId(id);
+            Assert.IsFalse(_idManager.Exists(id));
         }
 
         [Test]
@@ -110,19 +110,19 @@ namespace Code.Tests
         {
             for (int i = 0; i < 1_000; i++)
             {
-                Assert.AreEqual(new Id(i + 1, 0), _genIdManager.CreateId());
+                Assert.AreEqual(new Id(i + 1, 0), _idManager.CreateId());
             }
         }
 
         [Test]
         public static void IndexRecycledOnDestroy()
         {
-            var previous = _genIdManager.CreateId();
+            var previous = _idManager.CreateId();
 
             for (int i = 0; i < 100; i++)
             {
-                _genIdManager.DestroyId(previous);
-                var newId = _genIdManager.CreateId();
+                _idManager.DestroyId(previous);
+                var newId = _idManager.CreateId();
                 Assert.AreEqual(previous.Version + 1, newId.Version);
                 Assert.AreEqual(previous.Index, newId.Index);
                 previous = newId;
@@ -133,15 +133,15 @@ namespace Code.Tests
         public static void RealWorldScenario()
         {
             // Get 3 idx, Kill 2, then get 3 next one
-            var id10 = _genIdManager.CreateId(); // (1, 0)
-            var id20 = _genIdManager.CreateId(); // (2, 0)
-            var id30 = _genIdManager.CreateId(); // (3, 0)
+            var id10 = _idManager.CreateId(); // (1, 0)
+            var id20 = _idManager.CreateId(); // (2, 0)
+            var id30 = _idManager.CreateId(); // (3, 0)
 
-            _genIdManager.DestroyId(id10);
-            _genIdManager.DestroyId(id20);
+            _idManager.DestroyId(id10);
+            _idManager.DestroyId(id20);
 
-            var id11 = _genIdManager.CreateId();
-            var id21 = _genIdManager.CreateId();
+            var id11 = _idManager.CreateId();
+            var id21 = _idManager.CreateId();
 
             Assert.AreEqual(id11.Index, id10.Index);
             Assert.AreEqual(id10.Version + 1, id11.Version);
@@ -149,7 +149,7 @@ namespace Code.Tests
             Assert.AreEqual(id20.Index, id21.Index);
             Assert.AreEqual(id20.Version + 1, id21.Version);
 
-            var id40 = _genIdManager.CreateId();
+            var id40 = _idManager.CreateId();
 
             Assert.AreEqual(new Id(4, 0), id40);
         }

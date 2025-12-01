@@ -4,15 +4,15 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace Code
 {
-    public struct GenIdManager : IDisposable
+    public struct IdManager : IDisposable
     {
         private UnsafeHashMap<int, int> _versionByIndex;
         private UnsafeQueue<int> _freeIndices;
         private int _lastUsedIndex;
 
-        public static GenIdManager Create()
+        public static IdManager Create()
         {
-            return new GenIdManager
+            return new IdManager
             {
                 _versionByIndex = new UnsafeHashMap<int, int>(64, Allocator.Persistent),
                 _freeIndices = new UnsafeQueue<int>(Allocator.Persistent),

@@ -12,6 +12,11 @@ namespace Code
 
         public int Length => Entities.Length;
 
+        public EntityGroup(int initialCapacity)
+        {
+            this = Create(initialCapacity);
+        }
+
         public static EntityGroup<T> Create(int initialCapacity)
         {
             if (initialCapacity < 0)
