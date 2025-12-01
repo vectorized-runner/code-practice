@@ -95,13 +95,12 @@ namespace SuperMetalSoldier
 			return result;
 		}
 
-
 		private void Update()
 		{
 			var dt = Time.deltaTime;
 			var time = Time.time;
 
-			// Sync back from physics engine
+			// Player Sync back from physics engine
 			{
 				Player.Position = _playerRb.position;
 				Player.Rotation = _playerRb.rotation;
@@ -128,7 +127,7 @@ namespace SuperMetalSoldier
 				Player.IsGrounded = isGrounded;
 			}
 
-			// Jump
+			// Player Jump
 			{
 				var isJumpOutOfCooldown = time - Player.LastGroundedTime > Config.PlayerJumpCooldownAfterGrounded;
 				var canJump = Player.IsGrounded && isJumpOutOfCooldown;
@@ -138,7 +137,7 @@ namespace SuperMetalSoldier
 				}
 			}
 
-			// Gravity
+			// Player Gravity
 			{
 				if (!Player.IsGrounded)
 				{
@@ -153,7 +152,7 @@ namespace SuperMetalSoldier
 
 			var runInput = Input.GetKey(KeyCode.LeftShift);
 
-			// Update Player Pos
+			// Player Update Pos
 			{
 				var moveInput = GetPlayerMoveInput();
 				var allZero = math.all(moveInput == float2.zero);
@@ -206,7 +205,7 @@ namespace SuperMetalSoldier
 				}
 			}
 
-			// Update anim
+			// Player Update Anim
 			{
 				var previousState = Player.AnimationState;
 
@@ -237,13 +236,13 @@ namespace SuperMetalSoldier
 				}
 			}
 
-			// Sync to Physics
+			// Player Sync to Physics
 			{
 				_playerRb.linearVelocity = Player.Velocity;
 				_playerRb.rotation = Player.Rotation;
 			}
 
-			// Update Camera
+			// Camera Update
 			{
 				var playerPos = Player.Position;
 				var newCameraPos = playerPos + Config.CameraOffset;
