@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -26,5 +27,24 @@ namespace SuperMetalSoldier
         public float Gravity;
 
         public GameObject EnemyPrefab;
+
+        private static SuperMetalConfig _instance;
+
+        public static SuperMetalConfig Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = Resources.Load<SuperMetalConfig>("SuperMetalConfig");
+                    if (_instance == null)
+                    {
+                        throw new Exception("Couldn't load the SuperMetalConfig instance.");
+                    }
+                }
+
+                return _instance;
+            }
+        }
     }
 }

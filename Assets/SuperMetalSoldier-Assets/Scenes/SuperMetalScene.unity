@@ -736,8 +736,40 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1347924148143515072, guid: 93439cd33da9e4c71ac0d39b8570e44c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 375553098153983017}
   m_SourcePrefab: {fileID: 100100000, guid: 93439cd33da9e4c71ac0d39b8570e44c, type: 3}
+--- !u!1 &375553098153983016 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1347924148143515072, guid: 93439cd33da9e4c71ac0d39b8570e44c, type: 3}
+  m_PrefabInstance: {fileID: 375553098153983015}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &375553098153983017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375553098153983016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b19213d108149e4ad118b097ba448fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Camera:
+    Position:
+      x: 0
+      y: 0
+      z: 0
+    Rotation:
+      value:
+        x: 0
+        y: 0
+        z: 0
+        w: 0
+  CameraRender: {fileID: 1552901712}
 --- !u!1001 &1182154559002116416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -991,7 +1023,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 828616410298678512, guid: 3127738fffa8644a7b03632787b5b51a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 828616410298678512, guid: 3127738fffa8644a7b03632787b5b51a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -999,7 +1031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 828616410298678512, guid: 3127738fffa8644a7b03632787b5b51a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: -0.49
       objectReference: {fileID: 0}
     - target: {fileID: 828616410298678512, guid: 3127738fffa8644a7b03632787b5b51a, type: 3}
       propertyPath: m_LocalRotation.w

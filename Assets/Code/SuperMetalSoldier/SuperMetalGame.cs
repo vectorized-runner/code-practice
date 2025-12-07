@@ -45,13 +45,6 @@ namespace SuperMetalSoldier
 		public float3 Velocity;
 	}
 
-	[Serializable]
-	public struct CameraData
-	{
-		public float3 Position;
-		public quaternion Rotation;
-	}
-
 	public struct EnemyManagedData
 	{
 		public GameObject Go;
@@ -61,21 +54,19 @@ namespace SuperMetalSoldier
 	public class SuperMetalGame : MonoBehaviour
 	{
 		public PlayerData Player;
-		public CameraData Camera;
 		public GameObject PlayerRender;
 		public SuperMetalConfig Config;
-		public Camera CameraRender;
 		private Rigidbody _playerRb;
 		private Animator _playerAnimator;
 
 		public EnemyAuthoring[] EnemyAuthorings;
 		public EntityGroup<EnemyData> Enemies;
 		public Dictionary<Id, EnemyManagedData> EnemyIdToManaged = new();
-
+		
 		public IdManager IdManager;
 
 		public static SuperMetalGame Instance { get; private set; }
-
+		
 		private void Awake()
 		{
 			Instance = this;
@@ -331,15 +322,6 @@ namespace SuperMetalSoldier
 				}
 			}
 
-			// Camera Update
-			{
-				var playerPos = Player.Position;
-				var newCameraPos = playerPos + Config.CameraOffset;
-				Camera.Position = newCameraPos;
-				var lookDir = playerPos + new float3(0f, Config.CameraLookUpOffset, 0f) - newCameraPos;
-				Camera.Rotation = quaternion.LookRotation(lookDir, math.up());
-			}
-
 			// Enemy Sync Render Position
 			{
 				for (var index = 0; index < Enemies.Entities.Length; index++)
@@ -365,15 +347,6 @@ namespace SuperMetalSoldier
 					return "Run";
 				default:
 					throw new ArgumentOutOfRangeException(nameof(state), state, null);
-			}
-		}
-
-		private void LateUpdate()
-		{
-			// Sync Camera
-			{
-				CameraRender.transform.position = Camera.Position;
-				CameraRender.transform.rotation = Camera.Rotation;
 			}
 		}
 	}
