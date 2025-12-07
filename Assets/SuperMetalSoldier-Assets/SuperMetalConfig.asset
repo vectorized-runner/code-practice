@@ -20,7 +20,7 @@ MonoBehaviour:
   PlayerRunAcceleration: 12
   PlayerWalkMaxHorizontalSpeed: 6
   PlayerRunMaxHorizontalSpeed: 20
-  PlayerDeceleration: 10
+  PlayerDeceleration: 20
   PlayerJumpCooldownAfterGrounded: 0.5
   JumpPushAmount: 10
   GroundedDistanceCheck: 0.2
