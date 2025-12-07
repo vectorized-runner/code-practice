@@ -75,6 +75,7 @@ namespace SuperMetalSoldier
 		private PlayerManagedData _playerManaged;
 		
 		private static readonly int _animatorSpeedId = Animator.StringToHash("Speed");
+		private float _animSpeedParameter;
 		
 		private void Awake()
 		{
@@ -347,6 +348,10 @@ namespace SuperMetalSoldier
 					enemyTf.transform.rotation = enemy.Rotation;
 				}
 			}
+			
+			// Player Animation Speed update
+			_animSpeedParameter = math.length(Player.Velocity.xz);
+			_playerManaged.Animator.SetFloat(_animatorSpeedId, _animSpeedParameter);
 		}
 
 		private string AnimationStateToStr(AnimationState state)
