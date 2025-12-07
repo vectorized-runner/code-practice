@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Unity.Collections;
 
 namespace Code
@@ -29,6 +30,17 @@ namespace Code
                 Ids = new NativeList<Id>(initialCapacity, Allocator.Persistent),
                 IsCreated = true,
             };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T ElementAt(Id id)
+        {
+            return ref ElementAt(IdToIndex[id]);
+        }
+
+        public ref T ElementAt(int index)
+        {
+            return ref Entities.ElementAt(index);
         }
 
         public void Add(Id id, T entity)
