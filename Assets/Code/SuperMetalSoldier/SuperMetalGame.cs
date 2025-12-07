@@ -51,6 +51,12 @@ namespace SuperMetalSoldier
 		public quaternion Rotation;
 	}
 
+	public struct EnemyManagedData
+	{
+		public GameObject Go;
+		public Rigidbody Rb;
+	}
+
 	public class SuperMetalGame : MonoBehaviour
 	{
 		public PlayerData Player;
@@ -63,7 +69,7 @@ namespace SuperMetalSoldier
 
 		public EnemyAuthoring[] EnemyAuthorings;
 		public EntityGroup<EnemyData> Enemies;
-		public Dictionary<Id, GameObject> EnemyIdToRender = new();
+		public Dictionary<Id, EnemyManagedData> EnemyIdToManaged = new();
 
 		public IdManager IdManager;
 
@@ -100,8 +106,13 @@ namespace SuperMetalSoldier
 						Rotation = authoring.transform.rotation,
 					});
 
-					var enemyRender = Instantiate(Config.EnemyPrefab);
-					EnemyIdToRender.Add(id, enemyRender);
+					var enemyGo = Instantiate(Config.EnemyPrefab);
+					var enemyRb = enemyGo.GetComponent<Rigidbody>();
+					EnemyIdToManaged.Add(id, new EnemyManagedData
+					{
+						Go = enemyGo,
+						Rb = enemyRb,
+					});
 					
 					// Authoring isn't required at Runtime
 					Destroy(authoring.gameObject);
@@ -305,9 +316,9 @@ namespace SuperMetalSoldier
 				{
 					ref var enemy = ref Enemies.Entities.ElementAt(index);
 					var id = Enemies.Ids[index];
-					var render = EnemyIdToRender[id];
-					render.transform.position = enemy.Position;
-					render.transform.rotation = enemy.Rotation;
+					var enemyTf = EnemyIdToManaged[id].Go.transform;
+					enemyTf.transform.position = enemy.Position;
+					enemyTf.transform.rotation = enemy.Rotation;
 				}
 			}
 		}
