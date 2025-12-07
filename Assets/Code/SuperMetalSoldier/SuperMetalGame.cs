@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Code;
 using Unity.Mathematics;
 using UnityEngine;
-using Object = System.Object;
 
 namespace SuperMetalSoldier
 {
@@ -51,21 +50,31 @@ namespace SuperMetalSoldier
 		public Rigidbody Rb;
 	}
 
+	public struct PlayerManagedData
+	{
+		public GameObject Go;
+		public Rigidbody Rb;
+		public Animator Animator;
+	}
+
 	public class SuperMetalGame : MonoBehaviour
 	{
-		public PlayerData Player;
-		public GameObject PlayerRender;
-		public SuperMetalConfig Config;
-		private Rigidbody _playerRb;
-		private Animator _playerAnimator;
-
+		// To be assigned
 		public EnemyAuthoring[] EnemyAuthorings;
+		public SuperMetalConfig Config;
+		public GameObject PlayerRender;
+		//
+		
+		public PlayerData Player;
 		public EntityGroup<EnemyData> Enemies;
 		public Dictionary<Id, EnemyManagedData> EnemyIdToManaged = new();
-		
 		public IdManager IdManager;
-
+		
 		public static SuperMetalGame Instance { get; private set; }
+
+		private PlayerManagedData _playerManaged;
+		
+		private static readonly int _animatorSpeedId = Animator.StringToHash("Speed");
 		
 		private void Awake()
 		{
@@ -74,10 +83,17 @@ namespace SuperMetalSoldier
 
 		private void Start()
 		{
-			// Init player pos
+			// Init Player
 			{
 				Player.Position = Config.PlayerInitialPos;
 				Player.AnimationState = AnimationState.Idle;
+
+				_playerManaged = new PlayerManagedData
+				{
+					Go = PlayerRender,
+					Animator = PlayerRender.GetComponentInChildren<Animator>(),
+					Rb = PlayerRender.GetComponent<Rigidbody>(),
+				};
 			}
 
 			// Init enemies
@@ -114,9 +130,6 @@ namespace SuperMetalSoldier
 					Destroy(authoring.gameObject);
 				}
 			}
-
-			_playerRb = PlayerRender.GetComponent<Rigidbody>();
-			_playerAnimator = PlayerRender.GetComponentInChildren<Animator>();
 		}
 
 		private void OnDestroy()
@@ -157,9 +170,10 @@ namespace SuperMetalSoldier
 
 			// Player Sync back from physics engine
 			{
-				Player.Position = _playerRb.position;
-				Player.Rotation = _playerRb.rotation;
-				Player.Velocity = _playerRb.linearVelocity;
+				var playerRb = _playerManaged.Rb;
+				Player.Position = playerRb.position;
+				Player.Rotation = playerRb.rotation;
+				Player.Velocity = playerRb.linearVelocity;
 			}
 
 			// Enemy sync back from Physics Engine
@@ -300,14 +314,14 @@ namespace SuperMetalSoldier
 				var newState = Player.AnimationState;
 				if (previousState != newState)
 				{
-					_playerAnimator.SetTrigger(AnimationStateToStr(newState));
+					_playerManaged.Animator.SetTrigger(AnimationStateToStr(newState));
 				}
 			}
 
 			// Player Sync to Physics
 			{
-				_playerRb.linearVelocity = Player.Velocity;
-				_playerRb.rotation = Player.Rotation;
+				_playerManaged.Rb.linearVelocity = Player.Velocity;
+				_playerManaged.Rb.rotation = Player.Rotation;
 			}
 
 			// Enemy Sync to Physics
