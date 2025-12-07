@@ -101,13 +101,17 @@ namespace SuperMetalSoldier
 				foreach (var authoring in EnemyAuthorings)
 				{
 					var id = IdManager.CreateId();
+					var initialPos = authoring.transform.position;
+					var initialRot = authoring.transform.rotation;
+					
 					Enemies.Add(id, new EnemyData
 					{
-						Position = authoring.transform.position,
-						Rotation = authoring.transform.rotation,
+						Position = initialPos,
+						Rotation = initialRot,
+						Velocity = float3.zero,
 					});
-
-					var enemyGo = Instantiate(Config.EnemyPrefab);
+					
+					var enemyGo = Instantiate(Config.EnemyPrefab, initialPos, initialRot);
 					var enemyRb = enemyGo.GetComponent<Rigidbody>();
 					EnemyIdToManaged.Add(id, new EnemyManagedData
 					{
@@ -173,6 +177,7 @@ namespace SuperMetalSoldier
 				{
 					ref var enemy = ref Enemies.ElementAt(id);
 					var rb = managed.Rb;
+					
 					enemy.Position = rb.position;
 					enemy.Rotation = rb.rotation;
 					enemy.Velocity = rb.linearVelocity;
