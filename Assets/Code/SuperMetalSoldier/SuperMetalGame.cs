@@ -42,6 +42,7 @@ namespace SuperMetalSoldier
 	{
 		public float3 Position;
 		public quaternion Rotation;
+		public float3 Velocity;
 	}
 
 	[Serializable]
@@ -164,6 +165,18 @@ namespace SuperMetalSoldier
 				Player.Position = _playerRb.position;
 				Player.Rotation = _playerRb.rotation;
 				Player.Velocity = _playerRb.linearVelocity;
+			}
+
+			// Enemy sync back from Physics Engine
+			{
+				foreach (var (id, managed) in EnemyIdToManaged)
+				{
+					ref var enemy = ref Enemies.ElementAt(id);
+					var rb = managed.Rb;
+					enemy.Position = rb.position;
+					enemy.Rotation = rb.rotation;
+					enemy.Velocity = rb.linearVelocity;
+				}
 			}
 
 			// This is to track movement over time
@@ -301,6 +314,18 @@ namespace SuperMetalSoldier
 				_playerRb.rotation = Player.Rotation;
 			}
 
+			// Enemy Sync to Physics
+			{
+				foreach (var (id, managed) in EnemyIdToManaged)
+				{
+					ref var enemy = ref Enemies.ElementAt(id);
+					var rb = managed.Rb;
+					rb.position = enemy.Position;
+					rb.rotation = enemy.Rotation;
+					rb.linearVelocity = enemy.Velocity;
+				}
+			}
+
 			// Camera Update
 			{
 				var playerPos = Player.Position;
@@ -310,7 +335,7 @@ namespace SuperMetalSoldier
 				Camera.Rotation = quaternion.LookRotation(lookDir, math.up());
 			}
 
-			// Sync Enemies back
+			// Enemy Sync Render Position
 			{
 				for (var index = 0; index < Enemies.Entities.Length; index++)
 				{
