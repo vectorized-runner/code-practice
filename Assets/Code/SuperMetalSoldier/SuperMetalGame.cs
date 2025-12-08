@@ -76,6 +76,8 @@ namespace SuperMetalSoldier
 		
 		private static readonly int _animatorSpeedId = Animator.StringToHash("Speed");
 		private float _animSpeedParameter;
+		private Transform _cameraTransform;
+		private float _playerRotationCurrentVelocity;
 		
 		private void Awake()
 		{
@@ -84,6 +86,8 @@ namespace SuperMetalSoldier
 
 		private void Start()
 		{
+			_cameraTransform = CameraController.Instance.CameraRender.transform;
+			
 			// Init Player
 			{
 				Player.Position = Config.PlayerInitialPos;
@@ -138,7 +142,7 @@ namespace SuperMetalSoldier
 			Enemies.Dispose();
 			IdManager.Dispose();
 		}
-
+		
 		private float2 GetPlayerMoveInput()
 		{
 			var result = float2.zero;
@@ -238,24 +242,27 @@ namespace SuperMetalSoldier
 			// Player Update Pos
 			{
 				var moveInput = GetPlayerMoveInput();
-				var allZero = math.all(moveInput == float2.zero);
-				var inputDir = math.normalize(moveInput);
+				var normalizedInputDir = math.normalize(moveInput);
+				var hasMoveInput = math.lengthsq(moveInput) > 0.01f;
 
-				if (!allZero)
+				if (hasMoveInput)
 				{
-					// Turn
-					var lookPosition = Player.Position + moveInput.x0y();
-					// var lookDir = lookPosition - Player.Position
-					var wantedRotation = quaternion.LookRotation(moveInput.x0y(), math.up());
-					var rotateDegrees = Config.PlayerTurnAnglePerSec * dt;
-					var rotation = Quaternion.RotateTowards(Player.Rotation, wantedRotation, rotateDegrees);
-					Debug.DrawRay(lookPosition, math.up(), Color.cyan, 10f);
-					Player.Rotation = rotation;
+					var targetRotation = math.degrees(math.atan2(normalizedInputDir.x, normalizedInputDir.y)) + _cameraTransform.eulerAngles.y;
+					var currentTransformY = math.degrees(math.Euler(Player.Rotation)).y;
+					var rotation = Mathf.SmoothDampAngle(currentTransformY, targetRotation, ref _playerRotationCurrentVelocity, Config.PlayerRotationSmoothTime);
+					Player.Rotation = Quaternion.Euler(0f, rotation, 0f);
+					
+					// My original implementation -- I guess both could be used
+					// var lookPosition = Player.Position + moveInput.x0y();
+					// var wantedRotation = quaternion.LookRotation(moveInput.x0y(), math.up());
+					// var rotateDegrees = Config.PlayerTurnAnglePerSec * dt;
+					// var rotation = Quaternion.RotateTowards(Player.Rotation, wantedRotation, rotateDegrees);
+					// Debug.DrawRay(lookPosition, math.up(), Color.cyan, 10f);
+					// Player.Rotation = rotation;
 				}
-
-				var walkInput = math.lengthsq(moveInput) > 0.01f;
-				var acceleration = runInput ? Config.PlayerRunAcceleration : (walkInput ? Config.PlayerWalkAcceleration : Config.PlayerDeceleration);
-				var targetSpeed = runInput ? Config.PlayerRunMaxHorizontalSpeed : (walkInput ? Config.PlayerWalkMaxHorizontalSpeed : 0f);
+				
+				var acceleration = runInput ? Config.PlayerRunAcceleration : (hasMoveInput ? Config.PlayerWalkAcceleration : Config.PlayerDeceleration);
+				var targetSpeed = runInput ? Config.PlayerRunMaxHorizontalSpeed : (hasMoveInput ? Config.PlayerWalkMaxHorizontalSpeed : 0f);
 				var currentSpeed = math.length(Player.Velocity.xz);
 				var moveDir = math.forward(Player.Rotation).xz;
 				var newSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * dt);

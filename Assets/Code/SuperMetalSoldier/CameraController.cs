@@ -7,6 +7,13 @@ namespace SuperMetalSoldier
 	{
 		public CameraData Camera;
 		public Camera CameraRender;
+		
+		public static CameraController Instance { get; private set; }
+
+		private void Awake()
+		{
+			Instance = this;
+		}
 
 		private void LateUpdate()
 		{
