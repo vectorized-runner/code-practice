@@ -239,17 +239,10 @@ namespace SuperMetalSoldier
 			{
 				var moveInput = GetPlayerMoveInput();
 				var allZero = math.all(moveInput == float2.zero);
-				var moveDir = math.normalize(moveInput);
+				var inputDir = math.normalize(moveInput);
 
 				if (!allZero)
 				{
-					var acceleration = runInput ? Config.PlayerRunAcceleration : Config.PlayerWalkAcceleration;
-					var targetSpeed = runInput ? Config.PlayerRunMaxHorizontalSpeed : Config.PlayerWalkMaxHorizontalSpeed;
-					var currentSpeed = math.length(Player.Velocity.xz);
-					var newSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * dt);
-					
-					Player.Velocity.xz = moveDir * newSpeed;
-
 					// Turn
 					var lookPosition = Player.Position + moveInput.x0y();
 					// var lookDir = lookPosition - Player.Position
@@ -258,28 +251,16 @@ namespace SuperMetalSoldier
 					var rotation = Quaternion.RotateTowards(Player.Rotation, wantedRotation, rotateDegrees);
 					Debug.DrawRay(lookPosition, math.up(), Color.cyan, 10f);
 					Player.Rotation = rotation;
-
-					// We don't determine the position, the physics engine does
-					// Player.Position += moveInput.x0y() * moveSpeedMultiplier * dt;
 				}
-				else
-				{
-					Debug.Assert(Config.StopVelocityLengthThreshold > 0.001f);
-					var len = math.length(Player.Velocity.xz);
 
-					if (len < Config.StopVelocityLengthThreshold)
-					{
-						Player.Velocity.xz = float2.zero;
-					}
-					else
-					{
-						// Decelerate
-						var decelerationDir = -math.normalize(Player.Velocity.xz);
-						var velocityXZ = Player.Velocity.xz;
-						velocityXZ += decelerationDir * dt * Config.PlayerDeceleration;
-						Player.Velocity.xz = velocityXZ;
-					}
-				}
+				var walkInput = math.lengthsq(moveInput) > 0.01f;
+				var acceleration = runInput ? Config.PlayerRunAcceleration : (walkInput ? Config.PlayerWalkAcceleration : Config.PlayerDeceleration);
+				var targetSpeed = runInput ? Config.PlayerRunMaxHorizontalSpeed : (walkInput ? Config.PlayerWalkMaxHorizontalSpeed : 0f);
+				var currentSpeed = math.length(Player.Velocity.xz);
+				var moveDir = math.forward(Player.Rotation).xz;
+				var newSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * dt);
+					
+				Player.Velocity.xz = moveDir * newSpeed;
 			}
 
 			// Player Update Anim
