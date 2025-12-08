@@ -239,22 +239,16 @@ namespace SuperMetalSoldier
 			{
 				var moveInput = GetPlayerMoveInput();
 				var allZero = math.all(moveInput == float2.zero);
-				var accelerationConstant = runInput ? Config.PlayerRunAcceleration : Config.PlayerWalkAcceleration;
-				var acceleration = math.normalize(moveInput) * accelerationConstant;
+				var moveDir = math.normalize(moveInput);
 
 				if (!allZero)
 				{
-					var desiredVelocity = Player.Velocity.xz + acceleration * dt;
-					var len = math.length(desiredVelocity);
-					var maxSpeed = runInput ? Config.PlayerRunMaxHorizontalSpeed : Config.PlayerWalkMaxHorizontalSpeed;
-					if (len >= maxSpeed)
-					{
-						var normalized = desiredVelocity / len;
-						desiredVelocity = normalized * maxSpeed;
-					}
-
-					Player.Velocity.xz = desiredVelocity;
-
+					var acceleration = runInput ? Config.PlayerRunAcceleration : Config.PlayerWalkAcceleration;
+					var targetSpeed = runInput ? Config.PlayerRunMaxHorizontalSpeed : Config.PlayerWalkMaxHorizontalSpeed;
+					var currentSpeed = math.length(Player.Velocity.xz);
+					var newSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * dt);
+					
+					Player.Velocity.xz = moveDir * newSpeed;
 
 					// Turn
 					var lookPosition = Player.Position + moveInput.x0y();
