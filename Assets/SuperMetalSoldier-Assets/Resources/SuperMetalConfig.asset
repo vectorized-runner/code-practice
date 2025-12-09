@@ -17,9 +17,9 @@ MonoBehaviour:
     y: 1
     z: 0
   PlayerWalkAcceleration: 5
-  PlayerRunAcceleration: 12
-  PlayerWalkMaxHorizontalSpeed: 5
-  PlayerRunMaxHorizontalSpeed: 20
+  PlayerRunAcceleration: 5
+  PlayerWalkMaxHorizontalSpeed: 2.5
+  PlayerRunMaxHorizontalSpeed: 10
   PlayerDeceleration: 25
   PlayerJumpCooldownAfterGrounded: 0.5
   JumpPushAmount: 10

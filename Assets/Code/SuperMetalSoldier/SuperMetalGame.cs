@@ -261,9 +261,27 @@ namespace SuperMetalSoldier
 					// Player.Rotation = rotation;
 				}
 				
-				var acceleration = runInput ? Config.PlayerRunAcceleration : (hasMoveInput ? Config.PlayerWalkAcceleration : Config.PlayerDeceleration);
-				var targetSpeed = runInput ? Config.PlayerRunMaxHorizontalSpeed : (hasMoveInput ? Config.PlayerWalkMaxHorizontalSpeed : 0f);
+				targetSpeed = runInput ? Config.PlayerRunMaxHorizontalSpeed : (hasMoveInput ? Config.PlayerWalkMaxHorizontalSpeed : 0f);
 				var currentSpeed = math.length(Player.Velocity.xz);
+				var isAccelerating = targetSpeed > currentSpeed;
+				float acceleration;
+				
+				if (isAccelerating)
+				{
+					if (runInput)
+					{
+						acceleration = Config.PlayerRunAcceleration;
+					}
+					else
+					{
+						acceleration = Config.PlayerWalkAcceleration;
+					}
+				}
+				else
+				{
+					acceleration = Config.PlayerDeceleration;
+				}
+				
 				var moveDir = math.forward(Player.Rotation).xz;
 				var newSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * dt);
 					
