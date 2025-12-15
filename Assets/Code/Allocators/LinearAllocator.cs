@@ -5,9 +5,7 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace CodePractice
 {
-	// TODO-LinearAlloc: Don't clear memory
 	// TODO-LinearAlloc: Bitshift Alignment hack
-	// TODO-LinearAlloc: Do we need to align original Buffer? I don't think so
 	public unsafe struct LinearAllocator : IAllocator, IDisposable
 	{
 		public byte* Buffer;
@@ -44,8 +42,10 @@ namespace CodePractice
 			return (T*)Alloc(UnsafeUtility.SizeOf<T>() * count, UnsafeUtility.AlignOf<T>(), clearMemory);
 		}
 
-		public void* Alloc(int size, int align, bool clearMemory = MemoryUtil.DefaultClearMemory)
+		public void* Alloc(int size, int align = MemoryUtil.DefaultAlign, bool clearMemory = MemoryUtil.DefaultClearMemory)
 		{
+			MemoryUtil.CheckAllocSize(size);
+			
 			var currentPtr = &Buffer[Allocated];
 			var alignedPtr = MemoryUtil.AlignForward(currentPtr, align);
 			var alignBytes = (int)((long)alignedPtr - (long)currentPtr);
@@ -63,27 +63,6 @@ namespace CodePractice
 			}
 
 			return alignedPtr;
-		}
-
-		public void* Alloc(int size, bool clearMemory = MemoryUtil.DefaultClearMemory)
-		{
-			MemoryUtil.CheckAllocSize(size);
-
-			if (Allocated + size > Length)
-			{
-				throw new Exception(
-					$"Allocated Size {size} is out of LinearAllocator bounds. Allocated {Allocated} Length {Length}");
-			}
-
-			void* mem = &Buffer[Allocated];
-			Allocated += size;
-
-			if (clearMemory)
-			{
-				MemoryUtil.MemClear(mem, size);
-			}
-			
-			return mem;
 		}
 
 		public void Clear()

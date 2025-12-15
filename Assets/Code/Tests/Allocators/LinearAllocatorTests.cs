@@ -199,7 +199,7 @@ namespace CodePractice.Tests
 		{
 			Assert.DoesNotThrow(() =>
 			{
-				using var allocator = new LinearAllocator(1_000_000, 4);
+				using var allocator = new LinearAllocator(1_000_000);
 				var alloc = allocator.Alloc(1, 1024);
 				Assert.IsTrue(MemoryUtil.IsAligned(alloc, 1024));
 				var alloc2 = allocator.Alloc(1, 8);
