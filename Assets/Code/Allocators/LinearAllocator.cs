@@ -14,9 +14,9 @@ namespace CodePractice
 		public int Length;
 		public int Allocated;
 
-		public LinearAllocator(int length, int align = MemoryUtil.DefaultAlign)
+		public LinearAllocator(int length)
 		{
-			Buffer = (byte*)MemoryUtil.Malloc(length, align);
+			Buffer = (byte*)MemoryUtil.Malloc(length);
 			Length = length;
 			Allocated = 0;
 		}
