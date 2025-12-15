@@ -18,9 +18,9 @@ namespace CodePractice
 
 		private static readonly int _headerSize = sizeof(StackAllocatorHeader);
 		
-		public StackAllocator(int length, int align = MemoryUtil.DefaultAlign)
+		public StackAllocator(int length, int align = AllocatorHelper.DefaultAlign)
 		{
-			Buffer = (byte*)MemoryUtil.Malloc(length, align);
+			Buffer = (byte*)AllocatorHelper.Malloc(length, align);
 			Length = length;
 			Allocated = 0;
 		}
@@ -29,7 +29,7 @@ namespace CodePractice
 		// I don't care about padding
 		// Just store the previous pointer
 		// Add some simple tests 
-		public void* Alloc(int size, int align, bool clearMemory = MemoryUtil.DefaultClearMemory)
+		public void* Alloc(int size, int align, bool clearMemory = AllocatorHelper.DefaultClearMemory)
 		{
 			// TODO-StackAllocator: 
 			throw new NotImplementedException();

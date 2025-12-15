@@ -17,31 +17,31 @@ namespace CodePractice
 		{
 			get
 			{
-				MemoryUtil.CheckIndexInRange(index, Length);
+				AllocatorHelper.CheckIndexInRange(index, Length);
 				return Ptr[index];
 			}
 			set
 			{
-				MemoryUtil.CheckIndexInRange(index, Length);
+				AllocatorHelper.CheckIndexInRange(index, Length);
 				Ptr[index] = value;
 			}
 		}
 		
 		public ref T ItemAsRef(int index)
 		{
-			MemoryUtil.CheckIndexInRange(index, Length);
+			AllocatorHelper.CheckIndexInRange(index, Length);
 			return ref Ptr[index];
 		}
 
 		public Array(int length, bool clearMemory = false)
 		{
-			MemoryUtil.CheckLength(length);
-			Ptr = MemoryUtil.Malloc<T>(length);
+			AllocatorHelper.CheckLength(length);
+			Ptr = AllocatorHelper.Malloc<T>(length);
 			Length = length;
 
 			if (clearMemory)
 			{
-				MemoryUtil.MemClear(Ptr, length);
+				AllocatorHelper.MemClear(Ptr, length);
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace CodePractice
 		{
 			if (Ptr != null)
 			{
-				MemoryUtil.Free(Ptr);
+				AllocatorHelper.Free(Ptr);
 				this = default;
 			}
 		}

@@ -5,7 +5,7 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace CodePractice
 {
-    public static unsafe class MemoryUtil
+    public static unsafe class AllocatorHelper
     {
         public const string DebugCondition = "DEBUG_CHECKS";
         public const int DefaultAlign = 16;

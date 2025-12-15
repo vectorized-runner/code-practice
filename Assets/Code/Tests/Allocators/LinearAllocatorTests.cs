@@ -116,46 +116,46 @@ namespace CodePractice.Tests
 		[Test]
 		public void AlignForward_1()
 		{
-			Assert.AreEqual(32, (int)MemoryUtil.AlignForward((void*)32, 16));
+			Assert.AreEqual(32, (int)AllocatorHelper.AlignForward((void*)32, 16));
 		}
 
 		[Test]
 		public void AlignForward_2()
 		{
-			Assert.AreEqual(128, (int)MemoryUtil.AlignForward((void*)32, 128));
+			Assert.AreEqual(128, (int)AllocatorHelper.AlignForward((void*)32, 128));
 		}
 
 		[Test]
 		public void AlignForward_3()
 		{
-			Assert.AreEqual(64, (int)MemoryUtil.AlignForward((void*)64, 16));
+			Assert.AreEqual(64, (int)AllocatorHelper.AlignForward((void*)64, 16));
 		}
 
 		[Test]
 		public void AlignForward_4()
 		{
-			Assert.AreEqual(64, (int)MemoryUtil.AlignForward((void*)64, 16));
+			Assert.AreEqual(64, (int)AllocatorHelper.AlignForward((void*)64, 16));
 		}
 
 		[Test]
 		public void AlignForward_5()
 		{
-			Assert.AreEqual(32, (int)MemoryUtil.AlignForward((void*)27, 8));
+			Assert.AreEqual(32, (int)AllocatorHelper.AlignForward((void*)27, 8));
 		}
 
 		[Test]
 		public static void IsPow_0()
 		{
-			Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(0));
+			Assert.AreEqual(false, AllocatorHelper.IsPowerOfTwo(0));
 		}
 
 		[Test]
 		public static void IsPow_1()
 		{
-			Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-1));
-			Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-2));
-			Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(-4));
-			Assert.AreEqual(false, MemoryUtil.IsPowerOfTwo(int.MinValue));
+			Assert.AreEqual(false, AllocatorHelper.IsPowerOfTwo(-1));
+			Assert.AreEqual(false, AllocatorHelper.IsPowerOfTwo(-2));
+			Assert.AreEqual(false, AllocatorHelper.IsPowerOfTwo(-4));
+			Assert.AreEqual(false, AllocatorHelper.IsPowerOfTwo(int.MinValue));
 		}
 
 		[TestCase(100, 4)]
@@ -166,7 +166,7 @@ namespace CodePractice.Tests
 		[TestCase(1024, 32)]
 		public void IsAligned_Pass(long memAddress, int align)
 		{
-			Assert.IsTrue(MemoryUtil.IsAligned((void*)memAddress, align));
+			Assert.IsTrue(AllocatorHelper.IsAligned((void*)memAddress, align));
 		}
 
 		[TestCase(50, 8)]
@@ -177,7 +177,7 @@ namespace CodePractice.Tests
 		[TestCase(22, 8)]
 		public void IsAligned_Fail(long memAddress, int align)
 		{
-			Assert.IsFalse(MemoryUtil.IsAligned((void*)memAddress, align));
+			Assert.IsFalse(AllocatorHelper.IsAligned((void*)memAddress, align));
 		}
 		
 		[Test]
@@ -201,13 +201,13 @@ namespace CodePractice.Tests
 			{
 				using var allocator = new LinearAllocator(1_000_000);
 				var alloc = allocator.Alloc(1, 1024);
-				Assert.IsTrue(MemoryUtil.IsAligned(alloc, 1024));
+				Assert.IsTrue(AllocatorHelper.IsAligned(alloc, 1024));
 				var alloc2 = allocator.Alloc(1, 8);
-				Assert.IsTrue(MemoryUtil.IsAligned(alloc2, 8));
+				Assert.IsTrue(AllocatorHelper.IsAligned(alloc2, 8));
 				var alloc3 = allocator.Alloc(1, 32);
-				Assert.IsTrue(MemoryUtil.IsAligned(alloc3, 32));
+				Assert.IsTrue(AllocatorHelper.IsAligned(alloc3, 32));
 				var alloc4 = allocator.Alloc(1, 64);
-				Assert.IsTrue(MemoryUtil.IsAligned(alloc4, 64));
+				Assert.IsTrue(AllocatorHelper.IsAligned(alloc4, 64));
 			});
 		}
 

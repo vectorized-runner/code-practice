@@ -14,7 +14,7 @@ namespace CodePractice
 
 		public LinearAllocator(int length)
 		{
-			Buffer = (byte*)MemoryUtil.Malloc(length);
+			Buffer = (byte*)AllocatorHelper.Malloc(length);
 			Length = length;
 			Allocated = 0;
 		}
@@ -37,17 +37,17 @@ namespace CodePractice
 			Allocated = 0;
 		}
 		
-		public T* Alloc<T>(int count = 1, bool clearMemory = MemoryUtil.DefaultClearMemory) where T : unmanaged
+		public T* Alloc<T>(int count = 1, bool clearMemory = AllocatorHelper.DefaultClearMemory) where T : unmanaged
 		{
 			return (T*)Alloc(UnsafeUtility.SizeOf<T>() * count, UnsafeUtility.AlignOf<T>(), clearMemory);
 		}
 
-		public void* Alloc(int size, int align = MemoryUtil.DefaultAlign, bool clearMemory = MemoryUtil.DefaultClearMemory)
+		public void* Alloc(int size, int align = AllocatorHelper.DefaultAlign, bool clearMemory = AllocatorHelper.DefaultClearMemory)
 		{
-			MemoryUtil.CheckAllocSize(size);
+			AllocatorHelper.CheckAllocSize(size);
 			
 			var currentPtr = &Buffer[Allocated];
-			var alignedPtr = MemoryUtil.AlignForward(currentPtr, align);
+			var alignedPtr = AllocatorHelper.AlignForward(currentPtr, align);
 			var alignBytes = (int)((long)alignedPtr - (long)currentPtr);
 
 			if (Allocated + size + alignBytes > Length)
@@ -84,7 +84,7 @@ namespace CodePractice
 		{
 			if (Buffer != null)
 			{
-				MemoryUtil.Free(Buffer);
+				AllocatorHelper.Free(Buffer);
 			}
 
 			this = default;
