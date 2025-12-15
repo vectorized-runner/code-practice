@@ -35,7 +35,7 @@ namespace CodePractice
         }
 
         [Conditional(DebugCondition)]
-        public static void CheckAlignment(int align)
+        public static void CheckIsPow2(int align)
         {
             if (!IsPowerOfTwo(align))
                 throw new Exception($"Alignment {align} must be a power of two.");
@@ -55,13 +55,13 @@ namespace CodePractice
 
         public static bool IsAligned(void* ptr, int align)
         {
-            CheckAlignment(align);
+            CheckIsPow2(align);
             return ((long)ptr & (align - 1)) == 0;
         }
         
         public static void* AlignForward(void* ptr, int align)
         {
-            CheckAlignment(align);
+            CheckIsPow2(align);
 
             var ptrValue = (long)ptr;
 
