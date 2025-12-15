@@ -59,12 +59,10 @@ namespace CodePractice
             return ((long)ptr & (align - 1)) == 0;
         }
         
-        public static void* AlignForward(void* ptr, int align)
+        public static void* AlignForward(void* ptr, nuint align)
         {
-            CheckIsPow2(align);
-
+            /*
             var ptrValue = (long)ptr;
-
             // Same as (address % alignment) but faster as 'alignment' is a power of two
             var mod = ptrValue & (align - 1);
             if (mod == 0)
@@ -74,6 +72,11 @@ namespace CodePractice
 
             // The amount of padding required
             return (void*)(ptrValue + align - mod);
+            */
+
+            var longAlign = (long)align;
+            var longPtr = (long)ptr;
+            return (void*)((longPtr + longAlign - 1) & ~(longAlign - 1));
         }
 
         public static void* Malloc(int length, int align = DefaultAlign)
