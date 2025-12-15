@@ -77,7 +77,7 @@ namespace CodePractice
 
 		public void Resize(int newSize)
 		{
-			throw new NotImplementedException();
+			throw new NotSupportedException();
 		}
 
 		public void Dispose()
