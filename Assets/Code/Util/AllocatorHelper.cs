@@ -59,7 +59,7 @@ namespace CodePractice
             return ((long)ptr & (align - 1)) == 0;
         }
         
-        public static void* AlignForward(void* ptr, nuint align)
+        public static void* AlignForward(void* ptr, int align)
         {
             /*
             var ptrValue = (long)ptr;
