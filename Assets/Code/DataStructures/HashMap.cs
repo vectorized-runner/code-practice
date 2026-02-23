@@ -51,6 +51,12 @@ public class HashMap<TKey, TValue> where TKey : IEquatable<TKey>
     {
     }
 
+    // TODO: Increment length
+    // TODO: Resize condition incorrect (use length + 1)
+    // TODO: Resize avoid float division
+    // TODO: Check tombstone (can be reused)
+    // TODO: Don't use all 8 bits, use 7 bits for hash
+    // TODO: Didn't compare keys
     public void Add(TKey key, TValue value)
     {
         var hash = key.GetHashCode();
