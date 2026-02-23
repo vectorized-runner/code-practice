@@ -79,5 +79,20 @@ namespace CodePractice.Tests
 			Assert.IsFalse(map.ContainsKey(4359834));
 			Assert.IsTrue(map.ContainsKey(21314));
 		}
+
+		[Test]
+		public void LengthZeroByDefault()
+		{
+			var map = new HashMap<int, int>();
+			Assert.AreEqual(0, map.Length);
+		}
+
+		[Test]
+		public void LengthIncreaseAfterAdd()
+		{
+			var map = new HashMap<int, int>();
+			map.Add(1, 1);
+			Assert.AreEqual(1, map.Length);
+		}
 	}
 }
