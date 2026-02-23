@@ -47,14 +47,35 @@ public class HashMap<TKey, TValue> where TKey : IEquatable<TKey>
         }
     }
 
+    private void Resize()
+    {
+    }
+
     public void Add(TKey key, TValue value)
     {
         var hash = key.GetHashCode();
         // Fast modulo. Requirement: Capacity is power of two
-        var idx = hash & (Capacity - 1);
+        var capacity = Capacity;
+        var mod = capacity - 1;
+        var idx = hash & mod;
+
+        var loadFactor = (float)_length / capacity;
+        if (loadFactor >= _maxLoadFactor)
+        {
+            Resize(); // TODO:
+        }
         
-        
-        throw new NotImplementedException();
+        const byte empty = 0x00;
+        const byte tombstone = 0xFE;
+
+        while (_metadataArray[idx] != empty)
+        {
+            idx = (idx + 1) & mod; // wrap around
+        }
+
+        _metadataArray[idx] = (byte)(hash & 0xFF);
+        _keys[idx] = key;
+        _values[idx] = value;
     }
 
     public bool TryAdd(TKey key, TValue value)
